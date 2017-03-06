@@ -1,0 +1,22 @@
+IndexServlet.java  里面基于 import javax.servlet.annotation.WebServlet 注解接口
+该 注解 等价于 web.xml 里 配置 下列 内容
+	<servlet>
+		<servlet-name>indexServlet</servlet-name>
+		<servlet-class>web.servlet.IndexServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>indexServlet</servlet-name>
+		<url-pattern>/indexServlet</url-pattern>
+	</servlet-mapping>
+	
+web.xml 要注意以下几点
+
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0" metadata-complete="false">
+
+1  javax.servlet.annotation.WebServlet 注解接口 是基于servlet 3.0 以上环境 的支持
+2  注意  web.xml 中 web-app 节点中   metadata-complete  设为 false 否则    WebServlet 的注解将得不到支付 

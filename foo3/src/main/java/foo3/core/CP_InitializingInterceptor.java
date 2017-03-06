@@ -33,6 +33,9 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 public class CP_InitializingInterceptor extends HandlerInterceptorAdapter {
 	Logger logger = Logger.getLogger(CP_InitializingInterceptor.class);
 
+	/***
+	 *   请求前到此方法
+	 */
 	@Override
 	public boolean preHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler) throws Exception {
@@ -66,10 +69,15 @@ public class CP_InitializingInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		logger.info(log.toString());
+		
+//		logger.info("---------------11111111111111111111111111---");
 
 		return true;
 	}
-
+	
+	/***
+	 *   请求后到此方法  在此，在此有机会改变跳转地址 ModelAndVie 
+	 */
 	@Override
 	public void postHandle(HttpServletRequest request,
 			HttpServletResponse response, Object handler,
@@ -80,16 +88,19 @@ public class CP_InitializingInterceptor extends HandlerInterceptorAdapter {
 		String serverPort = ":" + request.getServerPort();
 		String httpPath = serverName + serverPort ;
 		request.setAttribute("_serverPath", httpPath);
-		
-		
+//		logger.info("---------------22222222222222222222---");
 	}
 
+	/***
+	 *  返回处理(已经渲染了页面) 可以根据ex 是否为 null 判断是否发生了异常,进行日志处理
+	 */
 	@Override
 	public void afterCompletion(HttpServletRequest request,
 			HttpServletResponse response, Object handler, Exception ex)
 			throws Exception {
 		// TODO Auto-generated method stub
 		super.afterCompletion(request, response, handler, ex);
+//		logger.info("---------------333333333333333333333---");
 	}
 
 	@Override
@@ -97,6 +108,7 @@ public class CP_InitializingInterceptor extends HandlerInterceptorAdapter {
 			HttpServletResponse response, Object handler) throws Exception {
 		// TODO Auto-generated method stub
 		super.afterConcurrentHandlingStarted(request, response, handler);
+//		logger.info("---------------444444444444444444444---");
 	}
 
 }
