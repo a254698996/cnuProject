@@ -17,19 +17,20 @@ import com.hibernate.dao.base.Page;
  * 提供了和具体实体类无关的数据库操作,如分页函数和若干便捷查询方法
  * @see    HibernateDaoSupport
  */
+@SuppressWarnings("rawtypes")
 public class HibernateGenericDao extends HibernateDaoSupport {
     /**
      * 分页查询函数，使用hql.
      *
      * @param pageNo 页号,从1开始.
      */
-    @SuppressWarnings("unchecked")
     public Page pagedQuery(String hql, int pageNo, int pageSize, Object... values) {
         Assert.hasText(hql);
         Assert.isTrue(pageNo >= 1, "pageNo should start from 1");
         // Count查询
         String countQueryString = " select count (*) " + removeSelect(removeOrders(hql));
-        List countlist = getHibernateTemplate().find(countQueryString, values);
+       
+		List countlist = getHibernateTemplate().find(countQueryString, values);
         long totalCount = (Long) countlist.get(0);
         if (totalCount < 1)
             return new Page();
@@ -47,7 +48,6 @@ public class HibernateGenericDao extends HibernateDaoSupport {
      * @param values 查询条件
      * @return page对象
      */
-    @SuppressWarnings("unchecked")
     public Page dataQuery(String hql, int start, int pageSize, Object... values){
         Assert.hasText(hql);
         // Count查询
@@ -92,7 +92,6 @@ public class HibernateGenericDao extends HibernateDaoSupport {
      * 根据hql查询,直接使用HibernateTemplate的find函数.
      * @param values 可变参数
      */
-    @SuppressWarnings("unchecked")
     public List find(String hql, Object... values) {
         Assert.hasText(hql);
         return getHibernateTemplate().find(hql, values);
@@ -116,7 +115,6 @@ public class HibernateGenericDao extends HibernateDaoSupport {
     /**
      * 执行本地sql语句获得标量数值列表
      */
-    @SuppressWarnings("unchecked")
     public List executeNativeSql(String sql){
       return currentSession().createSQLQuery(sql).list();
     }

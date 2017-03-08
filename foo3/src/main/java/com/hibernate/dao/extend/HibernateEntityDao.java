@@ -34,12 +34,10 @@ public class HibernateEntityDao<T,PK extends Serializable> extends HibernateDaoS
     /**
      * 在构造函数中将泛型T.class赋给entityClass.
      */
-    public HibernateEntityDao() {
-    	System.out.println("HibernateEntityDao ..created");
-//        entityClass = GenericsUtils.getSuperClassGenricType(getClass());
-    }
-    public HibernateEntityDao(Class<T> entityClass,SessionFactory sessionFactory) {
-    	 this.entityClass=entityClass;
+    
+    @SuppressWarnings("unchecked")
+	public HibernateEntityDao( SessionFactory sessionFactory) {
+    	 this.entityClass = GenericsUtils.getSuperClassGenricType(getClass());
     	 this.setSessionFactory(sessionFactory);
     }
     /**
@@ -61,7 +59,6 @@ public class HibernateEntityDao<T,PK extends Serializable> extends HibernateDaoS
     /**
      * 获取实体类型的全部对象
      */
-    @SuppressWarnings("unchecked")
     public List<T> getAll() {
         return (List<T>)(getHibernateTemplate().loadAll(getEntityClass()));
     }

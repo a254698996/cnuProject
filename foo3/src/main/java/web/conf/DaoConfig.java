@@ -28,8 +28,8 @@ public class DaoConfig {
 
 	@Bean
 	@Scope(value = "prototype")
-	public HibernateEntityDao<?, ?> getHibernateEntityDao(Class<?> entityClass) {
-		return new HibernateEntityDao<>(entityClass, sessionFactory);
+	public HibernateEntityDao<?, ?> getHibernateEntityDao() {
+		return new HibernateEntityDao<>(sessionFactory);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -37,8 +37,7 @@ public class DaoConfig {
 	@Lazy
 	public IPersonService<Person, Serializable> getPersonService() {
 		logger.info("IPersonService  created");
-		return new PersonService(Person.class,
-				(HibernateEntityDao<Person, Serializable>) getHibernateEntityDao(Person.class));
+		return new PersonService(Person.class, (HibernateEntityDao<Person, Serializable>) getHibernateEntityDao());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -46,7 +45,7 @@ public class DaoConfig {
 	@Lazy
 	public ICityService<City, Serializable> getCityService() {
 		logger.info("ICityService  created");
-		return new CityService(City.class, (HibernateEntityDao<City, Serializable>) getHibernateEntityDao(City.class));
+		return new CityService(City.class, (HibernateEntityDao<City, Serializable>) getHibernateEntityDao());
 	}
 
 }
