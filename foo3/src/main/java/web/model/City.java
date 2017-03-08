@@ -7,7 +7,8 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name = "city")
-public class City extends Base {
+public class City extends BaseEntity {
+	private static final long serialVersionUID = 3234176454482575866L;
 
 	@Column(name = "ID")
 	@Id

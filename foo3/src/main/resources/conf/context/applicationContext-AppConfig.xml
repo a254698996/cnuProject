@@ -22,4 +22,5 @@
 <!-- 	<import resource="classpath:conf/context/applicationContext-CachingConfig.xml" /> -->
 	<import resource="classpath:conf/context/applicationContext-DaoConfig.xml" />
 	<import resource="classpath:conf/context/applicationContext-dubbo.xml" />
+	<import resource="classpath:conf/context/applicationContext-hibernate.xml" />
 </beans>

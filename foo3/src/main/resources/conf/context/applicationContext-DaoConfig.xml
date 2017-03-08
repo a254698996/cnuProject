@@ -34,9 +34,9 @@
 	</bean>
 
 	<!-- hibernateDAO -->
-	<bean id="hibernateDAO" class="web.dao.hibernate.impl.CP_Hibernate4DAOImpl">
-		<property name="sessionFactory" ref="sessionFactory"></property>
-	</bean>
+<!-- 	<bean id="hibernateDAO" class="web.dao.hibernate.impl.CP_Hibernate4DAOImpl"> -->
+<!-- 		<property name="sessionFactory" ref="sessionFactory"></property> -->
+<!-- 	</bean> -->
 
 	<bean id="transactionManager"
 		class="org.springframework.orm.hibernate4.HibernateTransactionManager">

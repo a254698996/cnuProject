@@ -11,4 +11,6 @@ public class MyApplicationObjectSupport extends ApplicationObjectSupport {
 	public MyApplicationObjectSupport() {
 		logger.info("MyApplicationObjectSupport....");
 	}
+	
+	
 }

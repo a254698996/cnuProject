@@ -1,7 +1,7 @@
 package web.service;
 
-import web.model.City;
+import java.io.Serializable;
 
-public interface ICityService extends IBaseService<Integer, City> {
+public interface ICityService <T, PK extends Serializable> extends IService<T, PK> {
 
 }

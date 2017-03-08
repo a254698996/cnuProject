@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+						http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/context 
+						http://www.springframework.org/schema/context/spring-context-4.0.xsd
+						http://www.springframework.org/schema/aop 
+						http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
+						http://www.springframework.org/schema/tx 
+						http://www.springframework.org/schema/tx/spring-tx-4.0.xsd">
+						
+<!-- 	<bean id="hedao" class="com.hibernate.dao.extend.HibernateEntityDao" scope=""> -->
+<!-- 		<property name="sessionFactory"> -->
+<!-- 			<ref bean="sessionFactory" /> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+	<!--这个和具体实体无关,所有dao共享 -->
+<!-- 	<bean id="hgdao" class="com.hibernate.dao.generic.HibernateGenericDao"> -->
+<!-- 		<property name="sessionFactory"> -->
+<!-- 			<ref bean="sessionFactory" /> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+	<!-- 使用泛型DAO作为抽象基类 -->
+<!-- 	<bean id="baseDao" class="com.hibernate.dao.base.BaseDao" -->
+<!-- 		depends-on="hedao,hgdao"> -->
+<!-- 		<property name="hedao"> -->
+<!-- 			<ref bean="hedao" /> -->
+<!-- 		</property> -->
+<!-- 		<property name="hgdao"> -->
+<!-- 			<ref bean="hgdao" /> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+
+	<!-- 使用泛型DAO作为抽象基类 -->
+<!-- 	<bean id="serviceImpl" class="web.service.ServiceImpl" depends-on="hedao"> -->
+<!-- 		<property name="hedao"> -->
+<!-- 			<ref bean="hedao" /> -->
+<!-- 		</property> -->
+<!-- 	</bean> -->
+ 
+</beans>
