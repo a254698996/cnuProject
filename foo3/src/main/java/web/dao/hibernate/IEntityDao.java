@@ -1,6 +1,7 @@
 package web.dao.hibernate;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,6 +18,8 @@ public interface IEntityDao<T, PK extends Serializable> {
 
 	void removeById(PK id);
 
+	void removeAll(Collection<T> collection);
+	
 	void update(T entity);
 
 	/**

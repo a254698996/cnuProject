@@ -1,6 +1,8 @@
 package web.service.impl;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.List;
 
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
@@ -31,12 +33,42 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 		return hedao.get(pk);
 	}
 
+	@Override
+	public List<T> getAll() {
+		return hedao.getAll();
+	}
+
 	public void setHedao(HibernateEntityDao<T, Serializable> hedao) {
 		this.hedao = hedao;
 		hedao.setEntityClass(entityClass);
 	}
 
-	public void setEntityClass(Class<T> entityClass) {
-		this.entityClass = entityClass;
+	@Override
+	@Transactional(value = TxType.REQUIRED)
+	public void remove(T entity) {
+		hedao.remove(entity);
+	}
+
+	@Override
+	@Transactional(value = TxType.REQUIRED)
+	public void removeById(PK id) {
+		hedao.removeById(id);
+	}
+
+	@Override
+	@Transactional(value=TxType.REQUIRED)
+	public void removeAll(Collection<T> collection) {
+		hedao.removeAll(collection);
+	}
+
+	@Override
+	@Transactional(value = TxType.REQUIRED)
+	public void update(T entity) {
+		hedao.update(entity);
+	}
+
+	@Override
+	public String getIdName(Class<T> clazz) {
+		return hedao.getIdName(clazz);
 	}
 }

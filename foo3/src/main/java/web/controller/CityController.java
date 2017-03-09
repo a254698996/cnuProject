@@ -28,8 +28,8 @@ public class CityController {
 	Logger logger = LoggerFactory.getLogger(CityController.class);
 
 	@Autowired
-	private ICityService<City,Serializable> cityService;
- 
+	private ICityService<City, Serializable> cityService;
+
 	@RequestMapping(value = "/addCity", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<Void> addCity(@RequestBody City city, UriComponentsBuilder ucBuilder) {
 		logger.info(" addCity  name :" + city.getName());
@@ -40,14 +40,14 @@ public class CityController {
 		return new ResponseEntity<Void>(headers, HttpStatus.CREATED);
 	}
 
-//	@RequestMapping(value = "/getCity", method = RequestMethod.GET)
-//	public ResponseEntity<List<City>> listCity() {
-//		List<City> cityList = cityService.getAll();
-//		if (cityList.isEmpty()) {
-//			return new ResponseEntity<List<City>>(HttpStatus.NO_CONTENT);
-//		}
-//		return new ResponseEntity<List<City>>(cityList, HttpStatus.OK);
-//	}
+	@RequestMapping(value = "/city/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<City>> listCity() {
+		List<City> cityList = cityService.getAll();
+		if (cityList.isEmpty()) {
+			return new ResponseEntity<List<City>>(HttpStatus.NO_CONTENT);
+		}
+		return new ResponseEntity<List<City>>(cityList, HttpStatus.OK);
+	}
 
 	@RequestMapping(value = "/city/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<City> getCity(@PathVariable("id") Integer id) {
@@ -59,39 +59,39 @@ public class CityController {
 		return new ResponseEntity<City>(city, HttpStatus.OK);
 	}
 
-//	@RequestMapping(value = "/updateCity/{id}", method = RequestMethod.PUT)
-//	public ResponseEntity<City> updateCity(@PathVariable("id") Integer id, @RequestBody City city) {
-//		City currCity = cityService.get(id);
-//		if (currCity == null) {
-//			return new ResponseEntity<City>(HttpStatus.NOT_FOUND);
-//		}
-//		currCity.setName(city.getName());
-//		currCity.setPassword(city.getPassword());
-//
-//		cityService.Update(currCity);
-//
-//		return new ResponseEntity<City>(city, HttpStatus.OK);
-//	}
-//
-//	@RequestMapping(value = "/deleteCity/{id}", method = RequestMethod.DELETE)
-//	public ResponseEntity<City> deleteCity(@PathVariable("id") Integer id) {
-//		City city = cityService.get(id);
-//		if (city == null) {
-//			return new ResponseEntity<City>(HttpStatus.NOT_FOUND);
-//		}
-//		cityService.delete(id);
-//		return new ResponseEntity<City>(HttpStatus.NO_CONTENT);
-//	}
-//
-//	@RequestMapping(value = "/deleteCity/", method = RequestMethod.DELETE)
-//	public ResponseEntity<City> deleteCitys() {
-//		logger.info("delete all Citys");
-//		List<City> all = cityService.getAll();
-//		cityService.deleteAll(all);
-//		return new ResponseEntity<City>(HttpStatus.NO_CONTENT);
-//	}
+	@RequestMapping(value = "/updateCity/{id}", method = RequestMethod.PUT)
+	public ResponseEntity<City> updateCity(@PathVariable("id") Integer id, @RequestBody City city) {
+		City currCity = cityService.get(id);
+		if (currCity == null) {
+			return new ResponseEntity<City>(HttpStatus.NOT_FOUND);
+		}
+		currCity.setName(city.getName());
+		currCity.setPassword(city.getPassword());
 
-	@RequestMapping("/index")
+		cityService.update(currCity);
+
+		return new ResponseEntity<City>(city, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/deleteCity/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<City> deleteCity(@PathVariable("id") Integer id) {
+		City city = cityService.get(id);
+		if (city == null) {
+			return new ResponseEntity<City>(HttpStatus.NOT_FOUND);
+		}
+		cityService.removeById(id);
+		return new ResponseEntity<City>(HttpStatus.NO_CONTENT);
+	}
+	
+	@RequestMapping(value = "/deleteCity/", method = RequestMethod.DELETE)
+	public ResponseEntity<City> deleteCitys() {
+		logger.info("delete all Citys");
+		List<City> all = cityService.getAll();
+		cityService.removeAll(all);
+		return new ResponseEntity<City>(HttpStatus.NO_CONTENT);
+	}
+
+	@RequestMapping("/index")	
 	@ResponseBody
 	public String index() {
 		logger.info("request index " + new Date());

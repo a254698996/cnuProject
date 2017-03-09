@@ -2,9 +2,8 @@ package web.service;
 
 import java.io.Serializable;
 
-public interface IService<T, PK extends Serializable> {
-	public void save(T t);
+import web.dao.hibernate.IEntityDao;
 
-	public T get(PK pk);
+public interface IService<T, PK extends Serializable> extends IEntityDao<T, PK >{
 
 }

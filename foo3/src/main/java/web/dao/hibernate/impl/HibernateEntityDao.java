@@ -4,6 +4,7 @@
 package web.dao.hibernate.impl;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.commons.beanutils.PropertyUtils;
@@ -89,10 +90,13 @@ public class HibernateEntityDao<T,PK extends Serializable> extends HibernateDaoS
      * 根据ID删除对象.
      */
     public void removeById(PK id) {
-        
         remove(get(id));
     }
-    /**
+    
+	public void removeAll(Collection<T> collection) {
+    	getHibernateTemplate().deleteAll(collection);
+	}
+	/**
      * 保存对象.<br>
      * 如果对象已在本session中持久化了,不做任何事。<br>
      * 如果另一个seesion拥有相同的持久化标识,抛出异常。<br>

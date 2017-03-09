@@ -7,9 +7,11 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "person")
 public class Person extends BaseEntity {
+	
 	private static final long serialVersionUID = 6595877670819402641L;
 	@Id
 	private String id;
+
 	private String pname;
 
 	private int pno;

@@ -1,6 +1,7 @@
 package web.controller;
 
 import java.io.Serializable;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -45,6 +46,16 @@ public class PersonController {
 		}
 		logger.info("person/{id} " + id);
 		return new ResponseEntity<Person>(person, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/person/", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<List<Person>> getPerson() {
+	     List<Person> all = personService.getAll();
+		if (all.isEmpty()) {
+			return new ResponseEntity<List<Person>>(HttpStatus.NOT_FOUND);
+		}
+		logger.info("person/ ");
+		return new ResponseEntity<List<Person>>(all, HttpStatus.OK);
 	}
 
 }
