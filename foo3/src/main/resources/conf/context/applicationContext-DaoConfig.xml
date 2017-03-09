@@ -18,7 +18,7 @@
 		<property name="dataSource" ref="dataSource" />
 		<property name="packagesToScan">
 			<list>
-				<value>web.model</value>
+				<value>web.entity</value>
 			</list>
 		</property>
 		<property name="hibernateProperties">

@@ -5,8 +5,7 @@ import java.io.Serializable;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
-import com.hibernate.dao.extend.HibernateEntityDao;
-
+import web.dao.hibernate.impl.HibernateEntityDao;
 import web.service.IService;
 
 public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> {

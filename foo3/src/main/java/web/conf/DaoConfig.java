@@ -10,10 +10,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
-import com.hibernate.dao.extend.HibernateEntityDao;
-
-import web.model.City;
-import web.model.Person;
+import web.dao.hibernate.impl.HibernateEntityDao;
+import web.entity.City;
+import web.entity.Person;
 import web.service.ICityService;
 import web.service.IPersonService;
 import web.service.impl.CityService;

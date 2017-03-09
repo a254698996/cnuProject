@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.hibernate.dao.extend;
+package web.dao.hibernate.impl;
 import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -17,7 +17,10 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.metadata.ClassMetadata;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
-import org.springframework.util.ReflectionUtils; 
+import org.springframework.util.ReflectionUtils;
+
+import web.dao.hibernate.IEntityDao;
+import web.util.GenericsUtils; 
  
 /**
  * 负责为单个Entity对象提供CRUD操作的Hibernate DAO基类. <p/> 

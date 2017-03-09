@@ -10,14 +10,16 @@ import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 
-import com.hibernate.dao.extend.HibernateEntityDao;
 import com.hibernate.dao.generic.HibernateGenericDao;
+
+import web.dao.hibernate.impl.HibernateEntityDao;
  
 /**
  * 提供hibernate dao的所有操作,<br>
  * 实现类由spring注入HibernateEntityDao和HibernateGenericDao来实现
  * 
  */
+@SuppressWarnings("rawtypes")
 public class BaseDao<T,PK extends Serializable> implements IBaseDao<T,PK> {
 	
 
@@ -113,7 +115,6 @@ public class BaseDao<T,PK extends Serializable> implements IBaseDao<T,PK> {
     /**
      * 执行本地sql语句获得标量数值列表
      */
-    @SuppressWarnings("unchecked")
     public List executeNativeSql(String sql) {
         
         return hgdao.executeNativeSql(sql);
@@ -122,8 +123,7 @@ public class BaseDao<T,PK extends Serializable> implements IBaseDao<T,PK> {
      * 根据hql查询,直接使用HibernateTemplate的find函数.
      * @param values 可变参数
      */
-    @SuppressWarnings("unchecked")
-    public List find(String hql, Object... values) {
+	public List find(String hql, Object... values) {
         
         return hgdao.find(hql, values);
     }

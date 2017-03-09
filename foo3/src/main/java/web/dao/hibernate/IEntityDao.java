@@ -1,4 +1,4 @@
-package com.hibernate.dao.extend;
+package web.dao.hibernate;
 
 import java.io.Serializable;
 import java.util.List;

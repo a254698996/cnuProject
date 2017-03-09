@@ -1,4 +1,4 @@
-package com.hibernate.dao.extend;
+package web.util;
 import java.lang.reflect.Field;  
 import java.lang.reflect.Method;  
 import java.lang.reflect.ParameterizedType;  

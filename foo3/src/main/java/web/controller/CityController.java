@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import web.model.City;
+import web.entity.City;
 import web.service.ICityService;
 
 @RestController
@@ -49,13 +49,13 @@ public class CityController {
 //		return new ResponseEntity<List<City>>(cityList, HttpStatus.OK);
 //	}
 
-	@RequestMapping(value = "/getCity/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	@RequestMapping(value = "/city/{id}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<City> getCity(@PathVariable("id") Integer id) {
 		City city = cityService.get(id);
 		if (city == null) {
 			return new ResponseEntity<City>(HttpStatus.NOT_FOUND);
 		}
-		logger.info("getCity/{id} " + id);
+		logger.info("city/{id} " + id);
 		return new ResponseEntity<City>(city, HttpStatus.OK);
 	}
 

@@ -16,6 +16,7 @@ import com.hibernate.dao.generic.HibernateGenericDao;
  * 实现类由spring注入HibernateEntityDao和HibernateGenericDao来实现
  * 
  */
+@SuppressWarnings("rawtypes")
 public interface IBaseDao<T,PK extends Serializable> {
     
     /**
@@ -125,7 +126,6 @@ public interface IBaseDao<T,PK extends Serializable> {
     /**
      * 根据hql查询,直接使用HibernateTemplate的find函数.
      */
-    @SuppressWarnings("unchecked")
     public List find(String hql, Object... values);
     
     /**
@@ -169,7 +169,6 @@ public interface IBaseDao<T,PK extends Serializable> {
 //    public Page pagedQuery(int pageNo, int pageSize, String orderBy, boolean isAsc,
 //               Criterion... criterions);
     
-    @SuppressWarnings("unchecked")
     public List executeNativeSql(String sql);
     
     public HibernateTemplate getHibernateTemplate();
