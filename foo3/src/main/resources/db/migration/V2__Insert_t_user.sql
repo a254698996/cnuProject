@@ -1,0 +1,1 @@
+insert into t_menu(id,name,url)values(1,'哈哈','http://localhost:8080');

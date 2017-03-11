@@ -1,0 +1,10 @@
+
+flyway 不能在没有创建库的情况下运行，所以需要先创建一个库
+
+create database cnu;
+
+到 pom 所在目录下执行 
+
+mvn flyway:migrate -X  执行语句
+
+mvn flyway:clean -X    清空库 表完删掉
