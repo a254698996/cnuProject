@@ -8,3 +8,5 @@ create database cnu;
 mvn flyway:migrate -X  执行语句
 
 mvn flyway:clean -X    清空库 表完删掉
+
+mvn flyway:validate -X  数据正确性

@@ -20,7 +20,8 @@ public class HeheServlet extends HttpServlet {
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-       System.out.println("heheServlet request ... "+new Date());
+		System.out.println("heheServlet request ... " + new Date());
+		resp.sendRedirect("haha.jsp");
 	}
 
 }
