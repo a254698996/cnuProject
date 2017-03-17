@@ -1,4 +1,4 @@
-package foo3;
+package util;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
@@ -12,6 +12,7 @@ import java.util.Map.Entry;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
+import foo3.TransAccbaseDto;
 import foo3.TransAccbaseDto.TransAccbaseReq;
 import foo3.TransAccbaseDto.TransAccbaseResp;
  
@@ -89,6 +90,7 @@ public class JSONUtils {
 	/**
 	 * json string convert to map
 	 */
+	@SuppressWarnings("unchecked")
 	public static <T> Map<String, Object> json2map(String jsonStr) throws Exception {
 		return objectMapper.readValue(jsonStr, Map.class);
 	}
@@ -122,7 +124,7 @@ public class JSONUtils {
 	/**
 	 * map convert to javaBean
 	 */
-	public static <T> T map2pojo(Map map, Class<T> clazz) {
+	public static <T> T map2pojo(@SuppressWarnings("rawtypes") Map map, Class<T> clazz) {
 		return objectMapper.convertValue(map, clazz);
 	}
 }

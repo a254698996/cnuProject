@@ -26,6 +26,10 @@ public class TransAccbaseDto implements Serializable {
 	}
 
 	public final static class TransAccbaseReq implements Serializable {
+		/**
+		 * 
+		 */
+		private static final long serialVersionUID = 3943617004408280422L;
 		private String accNo;
 
 		public String getAccNo() {
@@ -38,6 +42,8 @@ public class TransAccbaseDto implements Serializable {
 	}
 
 	public final static class TransAccbaseResp implements Serializable {
+
+		private static final long serialVersionUID = -1289672336163653167L;
 
 		private int issue_id;
 
