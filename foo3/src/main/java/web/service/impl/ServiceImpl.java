@@ -7,12 +7,17 @@ import java.util.List;
 import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
+
+import com.hibernate.dao.base.Page;
+
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.service.IService;
 
 public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> {
 	protected Class<T> entityClass;// DAO所管理的Entity类型.
-	private HibernateEntityDao<T, Serializable> hedao;
+	protected HibernateEntityDao<T, Serializable> hedao;
 
 	public ServiceImpl(Class<T> entityClass, HibernateEntityDao<T, Serializable> hedao) {
 		this.entityClass = entityClass;
@@ -56,7 +61,7 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	}
 
 	@Override
-	@Transactional(value=TxType.REQUIRED)
+	@Transactional(value = TxType.REQUIRED)
 	public void removeAll(Collection<T> collection) {
 		hedao.removeAll(collection);
 	}
@@ -71,4 +76,46 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	public String getIdName(Class<T> clazz) {
 		return hedao.getIdName(clazz);
 	}
+
+	@Override
+	public List<T> findBy(String propertyName, Object value) {
+		return hedao.findBy(propertyName, value);
+	}
+
+	@Override
+	public List<T> findBy(String propertyName, Object value, String orderBy, boolean isAsc) {
+		return hedao.findBy(propertyName, value, orderBy, isAsc);
+	}
+
+	@Override
+	public T findUniqueBy(String propertyName, Object value) {
+		return hedao.findUniqueBy(propertyName, value);
+	}
+
+	@Override
+	public Page pagedQuery(Criteria criteria, int pageNo, int pageSize) {
+		return hedao.pagedQuery(criteria, pageNo, pageSize);
+	}
+
+	@Override
+	public Page pagedQuery(int pageNo, int pageSize, Criterion... criterions) {
+		return hedao.pagedQuery(pageNo, pageSize, criterions);
+	}
+
+	@Override
+	public Page pagedQuery(int pageNo, int pageSize, String orderBy, boolean isAsc, Criterion... criterions) {
+		return hedao.pagedQuery(pageNo, pageSize, orderBy, isAsc, criterions);
+	}
+
+	@Override
+	public boolean isUnique(T entity, Serializable uniquePropertyNamesParam) {
+		return hedao.isUnique(entity, uniquePropertyNamesParam);
+	}
+
+	@Override
+	public Criteria getCriteria() {
+		 return hedao.getCriteria();
+	}
+	
+	
 }

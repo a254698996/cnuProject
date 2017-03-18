@@ -13,14 +13,18 @@
 						http://www.springframework.org/schema/tx/spring-tx-4.0.xsd
 						http://www.springframework.org/schema/cache 
 						http://www.springframework.org/schema/cache/spring-cache-4.0.xsd">
+	<context:annotation-config />
 
 	<context:component-scan base-package="web">
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Controller" />
 	</context:component-scan>
 
-<!-- 	<import resource="classpath:conf/context/applicationContext-CachingConfig.xml" /> -->
+	<!-- <import resource="classpath:conf/context/applicationContext-CachingConfig.xml" 
+		/> -->
 	<import resource="classpath:conf/context/applicationContext-DaoConfig.xml" />
 	<import resource="classpath:conf/context/applicationContext-dubbo.xml" />
 	<import resource="classpath:conf/context/applicationContext-hibernate.xml" />
+
+
 </beans>

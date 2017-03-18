@@ -13,10 +13,13 @@ import org.springframework.context.annotation.Scope;
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.entity.City;
 import web.entity.Person;
+import web.entity.User;
 import web.service.ICityService;
 import web.service.IPersonService;
+import web.service.IUserService;
 import web.service.impl.CityService;
 import web.service.impl.PersonService;
+import web.service.impl.UserService;
 
 @Configuration
 public class DaoConfig {
@@ -45,6 +48,14 @@ public class DaoConfig {
 	public ICityService<City, Serializable> getCityService() {
 		logger.info("ICityService  created");
 		return new CityService(City.class, (HibernateEntityDao<City, Serializable>) getHibernateEntityDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IUserService<User, Serializable> getUserService() {
+		logger.info("IUserService  created");
+		return new UserService(User.class, (HibernateEntityDao<User, Serializable>) getHibernateEntityDao());
 	}
 
 }

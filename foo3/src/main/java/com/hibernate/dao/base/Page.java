@@ -5,6 +5,9 @@ import java.util.List;
 import org.hibernate.Criteria;
 
 public class Page {
+	public final static int defaultStartIndex = 1;
+	public final static int defaultPageSize = 10;
+
 	private int startIndex, pageSize;
 	private long totalCount;
 	private List list;
@@ -12,7 +15,7 @@ public class Page {
 	public Page() {
 
 	}
-	
+
 	public Page(int startIndex, long totalCount, int pageSize, List list) {
 		super();
 		this.startIndex = startIndex;
@@ -28,8 +31,8 @@ public class Page {
 	public Page(String hql, int start, int pageSize, Object... values) {
 
 	}
-	
-	public static int getStartOfPage(int pageNo,int pageSize ){
+
+	public static int getStartOfPage(int pageNo, int pageSize) {
 		return 0;
 	}
 

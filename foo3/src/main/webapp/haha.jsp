@@ -25,16 +25,20 @@
 <script src="<%=base%>/js/bootstrap.min.js"></script>
 <script type="text/javascript">
 	$(document).ready(function() {
-		alert("aaaa");
-		$("p").click(function() {
+		$("#hehe").click(function() {
 			$(this).hide();
 		});
+		function haha(){
+			alert("sssss");
+			
+		}
 	});
 </script>
 </head>
 <body>
 	<h1>Hello, world!</h1>
 
-	<p>If you click on me, I will disappear.</p>
+	<p  onclick="haha();">If you click on me, I will disappear.</p>
+	<button id="hehe" >走你 </button>
 </body>
 </html>
