@@ -1,9 +1,6 @@
 package util;
 
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,56 +9,7 @@ import java.util.Map.Entry;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
-import foo3.TransAccbaseDto;
-import foo3.TransAccbaseDto.TransAccbaseReq;
-import foo3.TransAccbaseDto.TransAccbaseResp;
- 
-
 public class JSONUtils {
-
-	public static void main(String[] args) throws Exception {
-		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		TransAccbaseDto t = new TransAccbaseDto();
-		TransAccbaseReq req = t.getReq();
-		req.setAccNo("21312123312132");
-		TransAccbaseResp resp = t.getResp();
-		resp.setAcc_no("21312123312132");
-		Date date = new Date();
-		System.out.println(simpleDateFormat.format(date));
-		long time = (date).getTime();
-		Timestamp timestamp = new Timestamp(time);
-
-		resp.setBegin_time(timestamp);
-		resp.setCurrency("CNY");
-		
-		TransAccbaseDto t2 = new TransAccbaseDto();
-		TransAccbaseReq req2 = t2.getReq();
-		req2.setAccNo("21312123312132");
-		TransAccbaseResp resp2 = t2.getResp();
-		resp2.setAcc_no("21312123312132");
-		Date date2 = new Date();
-		System.out.println(simpleDateFormat.format(date2));
-		long time2 = (date2).getTime();
-		Timestamp timestamp2 = new Timestamp(time2);
-
-		resp2.setBegin_time(timestamp2);
-		resp2.setCurrency("CNY");
-		
-		List<TransAccbaseDto> list=new ArrayList<TransAccbaseDto>();
-		list.add(t);
-		list.add(t2);
-		String obj2json =  obj2json(list);
-		 
-		System.out.println(obj2json);
-		
-//		
-//		String obj2json = JsonUtils.obj2json(t);
-//		TransAccbaseDto json2pojo = JsonUtils.json2pojo(obj2json, TransAccbaseDto.class);
-//		System.out.println(obj2json);
-//		Timestamp begin_time = json2pojo.getResp().getBegin_time();
-//		System.out.println(simpleDateFormat.format(begin_time));
-	}
-
 	private final static ObjectMapper objectMapper = new ObjectMapper();
 
 	private JSONUtils() {

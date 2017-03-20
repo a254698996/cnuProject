@@ -10,13 +10,13 @@ public class Page {
 
 	private int startIndex, pageSize;
 	private long totalCount;
-	private List list;
+	private List<Object> list;
 
 	public Page() {
 
 	}
 
-	public Page(int startIndex, long totalCount, int pageSize, List list) {
+	public Page(int startIndex, long totalCount, int pageSize, List<Object> list) {
 		super();
 		this.startIndex = startIndex;
 		this.totalCount = totalCount;
@@ -64,11 +64,11 @@ public class Page {
 		this.pageSize = pageSize;
 	}
 
-	public List getList() {
+	public List<Object> getList() {
 		return list;
 	}
 
-	public void setList(List list) {
+	public void setList(List<Object> list) {
 		this.list = list;
 	}
 

@@ -116,6 +116,9 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	public Criteria getCriteria() {
 		 return hedao.getCriteria();
 	}
-	
-	
+
+	@Override
+	public Criteria createCriteria(Criterion... criterions) {
+		return hedao.createCriteria(criterions);
+	}
 }
