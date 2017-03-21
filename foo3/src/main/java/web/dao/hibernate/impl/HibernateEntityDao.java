@@ -206,7 +206,7 @@ public class HibernateEntityDao<T, PK extends Serializable> extends HibernateDao
 	 *            页号,从1开始.
 	 * @return 含总记录数和当前页数据的Page对象.
 	 */
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public Page pagedQuery(Criteria criteria, int pageNo, int pageSize) {
 		Assert.notNull(criteria);
 		Assert.isTrue(pageNo >= 1, "pageNo should start from 1");
@@ -236,7 +236,6 @@ public class HibernateEntityDao<T, PK extends Serializable> extends HibernateDao
 		if (totalCount < 1)
 			return new Page();
 		int startIndex = Page.getStartOfPage(pageNo, pageSize);
-		;
 		List list = criteria.setFirstResult(startIndex).setMaxResults(pageSize).list();
 		return new Page(startIndex, totalCount, pageSize, list);
 	}
@@ -272,7 +271,7 @@ public class HibernateEntityDao<T, PK extends Serializable> extends HibernateDao
 	 *            在POJO里不能重复的属性列表,以逗号分割 如"name,loginid,password"
 	 */
 	public boolean isUnique(T entity, Serializable uniquePropertyNamesParam) {
-		String uniquePropertyNames=(String) uniquePropertyNamesParam;
+		String uniquePropertyNames = (String) uniquePropertyNamesParam;
 		Assert.hasText(uniquePropertyNames);
 		Criteria criteria = createCriteria().setProjection(Projections.rowCount());
 		String[] nameList = uniquePropertyNames.split(",");
@@ -320,5 +319,14 @@ public class HibernateEntityDao<T, PK extends Serializable> extends HibernateDao
 	@Override
 	public Criteria getCriteria() {
 		return getSessionFactory().getCurrentSession().createCriteria(entityClass);
+	}
+
+	@Override
+	public T queryByHql(T clazz) {
+		List<T> findByExample = getHibernateTemplate().findByExample(clazz, 0, 1);
+		if (findByExample != null && !findByExample.isEmpty()) {
+			return findByExample.get(0);
+		}
+		return null;
 	}
 }

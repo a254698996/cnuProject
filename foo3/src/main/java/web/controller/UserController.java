@@ -4,9 +4,6 @@ import java.io.Serializable;
 import java.util.List;
 
 import org.hibernate.Criteria;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Example;
-import org.hibernate.criterion.Restrictions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +23,7 @@ import web.service.IUserService;
 public class UserController {
 
 	Logger logger = LoggerFactory.getLogger(UserController.class);
+	private final static String JSP_PATH = "user/";
 
 	@Autowired
 	@Lazy
@@ -33,23 +31,22 @@ public class UserController {
 
 	@RequestMapping(value = "toLogin", method = RequestMethod.GET)
 	public String toLogin() {
-		return "user/userLogin";
+		return getPath("userLogin");
 	}
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
 	public ModelAndView userLogin(User user) {
-//		Example create = Example.create(user);
-//		DetachedCriteria detachedCriteria = DetachedCriteria.forClass(User.class);  
-//		detachedCriteria.createAlias("enumConstByFlagIsvalid", 
-		
-//		userService.pagedQuery(1, 1, create);
-
-		return new ModelAndView("user/index");
+		User returnUser = userService.queryByHql(user);
+		if (returnUser != null) {
+			return new ModelAndView("user/index");
+		} else {
+			return new ModelAndView(getPath("userLogin"));
+		}
 	}
 
 	@RequestMapping(value = "toReg", method = RequestMethod.GET)
 	public String toreg() {
-		return "user/reg";
+		return getPath("reg");
 	}
 
 	@RequestMapping(value = "reg", method = RequestMethod.POST)
@@ -60,18 +57,21 @@ public class UserController {
 		} else {
 			logger.info("用户名称重复");
 		}
-		return new ModelAndView("user/regSuccess");
+		return new ModelAndView(getPath("regSuccess"));
 	}
 
 	@RequestMapping(value = "userList", method = RequestMethod.GET)
 	public ModelAndView userList(User user) {
 		Criteria criteria = userService.getCriteria();
 		Page pagedQuery = userService.pagedQuery(criteria, Page.defaultStartIndex, Page.defaultPageSize);
-		List list = pagedQuery.getList();
-		logger.info("list.size " + list.size());
-		ModelAndView modelAndView = new ModelAndView("user/userList");
+		List<Object> list = pagedQuery.getList();
+		ModelAndView modelAndView = new ModelAndView(getPath("userList"));
 		modelAndView.getModelMap().put("userList", list);
 		return modelAndView;
+	}
+
+	private String getPath(String path) {
+		return JSP_PATH + path;
 	}
 
 }

@@ -7,6 +7,7 @@
 </head>
 <body>
 	<form action="<%=request.getContextPath() %>/user/reg" method="post">
+		nickname:<input type="text" name="nickname"></br>
 		username:<input type="text" name="username"></br>
 		password:<input type="text" name="password"></br>
 		email:<input type="text" name="email"></br>
@@ -14,6 +15,7 @@
 		sno:<input type="text" name="sno"></br>
 		sname:<input type="text" name="sname"></br>
 		passwordask:<input type="text" name="passwordask"></br>
+	    passwordanswer:<input type="text" name="passwordanswer"></br>
 		memo:<input type="text" name="memo"></br>
 		<input type="submit"/>
 	</form>

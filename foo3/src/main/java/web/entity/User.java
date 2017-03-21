@@ -7,6 +7,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_user")
 public class User extends BaseEntity {
+	private String nickname;
 	private String username;
 	private String password;
 	private String email;
@@ -15,6 +16,7 @@ public class User extends BaseEntity {
 	private String sno;
 	private String sname;
 	private String passwordask;
+	private String passwordanswer;
 
 	public String getUsername() {
 		return username;
@@ -78,6 +80,22 @@ public class User extends BaseEntity {
 
 	public void setPasswordask(String passwordask) {
 		this.passwordask = passwordask;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+
+	public String getPasswordanswer() {
+		return passwordanswer;
+	}
+
+	public void setPasswordanswer(String passwordanswer) {
+		this.passwordanswer = passwordanswer;
 	}
 
 }
