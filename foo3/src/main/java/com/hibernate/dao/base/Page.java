@@ -33,7 +33,7 @@ public class Page {
 	}
 
 	public static int getStartOfPage(int pageNo, int pageSize) {
-		return 0;
+		 return (pageNo - 1) * pageSize;
 	}
 
 	public int getStartIndex() {

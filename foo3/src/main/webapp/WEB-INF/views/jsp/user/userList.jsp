@@ -23,7 +23,7 @@
      </script>
   </head>
 <body> 
-<form class="form-inline" action="${ctx}/accManager/accList">
+<form class="form-inline" action="${ctx}/user/userList">
 	  <div class="form-group">
 	    <label class="sr-only" for="exampleInputPassword3">用户名</label>
 	    <input type="text" name="_SCH_username" class="form-control" value="${param._SCH_username}" placeholder="用户名">

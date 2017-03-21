@@ -9,6 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
@@ -59,15 +60,22 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "userList", method = RequestMethod.GET)
-	public ModelAndView userList(User user) {
-		Page pagedQuery = userService.pagedQuery("from User ", 1, 5);
-//		Criteria criteria = userService.getCriteria();
-//		Page pagedQuery = userService.pagedQuery(criteria, Page.defaultStartIndex, Page.defaultPageSize);
-//		List<Object> list = pagedQuery.getList();
-		ModelAndView modelAndView = new ModelAndView(getPath("userList"));
-//		modelAndView.getModelMap().put("userList", list);
-		modelAndView.getModelMap().put("userList", pagedQuery.getList());
-		return modelAndView;
+	public ModelAndView userList(User user, @RequestParam(required = false) Integer pageIndex) {
+		if (pageIndex == null) {
+			pageIndex = Page.defaultStartIndex;
+		}
+		Page page = userService.pagedQuery("from User ", pageIndex, 1);
+		// Criteria criteria = userService.getCriteria();
+		// Page pagedQuery = userService.pagedQuery(criteria,
+		// Page.defaultStartIndex, Page.defaultPageSize);
+		// List<Object> list = pagedQuery.getList();
+		ModelAndView mav = new ModelAndView(getPath("userList"));
+		// modelAndView.getModelMap().put("userList", list);
+		mav.getModelMap().put("userList", page.getList());
+		mav.getModel().put("steps", page.getPageSize());
+		mav.getModel().put("pageIndex",  pageIndex );
+		mav.getModel().put("count", page.getTotalCount());
+		return mav;
 	}
 
 	private String getPath(String path) {
