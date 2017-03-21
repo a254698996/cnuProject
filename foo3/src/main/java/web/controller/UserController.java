@@ -36,7 +36,7 @@ public class UserController {
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
 	public ModelAndView userLogin(User user) {
-		User returnUser = userService.queryByHql(user);
+		User returnUser = userService.queryBeanByHql(user);
 		if (returnUser != null) {
 			return new ModelAndView("user/index");
 		} else {

@@ -45,8 +45,7 @@ public interface IEntityDao<T, PK extends Serializable> {
 	
 	public Criteria createCriteria(Criterion... criterions) ;
 	
-	public T queryByHql(T clazz);
-	
+	public T queryBeanByHql(T clazz);
 
 	/**
 	 * 获取Entity对象的主键名.

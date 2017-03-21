@@ -322,11 +322,12 @@ public class HibernateEntityDao<T, PK extends Serializable> extends HibernateDao
 	}
 
 	@Override
-	public T queryByHql(T clazz) {
+	public T queryBeanByHql(T clazz) {
 		List<T> findByExample = getHibernateTemplate().findByExample(clazz, 0, 1);
 		if (findByExample != null && !findByExample.isEmpty()) {
 			return findByExample.get(0);
 		}
 		return null;
 	}
+
 }

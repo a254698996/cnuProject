@@ -123,7 +123,7 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	}
 
 	@Override
-	public T queryByHql(T clazz){
-		return hedao.queryByHql(clazz);
+	public T queryBeanByHql(T clazz){
+		return hedao.queryBeanByHql(clazz);
 	}
 }
