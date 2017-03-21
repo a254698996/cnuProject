@@ -11,6 +11,7 @@ import org.hibernate.Criteria;
 import org.hibernate.criterion.Criterion;
 
 import com.hibernate.dao.base.Page;
+import com.hibernate.dao.generic.HibernateGenericDao;
 
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.service.IService;
@@ -18,10 +19,12 @@ import web.service.IService;
 public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> {
 	protected Class<T> entityClass;// DAO所管理的Entity类型.
 	protected HibernateEntityDao<T, Serializable> hedao;
+	protected HibernateGenericDao hdao;
 
-	public ServiceImpl(Class<T> entityClass, HibernateEntityDao<T, Serializable> hedao) {
+	public ServiceImpl(Class<T> entityClass, HibernateEntityDao<T, Serializable> hedao, HibernateGenericDao hdao) {
 		this.entityClass = entityClass;
 		this.hedao = hedao;
+		this.hdao = hdao;
 	}
 
 	public ServiceImpl() {
@@ -114,7 +117,7 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 
 	@Override
 	public Criteria getCriteria() {
-		 return hedao.getCriteria();
+		return hedao.getCriteria();
 	}
 
 	@Override
@@ -123,7 +126,7 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	}
 
 	@Override
-	public T queryBeanByHql(T clazz){
+	public T queryBeanByHql(T clazz) {
 		return hedao.queryBeanByHql(clazz);
 	}
 }

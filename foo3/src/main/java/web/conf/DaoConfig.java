@@ -10,6 +10,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Scope;
 
+import com.hibernate.dao.generic.HibernateGenericDao;
+
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.entity.City;
 import web.entity.Person;
@@ -29,6 +31,11 @@ public class DaoConfig {
 	SessionFactory sessionFactory;
 
 	@Bean
+	public HibernateGenericDao getHibernateGenericDao() {
+		return new HibernateGenericDao(sessionFactory);
+	}
+
+	@Bean
 	@Scope(value = "prototype")
 	public HibernateEntityDao<?, ?> getHibernateEntityDao() {
 		return new HibernateEntityDao<>(sessionFactory);
@@ -39,7 +46,7 @@ public class DaoConfig {
 	@Lazy
 	public IPersonService<Person, Serializable> getPersonService() {
 		logger.info("IPersonService  created");
-		return new PersonService(Person.class, (HibernateEntityDao<Person, Serializable>) getHibernateEntityDao());
+		return new PersonService(Person.class, (HibernateEntityDao<Person, Serializable>) getHibernateEntityDao(),getHibernateGenericDao());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -47,7 +54,7 @@ public class DaoConfig {
 	@Lazy
 	public ICityService<City, Serializable> getCityService() {
 		logger.info("ICityService  created");
-		return new CityService(City.class, (HibernateEntityDao<City, Serializable>) getHibernateEntityDao());
+		return new CityService(City.class, (HibernateEntityDao<City, Serializable>) getHibernateEntityDao(),getHibernateGenericDao());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -55,7 +62,7 @@ public class DaoConfig {
 	@Lazy
 	public IUserService<User, Serializable> getUserService() {
 		logger.info("IUserService  created");
-		return new UserService(User.class, (HibernateEntityDao<User, Serializable>) getHibernateEntityDao());
+		return new UserService(User.class, (HibernateEntityDao<User, Serializable>) getHibernateEntityDao(),getHibernateGenericDao());
 	}
 
 }

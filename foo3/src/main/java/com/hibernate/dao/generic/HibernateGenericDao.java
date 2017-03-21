@@ -7,6 +7,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.hibernate.Query;
+import org.hibernate.SessionFactory;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 
@@ -19,7 +20,12 @@ import com.hibernate.dao.base.Page;
  */
 @SuppressWarnings("rawtypes")
 public class HibernateGenericDao extends HibernateDaoSupport {
-    /**
+	
+	public HibernateGenericDao(SessionFactory sessionFactory) {
+		setSessionFactory(sessionFactory);
+	}
+	 
+	/**
      * 分页查询函数，使用hql.
      *
      * @param pageNo 页号,从1开始.
