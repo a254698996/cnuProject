@@ -1,9 +1,7 @@
 package web.controller;
 
 import java.io.Serializable;
-import java.util.List;
 
-import org.hibernate.Criteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,11 +60,13 @@ public class UserController {
 
 	@RequestMapping(value = "userList", method = RequestMethod.GET)
 	public ModelAndView userList(User user) {
-		Criteria criteria = userService.getCriteria();
-		Page pagedQuery = userService.pagedQuery(criteria, Page.defaultStartIndex, Page.defaultPageSize);
-		List<Object> list = pagedQuery.getList();
+		Page pagedQuery = userService.pagedQuery("from User ", 1, 5);
+//		Criteria criteria = userService.getCriteria();
+//		Page pagedQuery = userService.pagedQuery(criteria, Page.defaultStartIndex, Page.defaultPageSize);
+//		List<Object> list = pagedQuery.getList();
 		ModelAndView modelAndView = new ModelAndView(getPath("userList"));
-		modelAndView.getModelMap().put("userList", list);
+//		modelAndView.getModelMap().put("userList", list);
+		modelAndView.getModelMap().put("userList", pagedQuery.getList());
 		return modelAndView;
 	}
 

@@ -8,10 +8,12 @@ import java.util.regex.Pattern;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 import org.springframework.util.Assert;
 
 import com.hibernate.dao.base.Page;
+
+import web.dao.hibernate.IGenericDao;
  
 /**
  * 继承自spring的HibernateDaoSupport<br>
@@ -19,7 +21,7 @@ import com.hibernate.dao.base.Page;
  * @see    HibernateDaoSupport
  */
 @SuppressWarnings("rawtypes")
-public class HibernateGenericDao extends HibernateDaoSupport {
+public class HibernateGenericDao  extends HibernateDaoSupport implements IGenericDao {
 	
 	public HibernateGenericDao(SessionFactory sessionFactory) {
 		setSessionFactory(sessionFactory);

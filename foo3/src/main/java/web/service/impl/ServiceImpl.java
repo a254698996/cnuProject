@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 import javax.transaction.Transactional.TxType;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.criterion.Criterion;
 
 import com.hibernate.dao.base.Page;
@@ -128,5 +129,41 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	@Override
 	public T queryBeanByHql(T clazz) {
 		return hedao.queryBeanByHql(clazz);
+	}
+
+	@Override
+	public Page pagedQuery(String hql, int pageNo, int pageSize, Object... values) {
+		return hdao.pagedQuery(hql, pageNo, pageSize, values);
+	}
+
+	@Override
+	public Page dataQuery(String hql, int start, int pageSize, Object... values) {
+		return hdao.dataQuery(hql, start, pageSize, values);
+	}
+
+	@Override
+	public Query createQuery(String hql, Object... values) {
+		return hdao.createQuery(hql, values);
+	}
+
+	@Override
+	public List find(String hql, Object... values) {
+		return hdao.find(hql, values);
+	}
+
+	@Override
+	public void flush() {
+		hdao.flush();
+	}
+
+	@Override
+	public void clear() {
+		hdao.clear();
+	}
+
+	@SuppressWarnings("rawtypes")
+	@Override
+	public List executeNativeSql(String sql) {
+		return hdao.executeNativeSql(sql);
 	}
 }
