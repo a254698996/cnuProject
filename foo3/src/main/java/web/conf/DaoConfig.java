@@ -14,12 +14,15 @@ import com.hibernate.dao.generic.HibernateGenericDao;
 
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.entity.City;
+import web.entity.GoodsCategory;
 import web.entity.Person;
 import web.entity.User;
 import web.service.ICityService;
+import web.service.IGoodsCategoryService;
 import web.service.IPersonService;
 import web.service.IUserService;
 import web.service.impl.CityService;
+import web.service.impl.GoodsCategoryService;
 import web.service.impl.PersonService;
 import web.service.impl.UserService;
 
@@ -46,7 +49,8 @@ public class DaoConfig {
 	@Lazy
 	public IPersonService<Person, Serializable> getPersonService() {
 		logger.info("IPersonService  created");
-		return new PersonService(Person.class, (HibernateEntityDao<Person, Serializable>) getHibernateEntityDao(),getHibernateGenericDao());
+		return new PersonService(Person.class, (HibernateEntityDao<Person, Serializable>) getHibernateEntityDao(),
+				getHibernateGenericDao());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -54,7 +58,8 @@ public class DaoConfig {
 	@Lazy
 	public ICityService<City, Serializable> getCityService() {
 		logger.info("ICityService  created");
-		return new CityService(City.class, (HibernateEntityDao<City, Serializable>) getHibernateEntityDao(),getHibernateGenericDao());
+		return new CityService(City.class, (HibernateEntityDao<City, Serializable>) getHibernateEntityDao(),
+				getHibernateGenericDao());
 	}
 
 	@SuppressWarnings("unchecked")
@@ -62,7 +67,17 @@ public class DaoConfig {
 	@Lazy
 	public IUserService<User, Serializable> getUserService() {
 		logger.info("IUserService  created");
-		return new UserService(User.class, (HibernateEntityDao<User, Serializable>) getHibernateEntityDao(),getHibernateGenericDao());
+		return new UserService(User.class, (HibernateEntityDao<User, Serializable>) getHibernateEntityDao(),
+				getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IGoodsCategoryService<GoodsCategory, Serializable> getGoodsCategoryService() {
+		logger.info("IGoodsCategoryService  created");
+		return new GoodsCategoryService(GoodsCategory.class,
+				(HibernateEntityDao<GoodsCategory, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
 	}
 
 }

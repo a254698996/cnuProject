@@ -3,7 +3,6 @@ package web.dao.hibernate;
 import java.util.List;
 
 import org.hibernate.Query;
-import org.springframework.util.Assert;
 
 import com.hibernate.dao.base.Page;
 
@@ -59,6 +58,7 @@ public interface IGenericDao {
 	 * @param values
 	 *            可变参数
 	 */
+	@SuppressWarnings("rawtypes")
 	public List find(String hql, Object... values);
 
 	/**
@@ -74,5 +74,6 @@ public interface IGenericDao {
 	/**
 	 * 执行本地sql语句获得标量数值列表
 	 */
+	@SuppressWarnings("rawtypes")
 	public List executeNativeSql(String sql);
 }
