@@ -14,6 +14,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import web.dto.UserDto;
 import web.entity.User;
 import web.service.IUserService;
 
@@ -59,6 +60,28 @@ public class UserController {
 		return new ModelAndView(getPath("regSuccess"));
 	}
 
+	@RequestMapping(value = "toGetPassword", method = RequestMethod.GET)
+	public ModelAndView toGetPassword(User user) {
+		User dataUser = userService.findUniqueBy("username", user.getUsername());
+		ModelAndView modelAndView = new ModelAndView(getPath("getPassword"));
+		modelAndView.addObject("user", dataUser);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "getPassword", method = RequestMethod.POST)
+	public String getPassword(UserDto userParam) {
+		if(!userParam.getNewPassword().equals(userParam.getReNewPassword())){
+			logger.error("两次输入的新密码不一至!");
+			return null;
+		}
+		User user = userService.get(userParam.getId());
+		if (userParam.getPasswordanswer().equals(user.getPasswordanswer())) {
+			user.setPassword(userParam.getNewPassword());
+			userService.update(user);
+		}
+		return getPath("getPasswordSuccess");
+	}
+
 	@RequestMapping(value = "userList", method = RequestMethod.GET)
 	public ModelAndView userList(User user, @RequestParam(required = false) Integer pageIndex) {
 		if (pageIndex == null) {
@@ -73,7 +96,7 @@ public class UserController {
 		// modelAndView.getModelMap().put("userList", list);
 		mav.getModelMap().put("userList", page.getList());
 		mav.getModel().put("steps", page.getPageSize());
-		mav.getModel().put("pageIndex",  pageIndex );
+		mav.getModel().put("pageIndex", pageIndex);
 		mav.getModel().put("count", page.getTotalCount());
 		return mav;
 	}
