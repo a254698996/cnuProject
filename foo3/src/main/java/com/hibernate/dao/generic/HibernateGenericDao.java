@@ -32,7 +32,8 @@ public class HibernateGenericDao  extends HibernateDaoSupport implements IGeneri
      *
      * @param pageNo 页号,从1开始.
      */
-    public Page pagedQuery(String hql, int pageNo, int pageSize, Object... values) {
+    @SuppressWarnings("unchecked")
+	public Page pagedQuery(String hql, int pageNo, int pageSize, Object... values) {
         Assert.hasText(hql);
         Assert.isTrue(pageNo >= 1, "pageNo should start from 1");
         // Count查询
@@ -56,7 +57,8 @@ public class HibernateGenericDao  extends HibernateDaoSupport implements IGeneri
      * @param values 查询条件
      * @return page对象
      */
-    public Page dataQuery(String hql, int start, int pageSize, Object... values){
+    @SuppressWarnings("unchecked")
+	public Page dataQuery(String hql, int start, int pageSize, Object... values){
         Assert.hasText(hql);
         // Count查询
         String countQueryString = " select count (*) " + removeSelect(removeOrders(hql));

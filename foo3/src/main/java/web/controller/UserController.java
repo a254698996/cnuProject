@@ -2,6 +2,7 @@ package web.controller;
 
 import java.io.Serializable;
 
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
@@ -44,6 +46,15 @@ public class UserController {
 		}
 	}
 
+	@ResponseBody
+	@RequestMapping(value = "userExist", method = RequestMethod.POST)
+	public String getUserName(User user) {
+		User findUniqueBy = userService.findUniqueBy("username", user.getUsername());
+		JSONObject jsonObject = new JSONObject();
+		jsonObject.put("exist", findUniqueBy != null);
+		return jsonObject.toString();
+	}
+
 	@RequestMapping(value = "toReg", method = RequestMethod.GET)
 	public String toreg() {
 		return getPath("reg");
@@ -70,7 +81,7 @@ public class UserController {
 
 	@RequestMapping(value = "getPassword", method = RequestMethod.POST)
 	public String getPassword(UserDto userParam) {
-		if(!userParam.getNewPassword().equals(userParam.getReNewPassword())){
+		if (!userParam.getNewPassword().equals(userParam.getReNewPassword())) {
 			logger.error("两次输入的新密码不一至!");
 			return null;
 		}

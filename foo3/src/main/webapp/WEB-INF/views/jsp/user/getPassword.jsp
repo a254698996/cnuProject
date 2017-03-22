@@ -12,7 +12,7 @@
 	找回密码
 	</br>
 	<form action="<%=request.getContextPath() %>/user/getPassword" method="post">
-		问题: ${user.passwordask} ?<input text="hidden"name="id"value="${user.id}"></br>
+		问题: ${user.passwordask} ?<input  type="hidden" name="id" value="${user.id}"></br>
 		回答: <input text="text"name="passwordanswer"></br> 
 		新密码:<input text="text"name="newPassword"></br> 
 	        重复新密码:<input text="text"name="reNewPassword"></br> 
