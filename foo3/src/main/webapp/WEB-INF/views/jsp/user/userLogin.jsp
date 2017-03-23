@@ -14,6 +14,7 @@
      		$("#toGetPasswordBut").click(function(){
      			var username=$("input[name='username']").val();
      			if(username==''){
+     				$('.popover-show').attr('data-content','没有输入用户名');
      				$('.popover-show').popover('show');
      				return ;
      			}
@@ -24,7 +25,11 @@
      				    	 if(dataObj.exist==true){
      				    		var url="${pageContext.request.contextPath}/user/toGetPassword?username="+username;
      			     			document.location=url;
-     				    	 } 
+     				    	 }else{
+     				    		$('.popover-show').attr('data-content','用户名不正确');
+     		     				$('.popover-show').popover('show');
+     				    	 }
+     				    	 return ;
      				},
      				error:function(e){
      					 alert(e);
@@ -37,19 +42,19 @@
 <body> 
 <form class="form-horizontal" action="<%=request.getContextPath() %>/user/userLogin" method="post" role="form">
   <div class="form-group">
-    <label for="firstname" class="col-sm-2 control-label">用户名</label>
-    <div class="col-sm-10">
+    <label for="firstname" class="col-md-3 control-label">用户名</label>
+    <div class="col-md-5">
       <input type="text" name="username" class="form-control" id="firstname" placeholder="请输入用户名">
     </div>
   </div>
   <div class="form-group">
-    <label for="lastname" class="col-sm-2 control-label">密码</label>
-    <div class="col-sm-10">
+    <label for="lastname" class="col-md-3 control-label">密码</label>
+    <div class="col-md-5">
       <input type="text" name="password" class="form-control" id="lastname" placeholder="请输入密码">
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
+    <div class="col-sm-offset-3 col-sm-10">
       <div class="checkbox">
         <label>
           <input type="checkbox">请记住我
@@ -58,7 +63,7 @@
     </div>
   </div>
   <div class="form-group">
-    <div class="col-sm-offset-2 col-sm-10">
+    <div class="col-sm-offset-3 col-sm-10">
       <button type="submit" class="btn btn-default">登录</button>
 	    <button type="button" class="btn btn-primary popover-show"
 	            title="错误提示" data-container="body"
