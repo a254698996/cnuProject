@@ -34,7 +34,7 @@ public class GoodsCategoryController {
 		if (pageIndex == null) {
 			pageIndex = Page.defaultStartIndex;
 		}
-		Page page = goodsCategoryService.pagedQuery("from GoodsCategory g where g.pcode is null ", pageIndex, 1);
+		Page page = goodsCategoryService.pagedQuery("from GoodsCategory g where g.pcode is null ", pageIndex, Page.defaultPageSize);
 		ModelAndView mav = new ModelAndView(getPath("goodsCategoryList"));
 		mav.getModelMap().put("goodsCategoryList", page.getList());
 		mav.getModel().put("steps", page.getPageSize());

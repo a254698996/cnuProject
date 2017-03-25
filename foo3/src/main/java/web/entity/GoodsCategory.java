@@ -15,6 +15,15 @@ public class GoodsCategory extends BaseEntity {
 	private String pcode;
 	@Column(name = "is_sub")
 	private String isSub;
+	private int state;
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
 
 	public String getCode() {
 		return code;
