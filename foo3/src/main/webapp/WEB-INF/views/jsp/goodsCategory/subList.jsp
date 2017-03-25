@@ -12,23 +12,16 @@
      <script type="text/javascript">
      	$(document).ready(function(){
      		$("#addBut").click(function(){
-     			document.location="${ctx}/goodsCategory/toAdd";
+     			var pcode=$("input[name='pcode']").val();
+     			document.location="${ctx}/goodsCategory/toAddSub/"+pcode;
      		});
-	    });
- 		function del(id) {
- 			if (confirm("确认删除吗？")) {
- 				document.location="${pageContext.request.contextPath}/user/delete/"+id;
- 			}
- 		}
+	    }); 
  		function changeState(id) {
  		   document.location="${pageContext.request.contextPath}/goodsCategory/changeState/"+id;
  		}
- 		function update(id) {
-  		   document.location="${pageContext.request.contextPath}/goodsCategory/toUpdate/"+id;
+ 		function updateSub(id) {
+  		   document.location="${pageContext.request.contextPath}/goodsCategory/toSubUpdate/"+id;
   		}
- 		function toSubList(pcode) {
-   		   document.location="${pageContext.request.contextPath}/goodsCategory/toSubList/"+pcode;
-   		}
      </script>
   </head>
 <body> 
@@ -39,6 +32,7 @@
 	  </div>
 	  <button type="submit" class="btn btn-default">搜索</button><br/>
 	</form>
+	<input type="hidden" name="pcode" value="${pcode }">
 	 <button type="button" class="btn btn-primary popover-show"
 	            title="错误提示" data-container="body"
 	            data-toggle="popover" 
@@ -58,7 +52,7 @@
            </tr>
          </thead>
          <tbody>  
-           <c:forEach items="${goodsCategoryList}" var="goodsCategory" varStatus="itr">
+           <c:forEach items="${subList}" var="goodsCategory" varStatus="itr">
 				<tr>
 					<td>${goodsCategory.code}</td>
                     <td>${goodsCategory.name}</td>
@@ -66,8 +60,7 @@
 					<td>${goodsCategory.isSub}</td>
 					<td>
 						<button type="button" class="btn btn-info btn-xs" onclick="changeState('${goodsCategory.id}')">禁用</button>
-						<button type="button" class="btn btn-info btn-xs" onclick="update('${goodsCategory.id}')">更新</button>
-						<button type="button" class="btn btn-info btn-xs" onclick="toSubList('${goodsCategory.code}')">增加子项</button>
+						<button type="button" class="btn btn-info btn-xs" onclick="updateSub('${goodsCategory.id}')">更新</button>
 					</td>
 				</tr>
 			</c:forEach>
@@ -75,7 +68,7 @@
        </table>
        <!-- maxResults=steps -->
 		<tag:paginate steps="${steps}" pageIndex= "${pageIndex }" count="${count}"
-			uri="${ctx}/goodsCategory/list?pageIndex={0}" parms="${parms}" />
+			uri="${ctx}/goodsCategory/toSubList/${pcode}?pageIndex={0}" parms="${parms}" />
      </div>
 </body>
 </html>

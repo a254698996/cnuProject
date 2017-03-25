@@ -11,8 +11,8 @@ public class GoodsCategory extends BaseEntity {
 
 	private String code;
 	private String name;
-	@Column(name = "sub_code")
-	private String subCode;
+	@Column(name = "pcode")
+	private String pcode;
 	@Column(name = "is_sub")
 	private String isSub;
 
@@ -32,12 +32,12 @@ public class GoodsCategory extends BaseEntity {
 		this.name = name;
 	}
 
-	public String getSubCode() {
-		return subCode;
+	public String getPcode() {
+		return pcode;
 	}
 
-	public void setSubCode(String subCode) {
-		this.subCode = subCode;
+	public void setPcode(String pcode) {
+		this.pcode = pcode;
 	}
 
 	public String getIsSub() {
