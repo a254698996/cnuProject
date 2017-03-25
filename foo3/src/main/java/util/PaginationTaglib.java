@@ -130,8 +130,8 @@ public class PaginationTaglib extends SimpleTagSupport {
 			
 			
 			// 第二行拼接分页提示信息/ 计算出显录的开始记录条数与结束的记录条数
-			int startNum = (pageIndex - 1) * steps + 1;
-			int endNum = (pageIndex == pageCount) ? count : pageIndex * steps;
+//			int startNum = (pageIndex - 1) * steps + 1;
+//			int endNum = (pageIndex == pageCount) ? count : pageIndex * steps;
 
 			// 最后拼接JavaScript代码
 			pageWrapStr.append("<script type=\"text/javascript\">");
