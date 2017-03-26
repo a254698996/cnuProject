@@ -8,8 +8,7 @@ import web.dao.hibernate.impl.HibernateEntityDao;
 import web.entity.Goods;
 import web.service.IGoodsService;
 
-public class GoodsService extends ServiceImpl<Goods, Serializable>
-		implements IGoodsService<Goods, Serializable> {
+public class GoodsService extends ServiceImpl<Goods, Serializable> implements IGoodsService<Goods, Serializable> {
 
 	public GoodsService(Class<Goods> entityClass, HibernateEntityDao<Goods, Serializable> hedao,
 			HibernateGenericDao hdao) {

@@ -28,10 +28,7 @@
 	href="${ctx}/static/bootstrap-fileinput/css/fileinput.min.css">
 <script type="text/javascript">
 	$(document).ready(function() {
-		$("#addBut").click(function() {
-			document.location = "${ctx}/goodsCategory/toAdd";
-		});
-		initFileInput("file-Portrait1", "${ctx}/goodsCategory/toAdd")
+		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic")
 	});
 	function initFileInput(ctrlName, uploadUrl) {
 		var control = $('#' + ctrlName);
@@ -46,14 +43,27 @@
 			multiple : true,
 			previewFileIcon : "<i class='glyphicon glyphicon-king'></i>",
 			msgFilesTooMany : "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-		});
+		}).on("fileuploaded", function (e, data) {
+// 			alert("data   "+data.response);
+			var res = eval("("+ data.response+")");
+// 	        alert("res.state  "+res.state);
+	        if (res.state == '1') {
+	        	var files=$("input[name='uploadFiles']").val();
+	        	$("input[name='uploadFiles']").val(files+","+res.filename);
+// 	            alert('上传成功');
+// 	            alert(res.filename);
+	        }
+	        else {
+	            alert('上传失败')
+	        }
+	    })
 	}
+	
 	function selectCode(param) {
 		var code = $(param).val();
-		// 		alert("code  "+code);
 		if (code != '请选择') {
 			getSubCodeSelect(code);
-		}else{
+		} else {
 			$("#subSelect").html("<option>请选择</option>");
 		}
 	}
@@ -69,35 +79,41 @@
 				$("#subSelect").html("");
 				var option = "<option>请选择</option>";
 				$("#subSelect").append(option);
-				$(data).each( function(index, element) {
-					 option = "<option value='"+element.code+"'>" + element.name + "</option>";
-					 $("#subSelect").append(option);
-				 });
+				$(data).each(
+					function(index, element) {
+						option = "<option value='"+element.code+"'>" + element.name + "</option>";
+						$("#subSelect").append(option);
+					});
 			},
 			error : function(e) {
-				alert("sssss" + e);
+				alert("上传出错: " + e);
 			}
 		});
 	}
 </script>
 </head>
 <body>
-	新增物品
-	<label class="control-lable">选择文件</label> 大类
-	<select onchange="selectCode(this)">
-		<option>请选择</option>
-		<c:forEach items="${pList }" var="goodsCategory">
-			<option value="<c:out value='${goodsCategory.code}'/>"><c:out
-					value='${goodsCategory.name}' /></option>
-		</c:forEach>
-	</select> 细类
-	<select id="subSelect">
-		<option>请选择</option>
-	</select>
-	<div class="row" style="height: 300px">
-		<input id="file-Portrait1" name="files" type="file" multiple>
-	</div>
-	<form action="<%=request.getContextPath()%>/goodsCategory/add"
-		method="post"></form>
+	新增物品 
+	<form action="<%=request.getContextPath()%>/goods/addGoods" method="post"  enctype="multipart/form-data">
+	   名称<input type="text" name="name" ><br>
+		<label class="control-lable">大类</label>
+		  <select onchange="selectCode(this)">
+			<option>请选择</option>
+			<c:forEach items="${pList }" var="goodsCategory">
+				 <option value="<c:out value='${goodsCategory.code}'/>">
+					<c:out value='${goodsCategory.name}' />
+			     </option>
+			</c:forEach>
+		  </select>
+	  <label class="control-lable">细类</label> 
+		 <select id="subSelect">
+			<option>请选择</option>
+		</select>
+		<div class="row" style="height: 300px">
+			<input id="file-Portrait1"  name="files"  type="file" multiple>
+			<input name="uploadFiles"  type="text">
+		</div>
+		<input type="submit"/>
+	</form>
 </body>
 </html>

@@ -166,4 +166,11 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	public List executeNativeSql(String sql) {
 		return hdao.executeNativeSql(sql);
 	}
+
+	@Override
+	@Transactional(value = TxType.REQUIRED)
+	public void update(String entityName, T entity) {
+		hedao.update(entityName, entity);
+	}
+	
 }

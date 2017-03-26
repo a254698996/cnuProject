@@ -1,13 +1,21 @@
 package web.entity;
 
+import java.io.Serializable;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "t_goods")
-public class Goods extends BaseEntity {
+public class Goods implements Serializable {
+
+	@Id
+	private String id;
 
 	private String name;
 	@Column(name = "t_exchange_group_id")
@@ -16,6 +24,24 @@ public class Goods extends BaseEntity {
 	private String goodsCategoryId;
 	@Column(name = "t_goodscol")
 	private String goodscol;
+
+	private int state;
+
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public String getName() {
 		return name;

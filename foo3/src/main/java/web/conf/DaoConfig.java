@@ -14,15 +14,21 @@ import com.hibernate.dao.generic.HibernateGenericDao;
 
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.entity.City;
+import web.entity.Goods;
 import web.entity.GoodsCategory;
+import web.entity.GoodsPic;
 import web.entity.Person;
 import web.entity.User;
 import web.service.ICityService;
 import web.service.IGoodsCategoryService;
+import web.service.IGoodsPicService;
+import web.service.IGoodsService;
 import web.service.IPersonService;
 import web.service.IUserService;
 import web.service.impl.CityService;
 import web.service.impl.GoodsCategoryService;
+import web.service.impl.GoodsPicService;
+import web.service.impl.GoodsService;
 import web.service.impl.PersonService;
 import web.service.impl.UserService;
 
@@ -78,6 +84,24 @@ public class DaoConfig {
 		logger.info("IGoodsCategoryService  created");
 		return new GoodsCategoryService(GoodsCategory.class,
 				(HibernateEntityDao<GoodsCategory, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IGoodsService<Goods, Serializable> getGoodsService() {
+		logger.info("IGoodsService  created");
+		return new GoodsService(Goods.class, (HibernateEntityDao<Goods, Serializable>) getHibernateEntityDao(),
+				getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IGoodsPicService<GoodsPic, Serializable> getGoodsPicService() {
+		logger.info("IGoodsPicService  created");
+		return new GoodsPicService(GoodsPic.class, (HibernateEntityDao<GoodsPic, Serializable>) getHibernateEntityDao(),
+				getHibernateGenericDao());
 	}
 
 }

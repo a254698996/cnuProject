@@ -6,7 +6,7 @@ import javax.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "t_goods")
+@Table(name = "t_goods_pic")
 public class GoodsPic extends BaseEntity {
 
 	private String name;

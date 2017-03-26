@@ -330,4 +330,9 @@ public class HibernateEntityDao<T, PK extends Serializable> extends HibernateDao
 		return null;
 	}
 
+	@Override
+	public void update(String entityName, T entity) {
+		getHibernateTemplate().update(entityName, entity);
+	}
+
 }
