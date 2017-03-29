@@ -7,7 +7,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>新增物品</title>
+<title>更新物品</title>
 <link href="${ctx}/static/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 <script src="${ctx}/static/bootstrap/js/jquery.js"></script>
@@ -97,7 +97,7 @@
 	<form action="<%=request.getContextPath()%>/goods/addGoods" method="post"  enctype="multipart/form-data">
 	   名称<input type="text" name="name" ><br>
 		<label class="control-lable">大类</label>
-		  <select onchange="selectCode(this)" name="goodsCategoryCode">
+		  <select onchange="selectCode(this)">
 			<option>请选择</option>
 			<c:forEach items="${pList }" var="goodsCategory">
 				 <option value="<c:out value='${goodsCategory.code}'/>">
@@ -106,7 +106,7 @@
 			</c:forEach>
 		  </select>
 	  <label class="control-lable">细类</label> 
-		 <select id="subSelect" name="goodsCategorySubCode">
+		 <select id="subSelect">
 			<option>请选择</option>
 		</select>
 		<div class="row" style="height: 300px">

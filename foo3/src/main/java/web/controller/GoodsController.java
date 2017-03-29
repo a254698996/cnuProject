@@ -2,6 +2,7 @@ package web.controller;
 
 import java.io.File;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -43,11 +44,11 @@ public class GoodsController {
 	@Autowired
 	@Lazy
 	IGoodsService<Goods, Serializable> goodsService;
-	
+
 	@Autowired
 	@Lazy
 	IGoodsPicService<GoodsPic, Serializable> goodsPicService;
-	
+
 	@Autowired
 	@Lazy
 	IGoodsCategoryService<GoodsCategory, Serializable> goodsCategoryService;
@@ -57,9 +58,22 @@ public class GoodsController {
 		if (pageIndex == null) {
 			pageIndex = Page.defaultStartIndex;
 		}
-		Page page = goodsService.pagedQuery("from Goods g   ", pageIndex, Page.defaultPageSize);
+		Page page = goodsService.pagedQuery("select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code ", pageIndex, Page.defaultPageSize);
+		List<Object> list = page.getList();
+		List<Goods> goodsList=new ArrayList<>();
+		if (list != null && !list.isEmpty()) {
+			for (Object object : list) {
+				Object[] objs=(Object[]) object;
+				Goods goods=(web.entity.Goods) objs[0];
+				GoodsCategory c=(web.entity.GoodsCategory) objs[1];
+				GoodsCategory subC=(web.entity.GoodsCategory) objs[2];
+				goods.setGoodsCategoryName(c.getName());
+				goods.setGoodsCategorySubName(subC.getName());
+				goodsList.add(goods);
+			}
+		}
 		ModelAndView mav = new ModelAndView(getPath("goodsList"));
-		mav.getModelMap().put("goodsList", page.getList());
+		mav.getModelMap().put("goodsList", goodsList);
 		mav.getModel().put("steps", page.getPageSize());
 		mav.getModel().put("pageIndex", pageIndex);
 		mav.getModel().put("count", page.getTotalCount());
@@ -126,13 +140,26 @@ public class GoodsController {
 		}
 		return new ModelAndView("redirect:/goods/list");
 	}
-	
+
 	@RequestMapping(value = "grounding/{id}", method = RequestMethod.GET)
 	public ModelAndView grounding(@PathVariable String id) {
 		Goods goods = goodsService.get(id);
 		goods.setState(1);
-	    goodsService.update("web.entity.Goods", goods);
+		goodsService.update("web.entity.Goods", goods);
 		return new ModelAndView("redirect:/goods/list");
+	}
+
+	@RequestMapping(value = "get/{id}", method = RequestMethod.GET)
+	public ModelAndView get(@PathVariable String id) {
+		Goods goods = goodsService.get(id);
+		goodsService.find(hql, values);
+		
+		List<GoodsPic> picList = goodsPicService.findBy("goodsId", id);
+		
+		ModelAndView modelAndView = new ModelAndView(getPath("detailGoods"));
+		modelAndView.addObject("goods", goods);
+		modelAndView.addObject("picList", picList);
+		return modelAndView;
 	}
 
 	private String getPath(String path) {

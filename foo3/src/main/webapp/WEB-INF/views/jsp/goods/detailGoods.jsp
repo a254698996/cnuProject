@@ -7,7 +7,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-<title>新增物品</title>
+<title>更新物品</title>
 <link href="${ctx}/static/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 <script src="${ctx}/static/bootstrap/js/jquery.js"></script>
@@ -93,27 +93,17 @@
 </script>
 </head>
 <body>
-	新增物品 
-	<form action="<%=request.getContextPath()%>/goods/addGoods" method="post"  enctype="multipart/form-data">
-	   名称<input type="text" name="name" ><br>
+	浏览物品  <br>
+	   名称${goods.name}<br>
 		<label class="control-lable">大类</label>
-		  <select onchange="selectCode(this)" name="goodsCategoryCode">
-			<option>请选择</option>
-			<c:forEach items="${pList }" var="goodsCategory">
-				 <option value="<c:out value='${goodsCategory.code}'/>">
-					<c:out value='${goodsCategory.name}' />
-			     </option>
-			</c:forEach>
-		  </select>
-	  <label class="control-lable">细类</label> 
-		 <select id="subSelect" name="goodsCategorySubCode">
-			<option>请选择</option>
-		</select>
+		  ${goods.goodsCategoryName}<br>
+	   <label class="control-lable">细类</label> 
+		   ${goods.goodsCategorySubName}<br>
+	   <label class="control-lable">状态</label> 
+		   ${goods.state}<br>
 		<div class="row" style="height: 300px">
 			<input id="file-Portrait1"  name="files"  type="file" multiple>
 			<input name="uploadFiles"  type="text">
 		</div>
-		<input type="submit"/>
-	</form>
 </body>
 </html>

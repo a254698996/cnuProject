@@ -40,6 +40,8 @@
          <thead>
            <tr>
              <th>名称</th>
+             <th>大类</th>
+             <th>细类</th>
              <th>状态</th>
              <th>操作</th>
            </tr>
@@ -48,6 +50,8 @@
            <c:forEach items="${goodsList}" var="goods" varStatus="itr">
 				<tr>
                     <td>${goods.name}</td>
+                    <td>${goods.goodsCategoryName}</td>
+                    <td>${goods.goodsCategorySubName}</td>
                     <td>${goods.state}</td>
 					<td>
 						<button type="button" class="btn btn-info btn-xs" onclick="changeState('${goods.id}')">禁用</button>
