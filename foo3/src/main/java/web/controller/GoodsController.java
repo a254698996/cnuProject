@@ -10,7 +10,6 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
-import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import util.JSONUtils;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
@@ -95,33 +95,49 @@ public class GoodsController {
 	}
 
 	@RequestMapping(value = "addGoodsPic", method = RequestMethod.POST)
-	public ResponseEntity<String> addGoodsPic(@RequestParam(value = "files", required = false) MultipartFile file,
+	public ResponseEntity<GoodsPic> addGoodsPic(@RequestParam(value = "files", required = false) MultipartFile file,
 			HttpServletRequest request) {
 		if (file.isEmpty()) {
 			logger.info("file is empty ");
-			JSONObject jsonObject = new JSONObject();
-			jsonObject.put("state", "0");
-			return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.OK);
+			GoodsPic goodsPic=new GoodsPic();
+			goodsPic.setState("0");
+			return new ResponseEntity<GoodsPic>(goodsPic, HttpStatus.OK);
 		}
 
 		String path = request.getSession().getServletContext().getRealPath("upload");
-		// String fileName = file.getOriginalFilename();
+		String originalFilename = file.getOriginalFilename();
 		String fileName = new Date().getTime() + ".jpg";
 		File targetFile = new File(path, fileName);
 		if (!targetFile.exists()) {
 			targetFile.mkdirs();
 		}
 		// 保存
+		long size = 0;
 		try {
+			size = file.getSize();
 			file.transferTo(targetFile);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		String filename = request.getContextPath() + "/upload/" + fileName;
-		JSONObject jsonObject = new JSONObject();
-		jsonObject.put("filename", filename);
-		jsonObject.put("state", "1");
-		return new ResponseEntity<String>(jsonObject.toString(), HttpStatus.OK);
+		GoodsPic goodsPic = new GoodsPic();
+		goodsPic.setName(originalFilename);
+		goodsPic.setSize(size);
+		goodsPic.setUrl(filename);
+		goodsPic.setState("1");
+		goodsPicService.save(goodsPic);
+		return new ResponseEntity<GoodsPic>(goodsPic, HttpStatus.OK);
+	}
+	
+	
+	@RequestMapping(value = "deleteGoodsPic", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteGoodsPic(HttpServletRequest request) {
+		String parameter = request.getParameter("");
+		
+		
+		logger.info("parameter  "+parameter);
+		 
+		return new ResponseEntity<String>( "hehe", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "addGoods", method = RequestMethod.POST)
@@ -129,13 +145,19 @@ public class GoodsController {
 		String goodsId = UUID.randomUUID().toString();
 		goods.setId(goodsId);
 		goodsService.save(goods);
-		String[] split = uploadFiles.split(",");
-		for (String picUrl : split) {
-			if (StringUtils.isNotBlank(picUrl)) {
-				GoodsPic goodsPic = new GoodsPic();
-				goodsPic.setUrl(picUrl);
-				goodsPic.setGoodsId(goodsId);
-				goodsPicService.save(goodsPic);
+		String[] split = uploadFiles.split(";");
+		for (String goodsPicJson : split) {
+			if (StringUtils.isNotBlank(goodsPicJson)) {
+				GoodsPic goodsPic = null;
+				try {
+					goodsPic = JSONUtils.json2pojo(goodsPicJson, GoodsPic.class);
+					if(goodsPic!=null){
+						goodsPic.setGoodsId(goodsId);
+						goodsPicService.save(goodsPic);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 		return new ModelAndView("redirect:/goods/list");
@@ -151,8 +173,18 @@ public class GoodsController {
 
 	@RequestMapping(value = "get/{id}", method = RequestMethod.GET)
 	public ModelAndView get(@PathVariable String id) {
-		Goods goods = goodsService.get(id);
-		goodsService.find(hql, values);
+	 
+		List<?>  goodsList = goodsService.find("select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code and g.id=? ", new Object[]{id});
+		
+		Goods goods=null;
+		if (goodsList != null && !goodsList.isEmpty()) {
+			    Object[] objs=(Object[]) goodsList.get(0);
+				goods=(web.entity.Goods) objs[0];
+				GoodsCategory c=(web.entity.GoodsCategory) objs[1];
+				GoodsCategory subC=(web.entity.GoodsCategory) objs[2];
+				goods.setGoodsCategoryName(c.getName());
+				goods.setGoodsCategorySubName(subC.getName());
+		}
 		
 		List<GoodsPic> picList = goodsPicService.findBy("goodsId", id);
 		

@@ -28,7 +28,7 @@
 	href="${ctx}/static/bootstrap-fileinput/css/fileinput.min.css">
 <script type="text/javascript">
 	$(document).ready(function() {
-		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic")
+		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic", "${ctx}/goods/deleteGoodsPic")
 	});
 	function initFileInput(ctrlName, uploadUrl) {
 		var control = $('#' + ctrlName);
@@ -36,27 +36,39 @@
 		control.fileinput({
 			language : 'zh', //设置语言
 			uploadUrl : uploadUrl, //上传的地址
+			deleteUrl :deleteUrl,
 			allowedFileExtensions : [ 'jpg', 'png', 'gif' ],//接收的文件后缀
 			showUpload : false, //是否显示上传按钮
 			showCaption : false,//是否显示标题
 			browseClass : "btn btn-primary", //按钮样式         
 			multiple : true,
 			previewFileIcon : "<i class='glyphicon glyphicon-king'></i>",
-			msgFilesTooMany : "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-		}).on("fileuploaded", function (e, data) {
-// 			alert("data   "+data.response);
-			var res = eval("("+ data.response+")");
-// 	        alert("res.state  "+res.state);
-	        if (res.state == '1') {
-	        	var files=$("input[name='uploadFiles']").val();
-	        	$("input[name='uploadFiles']").val(files+","+res.filename);
-// 	            alert('上传成功');
-// 	            alert(res.filename);
-	        }
-	        else {
-	            alert('上传失败')
-	        }
-	    })
+			overwriteInitial: false,
+            initialPreviewAsData: true,
+            initialPreview: [
+                "http://lorempixel.com/1920/1080/nature/1",
+                "http://lorempixel.com/1920/1080/nature/2",
+                "http://lorempixel.com/1920/1080/nature/3",
+            ],
+            initialPreviewConfig: [
+                {caption: "nature-1.jpg", size: 329892, width: "120px", url: "{$url}", key: 1},
+                {caption: "nature-2.jpg", size: 872378, width: "120px", url: "{$url}", key: 2},
+                {caption: "nature-3.jpg", size: 632762, width: "120px", url: "{$url}", key: 3},
+            ]
+		}) .on("filebatchselected", function(event, files) {  
+	            $(this).fileinput("upload");  
+	        })  
+	        .on("fileuploaded", function(event, data) {  
+		        if(data.response)  
+		        {  
+		            alert('处理成功');  
+		        }  
+	    }).on("filesuccessremove", function(event, data, previewId, index) {
+	    	var res = eval("("+ data.response+")");
+	    	 $("#input[goodsPicName='"+res.id+"']").remove();
+	       	 alert(res);
+	    });  
+	    
 	}
 	
 	function selectCode(param) {
@@ -86,7 +98,7 @@
 					});
 			},
 			error : function(e) {
-				alert("上传出错: " + e);
+				alert("选择出错: " + e);
 			}
 		});
 	}
@@ -100,7 +112,7 @@
 	   <label class="control-lable">细类</label> 
 		   ${goods.goodsCategorySubName}<br>
 	   <label class="control-lable">状态</label> 
-		   ${goods.state}<br>
+		   ${goods.state}<br> ${picList}
 		<div class="row" style="height: 300px">
 			<input id="file-Portrait1"  name="files"  type="file" multiple>
 			<input name="uploadFiles"  type="text">

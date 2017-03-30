@@ -49,7 +49,7 @@
          <tbody>  
            <c:forEach items="${goodsList}" var="goods" varStatus="itr">
 				<tr>
-                    <td>${goods.name}</td>
+                    <td><a href="${ctx}/goods/get/${goods.id}">${goods.name}</a></td>
                     <td>${goods.goodsCategoryName}</td>
                     <td>${goods.goodsCategorySubName}</td>
                     <td>${goods.state}</td>

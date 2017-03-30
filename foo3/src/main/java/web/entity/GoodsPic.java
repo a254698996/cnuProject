@@ -3,6 +3,7 @@ package web.entity;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
@@ -12,6 +13,11 @@ public class GoodsPic extends BaseEntity {
 	private String name;
 
 	private String url;
+
+	private Long size;
+
+	@Transient
+	private String state;
 
 	@Column(name = "t_goods_id")
 	private String goodsId;
@@ -40,4 +46,19 @@ public class GoodsPic extends BaseEntity {
 		this.goodsId = goodsId;
 	}
 
+	public Long getSize() {
+		return size;
+	}
+
+	public void setSize(Long size) {
+		this.size = size;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
 }

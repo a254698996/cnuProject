@@ -28,14 +28,15 @@
 	href="${ctx}/static/bootstrap-fileinput/css/fileinput.min.css">
 <script type="text/javascript">
 	$(document).ready(function() {
-		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic")
+		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic","${ctx}/goods/deleteGoodsPic")
 	});
-	function initFileInput(ctrlName, uploadUrl) {
+	function initFileInput(ctrlName, uploadUrl,deleteUrl) {
 		var control = $('#' + ctrlName);
 
 		control.fileinput({
 			language : 'zh', //设置语言
 			uploadUrl : uploadUrl, //上传的地址
+			deleteUrl :deleteUrl,
 			allowedFileExtensions : [ 'jpg', 'png', 'gif' ],//接收的文件后缀
 			showUpload : false, //是否显示上传按钮
 			showCaption : false,//是否显示标题
@@ -43,20 +44,20 @@
 			multiple : true,
 			previewFileIcon : "<i class='glyphicon glyphicon-king'></i>",
 			msgFilesTooMany : "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-		}).on("fileuploaded", function (e, data) {
-// 			alert("data   "+data.response);
-			var res = eval("("+ data.response+")");
-// 	        alert("res.state  "+res.state);
+		}).on("filebatchselected", function(event, files) {  
+            $(this).fileinput("upload");  
+        }).on("fileuploaded", function (e, data, previewId, index) {
+			var res =  data.response;
 	        if (res.state == '1') {
-	        	var files=$("input[name='uploadFiles']").val();
-	        	$("input[name='uploadFiles']").val(files+","+res.filename);
-// 	            alert('上传成功');
-// 	            alert(res.filename);
+	        	$("#goodsPicDiv").append("<input type='text' name='goodsPicIds' previewId='"+previewId+"' value='"+res.id+"' />");
 	        }
 	        else {
 	            alert('上传失败')
 	        }
-	    })
+	    	alert("上传 previewId  : "+previewId+"   index  : "+index);
+	    }).on("filesuccessremove", function(event, data, previewId, index) {
+	    	alert("data  : "+data); 
+	    });
 	}
 	
 	function selectCode(param) {
@@ -111,8 +112,8 @@
 		</select>
 		<div class="row" style="height: 300px">
 			<input id="file-Portrait1"  name="files"  type="file" multiple>
-			<input name="uploadFiles"  type="text">
 		</div>
+		<div id="goodsPicDiv"></div>
 		<input type="submit"/>
 	</form>
 </body>
