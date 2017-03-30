@@ -111,6 +111,9 @@ public class GoodsController {
 		if (!targetFile.exists()) {
 			targetFile.mkdirs();
 		}
+		String porjectPath = getPorjectPath();
+		logger.info("porjectPath   "+porjectPath);
+		
 		// 保存
 		long size = 0;
 		try {
@@ -119,11 +122,10 @@ public class GoodsController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		String filename = request.getContextPath() + "/upload/" + fileName;
 		GoodsPic goodsPic = new GoodsPic();
 		goodsPic.setName(originalFilename);
 		goodsPic.setSize(size);
-		goodsPic.setUrl(filename);
+		goodsPic.setUrl(fileName);
 		goodsPic.setState("1");
 		goodsPicService.save(goodsPic);
 		return new ResponseEntity<GoodsPic>(goodsPic, HttpStatus.OK);
@@ -131,10 +133,11 @@ public class GoodsController {
 	
 	
 	@RequestMapping(value = "deleteGoodsPic/{goodsPicId}", method = RequestMethod.POST)
-	public ResponseEntity<String> deleteGoodsPic(@PathVariable String goodsPicId,String picUrl) {
-//		goodsPicService.removeById(goodsPicId);
-//		delete(picUrl);
-		logger.info("picUrl  "+picUrl);
+	public ResponseEntity<String> deleteGoodsPic(@PathVariable Integer goodsPicId,String picUrl,HttpServletRequest request) {
+		goodsPicService.removeById(goodsPicId);
+		String path = request.getSession().getServletContext().getRealPath("upload")+File.separator+picUrl;
+		delete(path);
+		logger.info("path  "+path);
 		return new ResponseEntity<String>( "hehe", HttpStatus.OK);
 	}
 
@@ -194,10 +197,19 @@ public class GoodsController {
 	 
 	private void delete(String fileUrl){
 		File file=new File(fileUrl);
-		file.deleteOnExit();
+		file.delete();
 	}
 	
 	private String getPath(String path) {
 		return JSP_PATH + path;
+	}
+	
+	private String getPorjectPath(){
+		String nowpath; //当前tomcat的bin目录的路径 如 D:/java/software/apache-tomcat-6.0.14/bin
+		String tempdir;
+		nowpath=System.getProperty("user.dir");
+		tempdir=nowpath.replace("bin", "webapps"); //把bin 文件夹变到 webapps文件里面
+//		tempdir+="//foo3"; //拼成D:/java/software/apache-tomcat-6.0.14/webapps/sz_pro
+		return tempdir;
 	}
 }

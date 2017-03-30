@@ -49,25 +49,24 @@
         }).on("fileuploaded", function (e, data, previewId, index) {
 			var res =  data.response;
 	        if (res.state == '1') {
-	        	alert(res.id);
-	        	$("#goodsPicDiv").append("<input type='text' name='goodsPicIds' picUrl='"+res.url+"' id='"+previewId+"' value='"+res.id+"' />");
+// 	        	alert(res.id);
+                 var temp= previewId.split("-");
+	        	$("#myForm").append("<input type='text' name='goodsPicIds' picUrl='"+res.url+"' id= '"+temp[1]+"' value='"+res.id+"' />");
 	        }
 	        else {
 	            alert('上传失败')
 	        }
-	    	alert("上传 previewId  : "+previewId+"   index  : "+index);
+// 	    	alert("上传 previewId  : "+previewId+",   index  : "+index);
 	    }).on("filesuccessremove", function(event, data, previewId, index) {
-	    	alert("删除 previewId  : "+previewId+"   index  : "+index+"  data  :"+data+":");
-	    	var  goodsPicObj=$("#"+data);
-	    	var goodsPicId=$("#"+data).val();
-	    	var picUrl=$("#"+data).attr("picUrl");
-	    	alert(" goodsPicId "+goodsPicId+"  , picUrl  "+picUrl +"  , goodsPicObj  "+goodsPicObj.val());
-	    	return ;
+	        var temp= data.split("-");
+	        var goodsPicObj =$('#' + temp[1]);
+	    	var goodsPicId =goodsPicObj.val();
+	    	var picUrl=$(goodsPicObj).attr("picUrl");
+	    	alert(" goodsPicId "+goodsPicId+"  , picUrl  "+picUrl +"  , goodsPicObj  "+$(goodsPicObj).val());
+	    	
 	    	$.ajax({ url: "${ctx}/goods/deleteGoodsPic/"+goodsPicId, data:"picUrl="+picUrl ,  type:"POST", async:true,
 	    		success: function(data){
-	    			var res =  data.response;
-	    			alertr(res);
-	    			$("#"+previewId).remove();
+	    			goodsPicObj.remove();
 	          },
 	          error:function(e){
 	        	  alert(e);
@@ -112,7 +111,7 @@
 </head>
 <body>
 	新增物品 
-	<form action="<%=request.getContextPath()%>/goods/addGoods" method="post"  enctype="multipart/form-data">
+	<form id="myForm" action="<%=request.getContextPath()%>/goods/addGoods" method="post"  enctype="multipart/form-data">
 	   名称<input type="text" name="name" ><br>
 		<label class="control-lable">大类</label>
 		  <select onchange="selectCode(this)" name="goodsCategoryCode">
@@ -131,7 +130,7 @@
 			<input id="file-Portrait1"  name="files"  type="file" multiple>
 		</div>
 		<div id="goodsPicDiv"></div>
-		<input id="prarsd-12212-0" value="9988" >
+		<input id="preview-1490870265872-0" value="9988" >
 		<input type="submit"/>
 	</form>
 </body>
