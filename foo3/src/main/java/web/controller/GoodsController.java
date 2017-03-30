@@ -130,13 +130,11 @@ public class GoodsController {
 	}
 	
 	
-	@RequestMapping(value = "deleteGoodsPic", method = RequestMethod.POST)
-	public ResponseEntity<String> deleteGoodsPic(HttpServletRequest request) {
-		String parameter = request.getParameter("");
-		
-		
-		logger.info("parameter  "+parameter);
-		 
+	@RequestMapping(value = "deleteGoodsPic/{goodsPicId}", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteGoodsPic(@PathVariable String goodsPicId,String picUrl) {
+//		goodsPicService.removeById(goodsPicId);
+//		delete(picUrl);
+		logger.info("picUrl  "+picUrl);
 		return new ResponseEntity<String>( "hehe", HttpStatus.OK);
 	}
 
@@ -193,7 +191,12 @@ public class GoodsController {
 		modelAndView.addObject("picList", picList);
 		return modelAndView;
 	}
-
+	 
+	private void delete(String fileUrl){
+		File file=new File(fileUrl);
+		file.deleteOnExit();
+	}
+	
 	private String getPath(String path) {
 		return JSP_PATH + path;
 	}

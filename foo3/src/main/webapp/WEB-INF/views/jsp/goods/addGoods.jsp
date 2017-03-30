@@ -49,13 +49,30 @@
         }).on("fileuploaded", function (e, data, previewId, index) {
 			var res =  data.response;
 	        if (res.state == '1') {
-	        	$("#goodsPicDiv").append("<input type='text' name='goodsPicIds' previewId='"+previewId+"' value='"+res.id+"' />");
+	        	alert(res.id);
+	        	$("#goodsPicDiv").append("<input type='text' name='goodsPicIds' picUrl='"+res.url+"' id='"+previewId+"' value='"+res.id+"' />");
 	        }
 	        else {
 	            alert('上传失败')
 	        }
 	    	alert("上传 previewId  : "+previewId+"   index  : "+index);
 	    }).on("filesuccessremove", function(event, data, previewId, index) {
+	    	alert("删除 previewId  : "+previewId+"   index  : "+index+"  data  :"+data+":");
+	    	var  goodsPicObj=$("#"+data);
+	    	var goodsPicId=$("#"+data).val();
+	    	var picUrl=$("#"+data).attr("picUrl");
+	    	alert(" goodsPicId "+goodsPicId+"  , picUrl  "+picUrl +"  , goodsPicObj  "+goodsPicObj.val());
+	    	return ;
+	    	$.ajax({ url: "${ctx}/goods/deleteGoodsPic/"+goodsPicId, data:"picUrl="+picUrl ,  type:"POST", async:true,
+	    		success: function(data){
+	    			var res =  data.response;
+	    			alertr(res);
+	    			$("#"+previewId).remove();
+	          },
+	          error:function(e){
+	        	  alert(e);
+	          }
+	    	});
 	    	alert("data  : "+data); 
 	    });
 	}
@@ -114,6 +131,7 @@
 			<input id="file-Portrait1"  name="files"  type="file" multiple>
 		</div>
 		<div id="goodsPicDiv"></div>
+		<input id="prarsd-12212-0" value="9988" >
 		<input type="submit"/>
 	</form>
 </body>
