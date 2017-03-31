@@ -7,6 +7,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_user")
 public class User extends BaseEntity {
+	public final static String SESSION_USER = "user";
+	public final static int  STATE_NORMAL = 1;
+	
 	private String nickname;
 	private String username;
 	private String password;

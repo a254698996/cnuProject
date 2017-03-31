@@ -28,14 +28,15 @@
 	href="${ctx}/static/bootstrap-fileinput/css/fileinput.min.css">
 <script type="text/javascript">
 	$(document).ready(function() {
-		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic")
+		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic","${ctx}/goods/deleteGoodsPic")
 	});
-	function initFileInput(ctrlName, uploadUrl) {
+	function initFileInput(ctrlName, uploadUrl,deleteUrl) {
 		var control = $('#' + ctrlName);
 
 		control.fileinput({
 			language : 'zh', //设置语言
 			uploadUrl : uploadUrl, //上传的地址
+			deleteUrl :deleteUrl,
 			allowedFileExtensions : [ 'jpg', 'png', 'gif' ],//接收的文件后缀
 			showUpload : false, //是否显示上传按钮
 			showCaption : false,//是否显示标题
@@ -43,20 +44,39 @@
 			multiple : true,
 			previewFileIcon : "<i class='glyphicon glyphicon-king'></i>",
 			msgFilesTooMany : "选择上传的文件数量({n}) 超过允许的最大数值{m}！",
-		}).on("fileuploaded", function (e, data) {
-// 			alert("data   "+data.response);
-			var res = eval("("+ data.response+")");
-// 	        alert("res.state  "+res.state);
+	        overwriteInitial: false,
+	        initialPreviewAsData: true,
+	        initialPreview: <%=request.getAttribute("urlJsonArray")%> ,
+            initialPreviewConfig:  <%=request.getAttribute("initialPreviewConfigJsonArray")%> ,
+		}).on("filebatchselected", function(event, files) {  
+            $(this).fileinput("upload");  
+        }).on("fileuploaded", function (e, data, previewId, index) {
+			var res =  data.response;
 	        if (res.state == '1') {
-	        	var files=$("input[name='uploadFiles']").val();
-	        	$("input[name='uploadFiles']").val(files+","+res.filename);
-// 	            alert('上传成功');
-// 	            alert(res.filename);
+                 var temp= previewId.split("-");
+	        	$("#myForm").append("<input type='text' name='goodsPicIds' picUrl='"+res.url+"' id= '"+temp[1]+"' value='"+res.id+"' />");
 	        }
 	        else {
 	            alert('上传失败')
 	        }
-	    })
+// 	    	alert("上传 previewId  : "+previewId+",   index  : "+index);
+	    }).on("filesuccessremove", function(event, data, previewId, index) {
+	    	alert("删除previewId  : "+previewId+",   index  : "+index);
+// 	        var temp= data.split("-");
+// 	        var goodsPicObj =$('#' + temp[1]);
+// 	    	var goodsPicId =goodsPicObj.val();
+// 	    	var picUrl=$(goodsPicObj).attr("picUrl");
+// 	    	alert(" goodsPicId "+goodsPicId+"  , picUrl  "+picUrl +"  , goodsPicObj  "+$(goodsPicObj).val());
+	    	
+// 	    	$.ajax({ url: "${ctx}/goods/deleteGoodsPic/"+goodsPicId, data:"picUrl="+picUrl ,  type:"POST", async:true,
+// 	    		success: function(data){
+// 	    			goodsPicObj.remove();
+// 	          },
+// 	          error:function(e){
+// 	        	  alert(e);
+// 	          }
+// 	    	});
+	    });
 	}
 	
 	function selectCode(param) {
@@ -94,24 +114,47 @@
 </head>
 <body>
 	新增物品 
-	<form action="<%=request.getContextPath()%>/goods/addGoods" method="post"  enctype="multipart/form-data">
-	   名称<input type="text" name="name" ><br>
+	<form id="myForm"  action="<%=request.getContextPath()%>/goods/updateGoods" method="post"  enctype="multipart/form-data">
+	  <input type="text" name="id" value="${goods.id }">
+	   名称<input type="text" name="name" value="${goods.name }"><br>
 		<label class="control-lable">大类</label>
-		  <select onchange="selectCode(this)">
+		  <select onchange="selectCode(this)"  name="goodsCategoryCode">
 			<option>请选择</option>
-			<c:forEach items="${pList }" var="goodsCategory">
-				 <option value="<c:out value='${goodsCategory.code}'/>">
-					<c:out value='${goodsCategory.name}' />
-			     </option>
-			</c:forEach>
+				<c:forEach items="${pList }" var="goodsCategory">
+	 				<c:choose>
+					     <c:when test="${goodsCategory.code eq goods.goodsCategoryCode }">
+					      		<option value="<c:out value='${goodsCategory.code}'/>"  selected="selected" >
+						      		<c:out value='${goodsCategory.name}' />
+						        </option>
+					     </c:when>
+						 <c:otherwise >
+							  <option value="<c:out value='${goodsCategory.code}'/>">
+						  			<c:out value='${goodsCategory.name}' />
+						  		</option>
+						 </c:otherwise>
+				     </c:choose>
+			     </c:forEach>
 		  </select>
-	  <label class="control-lable">细类</label> 
-		 <select id="subSelect">
+	  <label class="control-lable">细类</label>
+		 <select id="subSelect" name="goodsCategorySubCode">
 			<option>请选择</option>
+			<c:forEach items="${subList }" var="goodsCategory">
+			  <c:choose>
+			     <c:when test="${goodsCategory.code eq goods.goodsCategorySubCode }">
+			      		<option value="<c:out value='${goodsCategory.code}'/>"  selected="selected" >
+				      		<c:out value='${goodsCategory.name}' />
+				        </option>
+			     </c:when>
+				 <c:otherwise >
+					  <option value="<c:out value='${goodsCategory.code}'/>">
+				  			<c:out value='${goodsCategory.name}' />
+				  		</option>
+				 </c:otherwise>
+			     </c:choose>
+			</c:forEach>
 		</select>
 		<div class="row" style="height: 300px">
 			<input id="file-Portrait1"  name="files"  type="file" multiple>
-			<input name="uploadFiles"  type="text">
 		</div>
 		<input type="submit"/>
 	</form>

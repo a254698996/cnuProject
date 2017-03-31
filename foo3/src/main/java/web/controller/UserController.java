@@ -2,6 +2,9 @@ package web.controller;
 
 import java.io.Serializable;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,6 +22,7 @@ import com.hibernate.dao.base.Page;
 import web.dto.UserDto;
 import web.entity.User;
 import web.service.IUserService;
+import web.util.SessionUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -37,9 +41,10 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
-	public ModelAndView userLogin(User user) {
+	public ModelAndView userLogin(User user,HttpServletRequest request) {
 		User returnUser = userService.queryBeanByHql(user);
 		if (returnUser != null) {
+			SessionUtil.setAttribute(request, User.SESSION_USER,returnUser);
 			return new ModelAndView("user/index");
 		} else {
 			return new ModelAndView(getPath("userLogin"));

@@ -1,48 +1,20 @@
-package web.entity;
+package web.dto;
 
 import java.io.Serializable;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "t_goods")
-public class Goods implements Serializable {
-	public final static int GROUNDING = 1;
-	public final static int NOT_GROUNDING = 0;
-	@Id
+public class GoodsDto implements Serializable {
 	private String id;
-
 	private String name;
-	@Column(name = "t_exchange_group_id")
 	private String exchangeGroupId;
-	@Column(name = "t_goods_category_code")
 	private String goodsCategoryCode;
-	@Column(name = "t_goods_category_sub_code")
 	private String goodsCategorySubCode;
-	@Column(name = "t_goodscol")
 	private String goodscol;
-//	@Column(name = "user_id")
-//	private int userId;
-
-	@Transient
+	private int userId;
 	private String goodsCategoryName;
-	@Transient
 	private String goodsCategorySubName;
-
 	private int state;
-
-	public int getState() {
-		return state;
-	}
-
-	public void setState(int state) {
-		this.state = state;
-	}
+	private String url;
 
 	public String getId() {
 		return id;
@@ -68,14 +40,6 @@ public class Goods implements Serializable {
 		this.exchangeGroupId = exchangeGroupId;
 	}
 
-	public String getGoodscol() {
-		return goodscol;
-	}
-
-	public void setGoodscol(String goodscol) {
-		this.goodscol = goodscol;
-	}
-
 	public String getGoodsCategoryCode() {
 		return goodsCategoryCode;
 	}
@@ -90,6 +54,22 @@ public class Goods implements Serializable {
 
 	public void setGoodsCategorySubCode(String goodsCategorySubCode) {
 		this.goodsCategorySubCode = goodsCategorySubCode;
+	}
+
+	public String getGoodscol() {
+		return goodscol;
+	}
+
+	public void setGoodscol(String goodscol) {
+		this.goodscol = goodscol;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
 	}
 
 	public String getGoodsCategoryName() {
@@ -108,12 +88,20 @@ public class Goods implements Serializable {
 		this.goodsCategorySubName = goodsCategorySubName;
 	}
 
-//	public int getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(int userId) {
-//		this.userId = userId;
-//	}
+	public int getState() {
+		return state;
+	}
+
+	public void setState(int state) {
+		this.state = state;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
+	}
 
 }

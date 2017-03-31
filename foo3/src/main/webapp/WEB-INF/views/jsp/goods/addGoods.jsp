@@ -63,7 +63,7 @@
 	    	var picUrl=$(goodsPicObj).attr("picUrl");
 // 	    	alert(" goodsPicId "+goodsPicId+"  , picUrl  "+picUrl +"  , goodsPicObj  "+$(goodsPicObj).val());
 	    	
-	    	$.ajax({ url: "${ctx}/goods/deleteGoodsPic/"+goodsPicId, data:"picUrl="+picUrl ,  type:"POST", async:true,
+	    	$.ajax({ url: "${ctx}/goods/deleteGoodsPic", data:"picUrl="+picUrl+"&key="+goodsPicId ,  type:"POST", async:true,
 	    		success: function(data){
 	    			goodsPicObj.remove();
 	          },
@@ -71,7 +71,6 @@
 	        	  alert(e);
 	          }
 	    	});
-// 	    	alert("data  : "+data); 
 	    });
 	}
 	

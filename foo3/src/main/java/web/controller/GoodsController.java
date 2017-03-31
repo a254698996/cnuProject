@@ -9,8 +9,12 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.http.HttpStatus;
@@ -25,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import web.dto.GoodsDto;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
@@ -51,29 +56,44 @@ public class GoodsController {
 	@Lazy
 	IGoodsCategoryService<GoodsCategory, Serializable> goodsCategoryService;
 
-	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public ModelAndView list(Goods Goods, @RequestParam(required = false) Integer pageIndex) {
-		if (pageIndex == null) {
-			pageIndex = Page.defaultStartIndex;
-		}
-		Page page = goodsService.pagedQuery(
-				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code ",
-				pageIndex, Page.defaultPageSize);
+	@RequestMapping(value = "showGoods", method = RequestMethod.GET)
+	public ModelAndView showGoods(Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,HttpServletRequest request) {
+		Page page = goodsService.getList(pageIndex, 100, null, _SCH_name);
+		ModelAndView mav = new ModelAndView(getPath("showGoods"));
+		mav.getModel().put("steps", page.getPageSize());
+		mav.getModel().put("pageIndex", pageIndex);
+		mav.getModel().put("count", page.getTotalCount());
 		List<Object> list = page.getList();
-		List<Goods> goodsList = new ArrayList<>();
+		
+		List<GoodsDto> goodsDtoList = new ArrayList<GoodsDto>();
 		if (list != null && !list.isEmpty()) {
 			for (Object object : list) {
-				Object[] objs = (Object[]) object;
-				Goods goods = (web.entity.Goods) objs[0];
-				GoodsCategory c = (web.entity.GoodsCategory) objs[1];
-				GoodsCategory subC = (web.entity.GoodsCategory) objs[2];
-				goods.setGoodsCategoryName(c.getName());
-				goods.setGoodsCategorySubName(subC.getName());
-				goodsList.add(goods);
+				Goods goods = (web.entity.Goods) object;
+				GoodsDto goodsDto = new GoodsDto();
+				BeanUtils.copyProperties(goods, goodsDto);
+				Page pagedQuery = goodsPicService.pagedQuery("from GoodsPic p where p.goodsId=? ", 1, 1,
+						new Object[] { goods.getId() });
+				if (pagedQuery.getList() != null && !pagedQuery.getList().isEmpty()) {
+					GoodsPic goodsPic = (GoodsPic) pagedQuery.getList().get(0);
+					goodsDto.setUrl(goodsPic.getUrl());
+					goodsDtoList.add(goodsDto);
+				}
 			}
 		}
+		mav.getModelMap().put("goodsDtoList", goodsDtoList);
+		return mav;
+	}
+	
+	@RequestMapping(value = "list", method = RequestMethod.GET)
+	public ModelAndView list(Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,HttpServletRequest request) {
+		
+//		User currUser = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+ 
+//		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, currUser.getId()+"", _SCH_name);
+		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, null, _SCH_name);
+		 
 		ModelAndView mav = new ModelAndView(getPath("goodsList"));
-		mav.getModelMap().put("goodsList", goodsList);
+		mav.getModelMap().put("goodsList", page.getList());
 		mav.getModel().put("steps", page.getPageSize());
 		mav.getModel().put("pageIndex", pageIndex);
 		mav.getModel().put("count", page.getTotalCount());
@@ -131,11 +151,16 @@ public class GoodsController {
 		return new ResponseEntity<GoodsPic>(goodsPic, HttpStatus.OK);
 	}
 
-	@RequestMapping(value = "deleteGoodsPic/{goodsPicId}", method = RequestMethod.POST)
-	public ResponseEntity<String> deleteGoodsPic(@PathVariable Integer goodsPicId, String picUrl,
-			HttpServletRequest request) {
-		goodsPicService.removeById(goodsPicId);
-		String path = request.getSession().getServletContext().getRealPath("upload") + File.separator + picUrl;
+	@RequestMapping(value = "deleteGoodsPic", method = RequestMethod.POST)
+	public ResponseEntity<String> deleteGoodsPic(Integer key, String picUrl, HttpServletRequest request) {
+		String path = "";
+		if (StringUtils.isNotBlank(picUrl)) {
+			path = request.getSession().getServletContext().getRealPath("upload") + File.separator + picUrl;
+		} else {
+			GoodsPic goodsPic = goodsPicService.get(key);
+			path = request.getSession().getServletContext().getRealPath("upload") + File.separator + goodsPic.getUrl();
+		}
+		goodsPicService.removeById(key);
 		delete(path);
 		logger.info("path  " + path);
 		return new ResponseEntity<String>("hehe", HttpStatus.OK);
@@ -157,7 +182,11 @@ public class GoodsController {
 	@RequestMapping(value = "grounding/{id}", method = RequestMethod.GET)
 	public ModelAndView grounding(@PathVariable String id) {
 		Goods goods = goodsService.get(id);
-		goods.setState(1);
+		if (goods.getState() == Goods.NOT_GROUNDING) {
+			goods.setState(Goods.GROUNDING);
+		} else {
+			goods.setState(Goods.NOT_GROUNDING);
+		}
 		goodsService.update("web.entity.Goods", goods);
 		return new ModelAndView("redirect:/goods/list");
 	}
@@ -165,6 +194,70 @@ public class GoodsController {
 	@RequestMapping(value = "get/{id}", method = RequestMethod.GET)
 	public ModelAndView get(@PathVariable String id) {
 
+		Goods goods = getGoodsById(id);
+
+		List<GoodsPic> picList = goodsPicService.findBy("goodsId", id);
+
+		ModelAndView modelAndView = new ModelAndView(getPath("detailGoods"));
+		modelAndView.addObject("goods", goods);
+		modelAndView.addObject("picList", picList);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "toUpdate/{id}", method = RequestMethod.GET)
+	public ModelAndView toUpdate(@PathVariable String id, HttpServletRequest request) {
+
+		Goods goods = getGoodsById(id);
+
+		List<GoodsPic> picList = goodsPicService.findBy("goodsId", id);
+
+		JSONArray initialPreviewConfigJsonArray = new JSONArray();
+		JSONArray urlJsonArray = new JSONArray();
+
+		if (picList != null && !picList.isEmpty()) {
+			try {
+				for (GoodsPic goodsPic : picList) {
+					JSONObject jsonObject = new JSONObject();
+					jsonObject.put("caption", goodsPic.getName());
+					jsonObject.put("size", goodsPic.getSize());
+					jsonObject.put("width", "120px");
+					jsonObject.put("url", request.getContextPath() + "/goods/deleteGoodsPic");
+					jsonObject.put("key", goodsPic.getId());
+					initialPreviewConfigJsonArray.put(jsonObject);
+					urlJsonArray.put(request.getContextPath() + "/upload/" + goodsPic.getUrl());
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+		List<Object> pList = goodsCategoryService.getPList();
+
+		List<Object> subList = goodsCategoryService.getSubList(goods.getGoodsCategoryCode());
+
+		ModelAndView mav = new ModelAndView(getPath("updateGoods"));
+		mav.addObject("goods", goods);
+		mav.addObject("pList", pList);
+		mav.addObject("subList", subList);
+		mav.addObject("initialPreviewConfigJsonArray", initialPreviewConfigJsonArray);
+		mav.addObject("urlJsonArray", urlJsonArray);
+		return mav;
+	}
+
+	@RequestMapping(value = "updateGoods", method = RequestMethod.POST)
+	public ModelAndView updateGoods(Goods goods, Integer[] goodsPicIds) {
+		goodsService.update(goods);
+		if (goodsPicIds != null && goodsPicIds.length > 0) {
+			for (Integer goodsPicId : goodsPicIds) {
+				GoodsPic goodsPic = goodsPicService.get(goodsPicId);
+				goodsPic.setGoodsId(goods.getId());
+				goodsPicService.update(goodsPic);
+			}
+		}
+		return new ModelAndView("redirect:/goods/list");
+	}
+
+	private Goods getGoodsById(String id) {
 		List<?> goodsList = goodsService.find(
 				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code and g.id=? ",
 				new Object[] { id });
@@ -178,15 +271,9 @@ public class GoodsController {
 			goods.setGoodsCategoryName(c.getName());
 			goods.setGoodsCategorySubName(subC.getName());
 		}
-
-		List<GoodsPic> picList = goodsPicService.findBy("goodsId", id);
-
-		ModelAndView modelAndView = new ModelAndView(getPath("detailGoods"));
-		modelAndView.addObject("goods", goods);
-		modelAndView.addObject("picList", picList);
-		return modelAndView;
+		return goods;
 	}
-
+	
 	private void delete(String fileUrl) {
 		File file = new File(fileUrl);
 		file.delete();
@@ -197,7 +284,7 @@ public class GoodsController {
 	}
 
 	private String getPorjectPath() {
-		String nowpath; // 当前tomcat的bin目录的路径 如
+		String nowpath; // 当前tomcat的bin目录的路径 如 //
 						// D:/java/software/apache-tomcat-6.0.14/bin
 		String tempdir;
 		nowpath = System.getProperty("user.dir");
