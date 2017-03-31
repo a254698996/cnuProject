@@ -20,10 +20,12 @@ import com.hibernate.dao.base.Page;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
+import web.entity.Menu;
 import web.entity.User;
 import web.service.IGoodsCategoryService;
 import web.service.IGoodsPicService;
 import web.service.IGoodsService;
+import web.service.IMenuService;
 import web.service.IUserService;
 
 @Controller
@@ -32,9 +34,15 @@ public class AdminController {
 
 	Logger logger = LoggerFactory.getLogger(AdminController.class);
 	private final static String JSP_PATH = "admin/";
+	
 	@Autowired
 	@Lazy
 	IUserService<User, Serializable> userService;
+	
+	@Autowired
+	@Lazy
+	IMenuService<Menu, Serializable> menuService;
+	
 	@Autowired
 	@Lazy
 	IGoodsService<Goods, Serializable> goodsService;

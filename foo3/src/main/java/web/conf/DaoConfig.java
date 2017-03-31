@@ -17,18 +17,21 @@ import web.entity.City;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
+import web.entity.Menu;
 import web.entity.Person;
 import web.entity.User;
 import web.service.ICityService;
 import web.service.IGoodsCategoryService;
 import web.service.IGoodsPicService;
 import web.service.IGoodsService;
+import web.service.IMenuService;
 import web.service.IPersonService;
 import web.service.IUserService;
 import web.service.impl.CityService;
 import web.service.impl.GoodsCategoryService;
 import web.service.impl.GoodsPicService;
 import web.service.impl.GoodsService;
+import web.service.impl.MenuService;
 import web.service.impl.PersonService;
 import web.service.impl.UserService;
 
@@ -101,6 +104,15 @@ public class DaoConfig {
 	public IGoodsPicService<GoodsPic, Serializable> getGoodsPicService() {
 		logger.info("IGoodsPicService  created");
 		return new GoodsPicService(GoodsPic.class, (HibernateEntityDao<GoodsPic, Serializable>) getHibernateEntityDao(),
+				getHibernateGenericDao());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IMenuService<Menu, Serializable> getMenuService() {
+		logger.info("IMenuService  created");
+		return new MenuService(Menu.class, (HibernateEntityDao<Menu, Serializable>) getHibernateEntityDao(),
 				getHibernateGenericDao());
 	}
 
