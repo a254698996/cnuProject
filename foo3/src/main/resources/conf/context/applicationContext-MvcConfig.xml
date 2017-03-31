@@ -99,4 +99,5 @@
 
 	<!-- 资源访问处理器 -->
 	<mvc:resources mapping="/static/**" location="/WEB-INF/static/" />
+	<mvc:resources mapping="/upload/**" location="/upload/" />
 </beans>

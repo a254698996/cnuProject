@@ -49,7 +49,6 @@
         }).on("fileuploaded", function (e, data, previewId, index) {
 			var res =  data.response;
 	        if (res.state == '1') {
-// 	        	alert(res.id);
                  var temp= previewId.split("-");
 	        	$("#myForm").append("<input type='text' name='goodsPicIds' picUrl='"+res.url+"' id= '"+temp[1]+"' value='"+res.id+"' />");
 	        }
@@ -62,7 +61,7 @@
 	        var goodsPicObj =$('#' + temp[1]);
 	    	var goodsPicId =goodsPicObj.val();
 	    	var picUrl=$(goodsPicObj).attr("picUrl");
-	    	alert(" goodsPicId "+goodsPicId+"  , picUrl  "+picUrl +"  , goodsPicObj  "+$(goodsPicObj).val());
+// 	    	alert(" goodsPicId "+goodsPicId+"  , picUrl  "+picUrl +"  , goodsPicObj  "+$(goodsPicObj).val());
 	    	
 	    	$.ajax({ url: "${ctx}/goods/deleteGoodsPic/"+goodsPicId, data:"picUrl="+picUrl ,  type:"POST", async:true,
 	    		success: function(data){
@@ -72,7 +71,7 @@
 	        	  alert(e);
 	          }
 	    	});
-	    	alert("data  : "+data); 
+// 	    	alert("data  : "+data); 
 	    });
 	}
 	
@@ -129,8 +128,6 @@
 		<div class="row" style="height: 300px">
 			<input id="file-Portrait1"  name="files"  type="file" multiple>
 		</div>
-		<div id="goodsPicDiv"></div>
-		<input id="preview-1490870265872-0" value="9988" >
 		<input type="submit"/>
 	</form>
 </body>

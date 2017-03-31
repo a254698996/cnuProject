@@ -9,7 +9,6 @@ import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +25,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
-import util.JSONUtils;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
@@ -58,15 +56,17 @@ public class GoodsController {
 		if (pageIndex == null) {
 			pageIndex = Page.defaultStartIndex;
 		}
-		Page page = goodsService.pagedQuery("select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code ", pageIndex, Page.defaultPageSize);
+		Page page = goodsService.pagedQuery(
+				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code ",
+				pageIndex, Page.defaultPageSize);
 		List<Object> list = page.getList();
-		List<Goods> goodsList=new ArrayList<>();
+		List<Goods> goodsList = new ArrayList<>();
 		if (list != null && !list.isEmpty()) {
 			for (Object object : list) {
-				Object[] objs=(Object[]) object;
-				Goods goods=(web.entity.Goods) objs[0];
-				GoodsCategory c=(web.entity.GoodsCategory) objs[1];
-				GoodsCategory subC=(web.entity.GoodsCategory) objs[2];
+				Object[] objs = (Object[]) object;
+				Goods goods = (web.entity.Goods) objs[0];
+				GoodsCategory c = (web.entity.GoodsCategory) objs[1];
+				GoodsCategory subC = (web.entity.GoodsCategory) objs[2];
 				goods.setGoodsCategoryName(c.getName());
 				goods.setGoodsCategorySubName(subC.getName());
 				goodsList.add(goods);
@@ -99,7 +99,7 @@ public class GoodsController {
 			HttpServletRequest request) {
 		if (file.isEmpty()) {
 			logger.info("file is empty ");
-			GoodsPic goodsPic=new GoodsPic();
+			GoodsPic goodsPic = new GoodsPic();
 			goodsPic.setState("0");
 			return new ResponseEntity<GoodsPic>(goodsPic, HttpStatus.OK);
 		}
@@ -112,8 +112,8 @@ public class GoodsController {
 			targetFile.mkdirs();
 		}
 		String porjectPath = getPorjectPath();
-		logger.info("porjectPath   "+porjectPath);
-		
+		logger.info("porjectPath   " + porjectPath);
+
 		// 保存
 		long size = 0;
 		try {
@@ -130,36 +130,26 @@ public class GoodsController {
 		goodsPicService.save(goodsPic);
 		return new ResponseEntity<GoodsPic>(goodsPic, HttpStatus.OK);
 	}
-	
-	
+
 	@RequestMapping(value = "deleteGoodsPic/{goodsPicId}", method = RequestMethod.POST)
-	public ResponseEntity<String> deleteGoodsPic(@PathVariable Integer goodsPicId,String picUrl,HttpServletRequest request) {
+	public ResponseEntity<String> deleteGoodsPic(@PathVariable Integer goodsPicId, String picUrl,
+			HttpServletRequest request) {
 		goodsPicService.removeById(goodsPicId);
-		String path = request.getSession().getServletContext().getRealPath("upload")+File.separator+picUrl;
+		String path = request.getSession().getServletContext().getRealPath("upload") + File.separator + picUrl;
 		delete(path);
-		logger.info("path  "+path);
-		return new ResponseEntity<String>( "hehe", HttpStatus.OK);
+		logger.info("path  " + path);
+		return new ResponseEntity<String>("hehe", HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "addGoods", method = RequestMethod.POST)
-	public ModelAndView addGoods(Goods goods, String uploadFiles) {
+	public ModelAndView addGoods(Goods goods, Integer[] goodsPicIds) {
 		String goodsId = UUID.randomUUID().toString();
 		goods.setId(goodsId);
 		goodsService.save(goods);
-		String[] split = uploadFiles.split(";");
-		for (String goodsPicJson : split) {
-			if (StringUtils.isNotBlank(goodsPicJson)) {
-				GoodsPic goodsPic = null;
-				try {
-					goodsPic = JSONUtils.json2pojo(goodsPicJson, GoodsPic.class);
-					if(goodsPic!=null){
-						goodsPic.setGoodsId(goodsId);
-						goodsPicService.save(goodsPic);
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
+		for (Integer goodsPicId : goodsPicIds) {
+			GoodsPic goodsPic = goodsPicService.get(goodsPicId);
+			goodsPic.setGoodsId(goodsId);
+			goodsPicService.update(goodsPic);
 		}
 		return new ModelAndView("redirect:/goods/list");
 	}
@@ -174,42 +164,46 @@ public class GoodsController {
 
 	@RequestMapping(value = "get/{id}", method = RequestMethod.GET)
 	public ModelAndView get(@PathVariable String id) {
-	 
-		List<?>  goodsList = goodsService.find("select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code and g.id=? ", new Object[]{id});
-		
-		Goods goods=null;
+
+		List<?> goodsList = goodsService.find(
+				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code and g.id=? ",
+				new Object[] { id });
+
+		Goods goods = null;
 		if (goodsList != null && !goodsList.isEmpty()) {
-			    Object[] objs=(Object[]) goodsList.get(0);
-				goods=(web.entity.Goods) objs[0];
-				GoodsCategory c=(web.entity.GoodsCategory) objs[1];
-				GoodsCategory subC=(web.entity.GoodsCategory) objs[2];
-				goods.setGoodsCategoryName(c.getName());
-				goods.setGoodsCategorySubName(subC.getName());
+			Object[] objs = (Object[]) goodsList.get(0);
+			goods = (web.entity.Goods) objs[0];
+			GoodsCategory c = (web.entity.GoodsCategory) objs[1];
+			GoodsCategory subC = (web.entity.GoodsCategory) objs[2];
+			goods.setGoodsCategoryName(c.getName());
+			goods.setGoodsCategorySubName(subC.getName());
 		}
-		
+
 		List<GoodsPic> picList = goodsPicService.findBy("goodsId", id);
-		
+
 		ModelAndView modelAndView = new ModelAndView(getPath("detailGoods"));
 		modelAndView.addObject("goods", goods);
 		modelAndView.addObject("picList", picList);
 		return modelAndView;
 	}
-	 
-	private void delete(String fileUrl){
-		File file=new File(fileUrl);
+
+	private void delete(String fileUrl) {
+		File file = new File(fileUrl);
 		file.delete();
 	}
-	
+
 	private String getPath(String path) {
 		return JSP_PATH + path;
 	}
-	
-	private String getPorjectPath(){
-		String nowpath; //当前tomcat的bin目录的路径 如 D:/java/software/apache-tomcat-6.0.14/bin
+
+	private String getPorjectPath() {
+		String nowpath; // 当前tomcat的bin目录的路径 如
+						// D:/java/software/apache-tomcat-6.0.14/bin
 		String tempdir;
-		nowpath=System.getProperty("user.dir");
-		tempdir=nowpath.replace("bin", "webapps"); //把bin 文件夹变到 webapps文件里面
-//		tempdir+="//foo3"; //拼成D:/java/software/apache-tomcat-6.0.14/webapps/sz_pro
+		nowpath = System.getProperty("user.dir");
+		tempdir = nowpath.replace("bin", "webapps"); // 把bin 文件夹变到 webapps文件里面
+		// tempdir+="//foo3";
+		// //拼成D:/java/software/apache-tomcat-6.0.14/webapps/sz_pro
 		return tempdir;
 	}
 }
