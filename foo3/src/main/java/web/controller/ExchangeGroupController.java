@@ -19,10 +19,8 @@ import com.hibernate.dao.base.Page;
 
 import web.entity.ExchangeGroup;
 import web.entity.Goods;
-import web.entity.User;
 import web.service.IExchangeGroupService;
 import web.service.IGoodsService;
-import web.util.SessionUtil;
 
 @Controller
 @RequestMapping("/exchangeGroup")

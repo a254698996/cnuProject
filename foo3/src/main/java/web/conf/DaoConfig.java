@@ -15,24 +15,30 @@ import com.hibernate.dao.generic.HibernateGenericDao;
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.entity.City;
 import web.entity.ExchangeGroup;
+import web.entity.ExchangeOrder;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
+import web.entity.GoodsScore;
 import web.entity.Menu;
 import web.entity.Person;
 import web.entity.User;
 import web.service.ICityService;
 import web.service.IExchangeGroupService;
+import web.service.IExchangeOrderService;
 import web.service.IGoodsCategoryService;
 import web.service.IGoodsPicService;
+import web.service.IGoodsScoreService;
 import web.service.IGoodsService;
 import web.service.IMenuService;
 import web.service.IPersonService;
 import web.service.IUserService;
 import web.service.impl.CityService;
 import web.service.impl.ExchangeGroupService;
+import web.service.impl.ExchangeOrderService;
 import web.service.impl.GoodsCategoryService;
 import web.service.impl.GoodsPicService;
+import web.service.impl.GoodsScoreService;
 import web.service.impl.GoodsService;
 import web.service.impl.MenuService;
 import web.service.impl.PersonService;
@@ -128,4 +134,21 @@ public class DaoConfig {
 				getHibernateGenericDao());
 	}
 
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IGoodsScoreService<GoodsScore, Serializable> getGoodsScoreService() {
+		logger.info("IGoodsScoreService  created");
+		return new GoodsScoreService(GoodsScore.class,
+				(HibernateEntityDao<GoodsScore, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IExchangeOrderService<ExchangeOrder, Serializable> getExchangeOrderService() {
+		logger.info("IExchangeOrderService  created");
+		return new ExchangeOrderService(ExchangeOrder.class,
+				(HibernateEntityDao<ExchangeOrder, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
 }
