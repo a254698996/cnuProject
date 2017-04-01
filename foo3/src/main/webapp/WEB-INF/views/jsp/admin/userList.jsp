@@ -20,13 +20,20 @@
  				document.location="${pageContext.request.contextPath}/user/delete/"+id;
  			}
  		}
+ 		function changeUserState(id) {
+ 				document.location="${pageContext.request.contextPath}/admin/changeUserState/"+id;
+ 		}
      </script>
   </head>
 <body> 
 <form class="form-inline" action="${ctx}/admin/userList">
 	  <div class="form-group">
-	    <label class="sr-only" for="exampleInputPassword3">用户名</label>
-	    <input type="text" name="sno" class="form-control" value="${param.sno}" placeholder="用户名">
+	    <label class="sr-only" for="exampleInputPassword3">学号</label>
+	    <input type="text" name="sno" class="form-control" value="${param.sno}" placeholder="学号">
+	     <label class="sr-only" for="exampleInputPassword3">用户名</label>
+	    <input type="text" name="username" class="form-control" value="${param.username}" placeholder="用户名">
+	     <label class="sr-only" for="exampleInputPassword3">姓名</label>
+	    <input type="text" name="sname" class="form-control" value="${param.sname}" placeholder="姓名">
 	  </div>
 	  <button type="submit" class="btn btn-default">搜索</button><br/>
 	</form>
@@ -56,7 +63,7 @@
                     <td>${user.sname}</td>  
                     <td>${user.state}</td>                   
 					<td>
-						<button type="button" class="btn btn-info btn-xs" onclick="recharge('${user.username}')">禁用</button>
+						<button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${user.id}')">禁用</button>
 					</td>
 				</tr>
 			</c:forEach>

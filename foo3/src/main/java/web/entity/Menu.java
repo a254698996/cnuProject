@@ -13,6 +13,10 @@ public class Menu extends BaseEntity {
 	private String url;
 	private Integer state;
 
+	public Menu() {
+		this.state = STATE_NORMAL;
+	}
+
 	public String getName() {
 		return name;
 	}
