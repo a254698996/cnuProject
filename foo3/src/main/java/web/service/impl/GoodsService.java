@@ -24,20 +24,34 @@ public class GoodsService extends ServiceImpl<Goods, Serializable> implements IG
 	}
 
 	@Override
-	public Page getList(Integer pageIndex, int pageSize, String userId,String _SCH_name ) {
+	public Page getList(Integer pageIndex, int pageSize, Integer userId, String _SCH_name, Integer exchangeGroupId) {
 		if (pageIndex == null) {
 			pageIndex = Page.defaultStartIndex;
 		}
-		
-		String hql="select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code and  g.name like ? ";
+
+		StringBuffer hql = new StringBuffer(
+				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code ");
 		Page page = null;
-		if(StringUtils.isBlank(userId)){
-			page = pagedQuery( hql, pageIndex, Page.defaultPageSize,new Object[]{ "%"+(_SCH_name==null?"":_SCH_name)+"%"});
-		}else{
-		    hql+=" and g.userId=? ";
-			page = pagedQuery( hql, pageIndex, Page.defaultPageSize,new Object[]{ "%"+(_SCH_name==null?"":_SCH_name)+"%",userId});
+
+		List<Object> paramList = new ArrayList<Object>();
+
+		if (StringUtils.isNotBlank(_SCH_name)) {
+			hql.append(" and  g.name like ?");
+			paramList.add("%" + _SCH_name + "%");
 		}
-		
+
+		if (userId != 0) {
+			hql.append(" and  g.userId = ?");
+			paramList.add(userId);
+		}
+
+		if (exchangeGroupId != null) {
+			hql.append(" and  g.exchangeGroupId = ?");
+			paramList.add(exchangeGroupId);
+		}
+
+		page = pagedQuery(hql.toString(), pageIndex, Page.defaultPageSize, paramList.toArray());
+
 		List<Object> list = page.getList();
 		List<Object> goodsList = new ArrayList<>();
 		if (list != null && !list.isEmpty()) {

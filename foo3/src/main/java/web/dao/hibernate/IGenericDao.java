@@ -15,6 +15,10 @@ public interface IGenericDao {
 	 *            页号,从1开始.
 	 */
 	public Page pagedQuery(String hql, int pageNo, int pageSize, Object... values);
+	
+	
+	
+	public Page pagedQuery(String hql, int pageNo, int pageSize, Object[] propertyArr,Object[] propertyMatetype, Object[] propertyVal);
 
 	/**
 	 * @param hql

@@ -57,6 +57,12 @@ public class AdminController {
 	@Lazy
 	IGoodsCategoryService<GoodsCategory, Serializable> goodsCategoryService;
 
+	@RequestMapping(value = "adminIndex", method = RequestMethod.GET)
+	public String adminIndex() {
+
+		return getPath("adminIndex");
+	}
+
 	@RequestMapping(value = "userList", method = RequestMethod.GET)
 	public ModelAndView userList(User user, @RequestParam(required = false) Integer pageIndex) {
 		if (pageIndex == null) {
@@ -68,19 +74,18 @@ public class AdminController {
 
 		if (StringUtils.isNotBlank(user.getSno())) {
 			hql += "and u.sno like ? ";
-			list.add("%"+user.getSno()+"%");
+			list.add("%" + user.getSno() + "%");
 		}
 
 		if (StringUtils.isNotBlank(user.getSname())) {
 			hql += "and u.sname like ? ";
-			list.add("%"+user.getSname()+"%");
-		}
-		
-		if (StringUtils.isNotBlank(user.getUsername())) {
-			hql += "and u.username like ? ";
-			list.add("%"+user.getUsername()+"%");
+			list.add("%" + user.getSname() + "%");
 		}
 
+		if (StringUtils.isNotBlank(user.getUsername())) {
+			hql += "and u.username like ? ";
+			list.add("%" + user.getUsername() + "%");
+		}
 
 		Page page = userService.pagedQuery(hql, pageIndex, Page.defaultPageSize, list.toArray());
 

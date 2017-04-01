@@ -137,6 +137,12 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	}
 
 	@Override
+	public Page pagedQuery(String hql, int pageNo, int pageSize, Object[] propertyArr, Object[] propertyMatetype,
+			Object[] propertyVal) {
+		return hdao.pagedQuery(hql, pageNo, pageSize, propertyArr,  propertyMatetype, propertyVal);
+	}
+
+	@Override
 	public Page dataQuery(String hql, int start, int pageSize, Object... values) {
 		return hdao.dataQuery(hql, start, pageSize, values);
 	}

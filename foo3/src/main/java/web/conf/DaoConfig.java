@@ -14,6 +14,7 @@ import com.hibernate.dao.generic.HibernateGenericDao;
 
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.entity.City;
+import web.entity.ExchangeGroup;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
@@ -21,6 +22,7 @@ import web.entity.Menu;
 import web.entity.Person;
 import web.entity.User;
 import web.service.ICityService;
+import web.service.IExchangeGroupService;
 import web.service.IGoodsCategoryService;
 import web.service.IGoodsPicService;
 import web.service.IGoodsService;
@@ -28,6 +30,7 @@ import web.service.IMenuService;
 import web.service.IPersonService;
 import web.service.IUserService;
 import web.service.impl.CityService;
+import web.service.impl.ExchangeGroupService;
 import web.service.impl.GoodsCategoryService;
 import web.service.impl.GoodsPicService;
 import web.service.impl.GoodsService;
@@ -106,7 +109,16 @@ public class DaoConfig {
 		return new GoodsPicService(GoodsPic.class, (HibernateEntityDao<GoodsPic, Serializable>) getHibernateEntityDao(),
 				getHibernateGenericDao());
 	}
-	
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IExchangeGroupService<ExchangeGroup, Serializable> getExchangeGroupService() {
+		logger.info("IExchangeGroupService  created");
+		return new ExchangeGroupService(ExchangeGroup.class,
+				(HibernateEntityDao<ExchangeGroup, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
+
 	@SuppressWarnings("unchecked")
 	@Bean
 	@Lazy

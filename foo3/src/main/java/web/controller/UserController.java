@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import web.dto.UserDto;
 import web.entity.User;
 import web.service.IUserService;
+import web.util.MD5Tools;
 import web.util.SessionUtil;
 
 @Controller
@@ -37,13 +38,16 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
-	public ModelAndView userLogin(User user,HttpServletRequest request) {
+	public ModelAndView userLogin(User user, HttpServletRequest request) {
+		user.setPassword(MD5Tools.MD5(user.getPassword()));
 		User returnUser = userService.queryBeanByHql(user);
 		if (returnUser != null) {
-			SessionUtil.setAttribute(request, User.SESSION_USER,returnUser);
+			SessionUtil.setAttribute(request, User.SESSION_USER, returnUser);
 			return new ModelAndView("user/index");
 		} else {
-			return new ModelAndView(getPath("userLogin"));
+			ModelAndView modelAndView = new ModelAndView(getPath("userLogin"));
+			modelAndView.addObject("msg", "用户名或密码错误");
+			return modelAndView;
 		}
 	}
 
@@ -65,9 +69,12 @@ public class UserController {
 	public ModelAndView reg(User user) {
 		boolean unique = userService.isUnique(user, "username");
 		if (unique) {
+			user.setPassword(MD5Tools.MD5(user.getPassword()));
 			userService.save(user);
 		} else {
-			logger.info("用户名称重复");
+			ModelAndView modelAndView = new ModelAndView(getPath("reg"));
+			modelAndView.addObject("msg", "用户名称重复");
+			return modelAndView;
 		}
 		return new ModelAndView(getPath("regSuccess"));
 	}
@@ -81,17 +88,24 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "getPassword", method = RequestMethod.POST)
-	public String getPassword(UserDto userParam) {
+	public ModelAndView getPassword(UserDto userParam) {
 		if (!userParam.getNewPassword().equals(userParam.getReNewPassword())) {
+			ModelAndView modelAndView = new ModelAndView(getPath("getPassword"));
 			logger.error("两次输入的新密码不一至!");
-			return null;
+			modelAndView.addObject("msg", "两次输入的新密码不一至");
+			return modelAndView;
 		}
 		User user = userService.get(userParam.getId());
 		if (userParam.getPasswordanswer().equals(user.getPasswordanswer())) {
-			user.setPassword(userParam.getNewPassword());
+			user.setPassword(MD5Tools.MD5(userParam.getNewPassword()));
 			userService.update(user);
+		} else {
+			ModelAndView modelAndView = new ModelAndView(getPath("getPassword"));
+			logger.error("答案不正确!");
+			modelAndView.addObject("msg", "答案不正确");
+			return modelAndView;
 		}
-		return getPath("getPasswordSuccess");
+		return new ModelAndView(getPath("userLogin"));
 	}
 
 	private String getPath(String path) {

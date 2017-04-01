@@ -26,8 +26,11 @@ public class Goods implements Serializable {
 	private String goodsCategorySubCode;
 	@Column(name = "t_goodscol")
 	private String goodscol;
-//	@Column(name = "user_id")
-//	private int userId;
+	@Column(name = "user_id")
+	private int userId;
+
+	@Column(name = "title_url")
+	private String titleUrl;
 
 	@Transient
 	private String goodsCategoryName;
@@ -108,12 +111,20 @@ public class Goods implements Serializable {
 		this.goodsCategorySubName = goodsCategorySubName;
 	}
 
-//	public int getUserId() {
-//		return userId;
-//	}
-//
-//	public void setUserId(int userId) {
-//		this.userId = userId;
-//	}
+	public String getTitleUrl() {
+		return titleUrl;
+	}
+
+	public void setTitleUrl(String titleUrl) {
+		this.titleUrl = titleUrl;
+	}
+
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
 
 }

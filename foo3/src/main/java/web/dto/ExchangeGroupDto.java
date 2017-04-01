@@ -1,27 +1,21 @@
-package web.entity;
+package web.dto;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import java.util.List;
 
 @SuppressWarnings("serial")
-@Entity
-@Table(name = "t_exchange_group")
-public class ExchangeGroup extends BaseEntity {
+public class ExchangeGroupDto implements Serializable {
+	private int id;
 	private String name;
 	private String total;
-	@Column(name = "t_user_id")
 	private String userId;
 	private String intention;
 	private int state;
 	private Timestamp createtime;
 	private Timestamp updatetime;
 
-	public ExchangeGroup() {
-		this.updatetime = new Timestamp(System.currentTimeMillis());
-	}
+	private List<GoodsDto> goodsDto;
 
 	public int getState() {
 		return state;
@@ -77,6 +71,22 @@ public class ExchangeGroup extends BaseEntity {
 
 	public void setUpdatetime(Timestamp updatetime) {
 		this.updatetime = updatetime;
+	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public List<GoodsDto> getGoodsDto() {
+		return goodsDto;
+	}
+
+	public void setGoodsDto(List<GoodsDto> goodsDto) {
+		this.goodsDto = goodsDto;
 	}
 
 }

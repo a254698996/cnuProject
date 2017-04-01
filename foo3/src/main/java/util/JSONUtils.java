@@ -1,11 +1,14 @@
 package util;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.codehaus.jackson.type.TypeReference;
 
@@ -24,8 +27,13 @@ public class JSONUtils {
 	/**
 	 * javaBean,list,array convert to json string
 	 */
-	public static String obj2json(Object obj) throws Exception {
-		return objectMapper.writeValueAsString(obj);
+	public static String obj2json(Object obj)   {
+		try {
+			return objectMapper.writeValueAsString(obj);
+		} catch ( Exception e) {
+			e.printStackTrace();
+			return null;
+		}  
 	}
 
 	/**

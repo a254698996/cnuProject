@@ -58,7 +58,7 @@ public class GoodsController {
 
 	@RequestMapping(value = "showGoods", method = RequestMethod.GET)
 	public ModelAndView showGoods(Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,HttpServletRequest request) {
-		Page page = goodsService.getList(pageIndex, 100, null, _SCH_name);
+		Page page = goodsService.getList(pageIndex, 100, null, _SCH_name,null);
 		ModelAndView mav = new ModelAndView(getPath("showGoods"));
 		mav.getModel().put("steps", page.getPageSize());
 		mav.getModel().put("pageIndex", pageIndex);
@@ -90,7 +90,7 @@ public class GoodsController {
 //		User currUser = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
  
 //		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, currUser.getId()+"", _SCH_name);
-		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, null, _SCH_name);
+		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, null, _SCH_name,null);
 		 
 		ModelAndView mav = new ModelAndView(getPath("goodsList"));
 		mav.getModelMap().put("goodsList", page.getList());
@@ -169,13 +169,21 @@ public class GoodsController {
 	@RequestMapping(value = "addGoods", method = RequestMethod.POST)
 	public ModelAndView addGoods(Goods goods, Integer[] goodsPicIds) {
 		String goodsId = UUID.randomUUID().toString();
+		
+		if(goodsPicIds!=null &&goodsPicIds.length>0){
+			for (Integer goodsPicId : goodsPicIds) {
+				GoodsPic goodsPic = goodsPicService.get(goodsPicId);
+				goodsPic.setGoodsId(goodsId);
+				goodsPicService.update(goodsPic);
+				if(StringUtils.isBlank(goods.getTitleUrl())){
+					goods.setTitleUrl(goodsPic.getUrl());
+				}
+			}
+		}
+		
 		goods.setId(goodsId);
 		goodsService.save(goods);
-		for (Integer goodsPicId : goodsPicIds) {
-			GoodsPic goodsPic = goodsPicService.get(goodsPicId);
-			goodsPic.setGoodsId(goodsId);
-			goodsPicService.update(goodsPic);
-		}
+		
 		return new ModelAndView("redirect:/goods/list");
 	}
 
@@ -246,7 +254,6 @@ public class GoodsController {
 
 	@RequestMapping(value = "updateGoods", method = RequestMethod.POST)
 	public ModelAndView updateGoods(Goods goods, Integer[] goodsPicIds) {
-		goodsService.update(goods);
 		if (goodsPicIds != null && goodsPicIds.length > 0) {
 			for (Integer goodsPicId : goodsPicIds) {
 				GoodsPic goodsPic = goodsPicService.get(goodsPicId);
@@ -254,6 +261,12 @@ public class GoodsController {
 				goodsPicService.update(goodsPic);
 			}
 		}
+		List<GoodsPic> goodsPicList = goodsPicService.findBy("goodsId", goods.getId(), "id", true);
+		if (goodsPicList != null && !goodsPicList.isEmpty()) {
+			goods.setTitleUrl(goodsPicList.get(0).getUrl());
+		}
+		goodsService.update(goods);
+		
 		return new ModelAndView("redirect:/goods/list");
 	}
 
