@@ -32,7 +32,7 @@
      				    	 return ;
      				},
      				error:function(e){
-     					 alert(e);
+     					 alert("有错误... "+e);
      				}
      			});
      		});

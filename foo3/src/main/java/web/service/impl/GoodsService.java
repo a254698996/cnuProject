@@ -40,7 +40,7 @@ public class GoodsService extends ServiceImpl<Goods, Serializable> implements IG
 			paramList.add("%" + _SCH_name + "%");
 		}
 
-		if (userId != 0) {
+		if (userId !=null) {
 			hql.append(" and  g.userId = ?");
 			paramList.add(userId);
 		}

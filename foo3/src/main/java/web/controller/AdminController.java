@@ -1,10 +1,12 @@
 package web.controller;
 
 import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +33,7 @@ import web.service.IMenuService;
 import web.service.IUserService;
 
 @Controller
+@RequiresRoles("admin")
 @RequestMapping("/admin")
 public class AdminController {
 

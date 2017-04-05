@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.mgt.SecurityManager;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,7 +46,9 @@ public class UserController {
 		User returnUser = userService.queryBeanByHql(user);
 		if (returnUser != null) {
 			SessionUtil.setAttribute(request, User.SESSION_USER, returnUser);
-			return new ModelAndView("user/index");
+//			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(), MD5Tools.MD5(user.getPassword()));
+//			SecurityUtils.getSubject().
+  			return new ModelAndView("user/index");
 		} else {
 			ModelAndView modelAndView = new ModelAndView(getPath("userLogin"));
 			modelAndView.addObject("msg", "用户名或密码错误");

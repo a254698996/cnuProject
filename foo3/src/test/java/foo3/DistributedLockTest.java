@@ -8,28 +8,30 @@ import java.util.concurrent.Executors;
  *
  */
 public class DistributedLockTest {
-
 	public static void main(String[] args) throws InterruptedException {
+		DistributedLock lock = new DistributedLock("127.0.0.1:2181", "lock");
 		ExecutorService newFixedThreadPool = Executors.newFixedThreadPool(100);
 		Person person = new Person();
 		for (int i = 0; i < 5; i++) {
-			newFixedThreadPool.execute(new AddMoney(person, 1));
+			newFixedThreadPool.execute(new AddMoney(person, 1, lock));
 		}
 
 		Thread.sleep(5000);
 
 		newFixedThreadPool.shutdown();
-		System.out.println("person.getMoney():"+person.getMoney());
+		System.out.println("person.getMoney():" + person.getMoney());
 	}
 }
 
 class AddMoney implements Runnable {
 	private Person p;
 	int money;
+	DistributedLock lock;
 
-	public AddMoney(Person p, int money) {
+	public AddMoney(Person p, int money, DistributedLock lock) {
 		this.p = p;
 		this.money = money;
+		this.lock = lock;
 	}
 
 	@Override
@@ -38,7 +40,6 @@ class AddMoney implements Runnable {
 		// p.setMoney(p.getMoney() + money);
 		// }
 
-		DistributedLock lock = new DistributedLock("127.0.0.1:2181", "lock");
 		lock.lock();
 		// 共享资源
 		p.setMoney(p.getMoney() + money);

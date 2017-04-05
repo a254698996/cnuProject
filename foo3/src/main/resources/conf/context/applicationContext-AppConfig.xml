@@ -25,6 +25,6 @@
 	<import resource="classpath:conf/context/applicationContext-DaoConfig.xml" />
 	<import resource="classpath:conf/context/applicationContext-dubbo.xml" />
 	<import resource="classpath:conf/context/applicationContext-hibernate.xml" />
-
+	<import resource="classpath:conf/context/applicationContext-shiro.xml" />
 
 </beans>
