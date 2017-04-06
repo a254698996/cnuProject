@@ -29,12 +29,15 @@
 			in chain -->
 		<!-- definitions, but you can perform instance overrides or name aliases 
 			here if you like: -->
-		<!-- <property name="filters"> <util:map> <entry key="anAlias" value-ref="someFilter"/> 
-			</util:map> </property> -->
+<!-- 	 	 <property name="filters">  -->
+<!-- 	  			<util:map>  -->
+<!-- 	  					<entry key="anAlias" value-ref="someFilter"/>  -->
+<!-- 				</util:map> -->
+<!-- 		 </property>   -->
 		<property name="filterChainDefinitions">
 			<value>
 <!-- 				# some example chain definitions: -->
-				/admin/** = authc, roles[admin]
+<!-- 				/admin/** = authc, roles[admin] -->
 <!-- 				/docs/** = authc, perms[document:read] -->
 <!-- 				/** = authc -->
 <!-- 				# more URL-to-FilterChain definitions here -->

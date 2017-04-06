@@ -21,8 +21,12 @@ import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
 import web.entity.GoodsScore;
 import web.entity.Menu;
+import web.entity.Permission;
 import web.entity.Person;
+import web.entity.Role;
+import web.entity.RolePermission;
 import web.entity.User;
+import web.entity.UserRole;
 import web.service.ICityService;
 import web.service.IExchangeGroupService;
 import web.service.IExchangeOrderService;
@@ -31,7 +35,11 @@ import web.service.IGoodsPicService;
 import web.service.IGoodsScoreService;
 import web.service.IGoodsService;
 import web.service.IMenuService;
+import web.service.IPermissionService;
 import web.service.IPersonService;
+import web.service.IRolePermissionService;
+import web.service.IRoleService;
+import web.service.IUserRoleService;
 import web.service.IUserService;
 import web.service.impl.CityService;
 import web.service.impl.ExchangeGroupService;
@@ -41,7 +49,11 @@ import web.service.impl.GoodsPicService;
 import web.service.impl.GoodsScoreService;
 import web.service.impl.GoodsService;
 import web.service.impl.MenuService;
+import web.service.impl.PermissionService;
 import web.service.impl.PersonService;
+import web.service.impl.RolePermissionService;
+import web.service.impl.RoleService;
+import web.service.impl.UserRoleService;
 import web.service.impl.UserService;
 
 @Configuration
@@ -150,5 +162,41 @@ public class DaoConfig {
 		logger.info("IExchangeOrderService  created");
 		return new ExchangeOrderService(ExchangeOrder.class,
 				(HibernateEntityDao<ExchangeOrder, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IRoleService<Role, Serializable> getRoleService() {
+		logger.info("IRoleService  created");
+		return new RoleService(Role.class, (HibernateEntityDao<Role, Serializable>) getHibernateEntityDao(),
+				getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IPermissionService<Permission, Serializable> getPermissionService() {
+		logger.info("IPermissionService  created");
+		return new PermissionService(Permission.class,
+				(HibernateEntityDao<Permission, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IUserRoleService<UserRole, Serializable> getUserRoleService() {
+		logger.info("IUserRoleService  created");
+		return new UserRoleService(UserRole.class, (HibernateEntityDao<UserRole, Serializable>) getHibernateEntityDao(),
+				getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public IRolePermissionService<RolePermission, Serializable> getRolePermissionService() {
+		logger.info("IRolePermissionService  created");
+		return new RolePermissionService(RolePermission.class,
+				(HibernateEntityDao<RolePermission, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
 	}
 }

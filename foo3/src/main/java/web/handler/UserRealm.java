@@ -1,5 +1,7 @@
 package web.handler;
 
+import javax.annotation.Resource;
+
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.AuthenticationInfo;
 import org.apache.shiro.authc.AuthenticationToken;
@@ -16,11 +18,11 @@ import web.entity.User;
 import web.service.impl.UserService;
 
 //  http://jinnianshilongnian.iteye.com/blog/2022468
-
+//@Resource(name="myRealm")
 //public class UserRealm extends AuthorizingRealm {
- 
+// 
 //	private UserService userService = new UserServiceImpl();
-
+//
 //	protected AuthorizationInfo doGetAuthorizationInfo(PrincipalCollection principals) {
 //		String username = (String) principals.getPrimaryPrincipal();
 //		SimpleAuthorizationInfo authorizationInfo = new SimpleAuthorizationInfo();
@@ -38,6 +40,7 @@ import web.service.impl.UserService;
 //		if (Boolean.TRUE.equals(user.getLocked())) {
 //			throw new LockedAccountException(); // 帐号锁定
 //		}
+//		new SimpleAuthenticationInfo();
 //		// 交给AuthenticatingRealm使用CredentialsMatcher进行密码匹配，如果觉得人家的不好可以在此判断或自定义实现
 //		SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(user.getUsername(), // 用户名
 //				user.getPassword(), // 密码

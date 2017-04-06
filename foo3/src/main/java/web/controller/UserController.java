@@ -1,12 +1,10 @@
 package web.controller;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.mgt.SecurityManager;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,7 +17,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import web.dto.UserDto;
+import web.entity.Role;
 import web.entity.User;
+import web.entity.UserRole;
+import web.service.IRoleService;
+import web.service.IUserRoleService;
 import web.service.IUserService;
 import web.util.MD5Tools;
 import web.util.SessionUtil;
@@ -35,6 +37,14 @@ public class UserController {
 	@Lazy
 	IUserService<User, Serializable> userService;
 
+	@Autowired
+	@Lazy
+	IRoleService<Role, Serializable> roleService;
+
+	@Autowired
+	@Lazy
+	IUserRoleService<UserRole, Serializable> userRoleService;
+	
 	@RequestMapping(value = "toLogin", method = RequestMethod.GET)
 	public String toLogin() {
 		return getPath("userLogin");
@@ -76,6 +86,15 @@ public class UserController {
 		if (unique) {
 			user.setPassword(MD5Tools.MD5(user.getPassword()));
 			userService.save(user);
+			
+			List<Role> roleList = roleService.findBy("name", "user");
+			if(roleList!=null&&!roleList.isEmpty()){
+				Role role = roleList.get(0);
+				UserRole userRole = new UserRole();
+				userRole.setRoleId(String.valueOf( role.getId()));
+				userRole.setUserId(String.valueOf(user.getId()));
+				userRoleService.save(userRole);
+			}
 		} else {
 			ModelAndView modelAndView = new ModelAndView(getPath("reg"));
 			modelAndView.addObject("msg", "用户名称重复");

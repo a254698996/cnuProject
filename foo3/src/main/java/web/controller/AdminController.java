@@ -1,7 +1,6 @@
 package web.controller;
 
 import java.io.Serializable;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,11 +26,15 @@ import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
 import web.entity.Menu;
+import web.entity.Role;
 import web.entity.User;
+import web.entity.UserRole;
 import web.service.IGoodsCategoryService;
 import web.service.IGoodsPicService;
 import web.service.IGoodsService;
 import web.service.IMenuService;
+import web.service.IRoleService;
+import web.service.IUserRoleService;
 import web.service.IUserService;
 
 @Controller
@@ -43,6 +48,14 @@ public class AdminController {
 	@Autowired
 	@Lazy
 	IUserService<User, Serializable> userService;
+
+	@Autowired
+	@Lazy
+	IRoleService<Role, Serializable> roleService;
+
+	@Autowired
+	@Lazy
+	IUserRoleService<UserRole, Serializable> userRoleService;
 
 	@Autowired
 	@Lazy
@@ -94,10 +107,38 @@ public class AdminController {
 
 		ModelAndView mav = new ModelAndView(getPath("userList"));
 		mav.getModelMap().put("userList", page.getList());
+		mav.getModelMap().put("roleList", getRoleList());
 		mav.getModel().put("steps", page.getPageSize());
 		mav.getModel().put("pageIndex", pageIndex);
 		mav.getModel().put("count", page.getTotalCount());
 		return mav;
+	}
+
+	@SuppressWarnings("unchecked")
+	private List<Role> getRoleList() {
+		return roleService.find("from Role ");
+	}
+
+	@RequestMapping(value = "updateRole/{id}", method = RequestMethod.POST)
+	public ResponseEntity<Integer> updateRole(@PathVariable String id, String roleIds) {
+		List<UserRole> userRoleList = userRoleService.findBy("userId", id);
+		userRoleService.removeAll(userRoleList);
+		if (StringUtils.isNotBlank(roleIds)) {
+			String[] split = roleIds.split(",");
+			for (String roleId : split) {
+				UserRole userRole = new UserRole();
+				userRole.setRoleId(roleId);
+				userRole.setUserId(String.valueOf(id));
+				userRoleService.save(userRole);
+			}
+		}
+		return new ResponseEntity<Integer>(1, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "getUserRole/{userId}", method = RequestMethod.GET)
+	public ResponseEntity<List<UserRole>> getUserRole(@PathVariable String userId) {
+		List<UserRole> userRoleList = userRoleService.findBy("userId", userId);
+		return new ResponseEntity<List<UserRole>>(userRoleList, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "changeUserState/{id}", method = RequestMethod.GET)
