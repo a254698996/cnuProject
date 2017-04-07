@@ -63,6 +63,28 @@
  		       		}
  			});
  		}
+ 		function updatePermission(roleId){
+ 			var permissions=new Array();
+ 			$("input[name='permission_"+roleId+"']:checked").each(function(index,param){
+ 				permissions.push($(this).val());
+ 			});
+ 			$.ajax({ url: "${pageContext.request.contextPath}/permission/updatePermission/"+roleId,
+			     data:"permissions="+permissions,
+			     type:"POST",
+			     dataType:"text",
+			     async:false,
+				 success: function(data){
+					 if((data-0) == 1 ){
+						 alert("更新权限成功");
+					 }else{
+						 alert("更新权限失败");
+					 }
+	             },
+	       		error: function(e){
+			        	alert(" ajax 更新 权限 失败 "+e);
+	       		}
+		});
+ 		}
      </script>
   </head>
 <body> 
@@ -83,20 +105,21 @@
 					<td>${role.name}</td>
                     <td>${role.remark}</td>
                     <td>
-                      <c:forEach items="${pSet }" var="p">
-                     	 <c:choose>
-	                      <c:when test="${p.roleId eq role.id}">
-                     	    	<input type="checkbox" name="roleIds" checked="checked"  value="${p.id}">${p.name }&nbsp;&nbsp;
-	                      </c:when>
-	                      <c:otherwise>
-	                     	    <input type="checkbox" name="roleIds"   value="${p.id}">${p.name }&nbsp;&nbsp;
-	                      </c:otherwise>  
-	                      </c:choose>
+                     <c:forEach items="${pAllSet }" var="pAll">
+	                       	 <input type="checkbox"  name="permission_${role.id}"  value="${pAll.id}"
+	                       	     <c:forEach items="${rpSet }" var="rp">
+					                      <c:if test="${rp.roleId eq role.id}">
+					                           <c:if test="${rp.permissionId eq pAll.id}">
+					                      			checked="checked"
+					                           </c:if>
+					                      </c:if>
+				                 </c:forEach>
+	                       	   >${pAll.remark }&nbsp;&nbsp;
                        </c:forEach>
                     </td>
 					<td>
-						<button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${user.id}')">禁用</button>
-						<button type="button" class="btn btn-info btn-xs" onclick="addRole('${user.id}')">更新角色</button>
+						<button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${role.id}')">禁用</button>
+						<button type="button" class="btn btn-info btn-xs" onclick="updatePermission('${role.id}')">更新权限</button>
 					</td>
 				</tr>
 			</c:forEach>

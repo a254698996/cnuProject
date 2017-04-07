@@ -8,11 +8,15 @@ import java.util.Set;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,27 +68,46 @@ public class PermissionController {
 
 		Page page = userService.pagedQuery(hql, pageIndex, Page.defaultPageSize, list.toArray());
 
-		hql = "select p, rp from Permission p ,RolePermission rp where p.id=rp.permissionId ";
+		hql = "select p, rp from Permission p ,RolePermission rp";
 		Page pagedQuery = rolePermissionService.pagedQuery(hql, pageIndex, Page.defaultPageSize);
-		Set<Permission> pSet = new HashSet<Permission>();
+		Set<RolePermission> rpSet = new HashSet<RolePermission>();
+		Set<Permission> pAllSet = new HashSet<Permission>();
+		
 		if (pagedQuery.getList() != null && !pagedQuery.getList().isEmpty()) {
 			List<Object> list2 = pagedQuery.getList();
 			for (Object object : list2) {
 				Object[] objArr = (Object[]) object;
-				Permission p = (Permission) objArr[0];
+				Permission permission = (Permission) objArr[0];
 				RolePermission rp = (RolePermission) objArr[1];
-				p.setRoleId(rp.getRoleId());
-				pSet.add(p);
-			}
+				rpSet.add(rp); 
+				pAllSet.add(permission);
+			} 
 		}
 
 		ModelAndView mav = new ModelAndView(getPath("roleList"));
 		mav.getModelMap().put("roleList", page.getList());
-		mav.getModelMap().put("pSet", pSet);
+		mav.getModelMap().put("rpSet", rpSet);
+		mav.getModelMap().put("pAllSet", pAllSet);
 		mav.getModel().put("steps", page.getPageSize());
 		mav.getModel().put("pageIndex", pageIndex);
 		mav.getModel().put("count", page.getTotalCount());
 		return mav;
+	}
+	
+	@RequestMapping(value = "updatePermission/{roleId}", method = RequestMethod.POST)
+	public ResponseEntity<Integer> updatePermission(@PathVariable String roleId, String permissions) {
+		 List<RolePermission> oldRolePermission = rolePermissionService.findBy("roleId", roleId);
+		 rolePermissionService.removeAll(oldRolePermission);
+		if (StringUtils.isNotBlank(permissions)) {
+			String[] split = permissions.split(",");
+			for (String permission : split) {
+				 RolePermission rolePermission = new RolePermission();
+				 rolePermission.setRoleId(roleId);
+				 rolePermission.setPermissionId(permission);
+				 rolePermissionService.save(rolePermission);
+			}
+		}
+		return new ResponseEntity<Integer>(1, HttpStatus.OK);
 	}
 
 	@RequestMapping(value = "toAddRole", method = RequestMethod.GET)

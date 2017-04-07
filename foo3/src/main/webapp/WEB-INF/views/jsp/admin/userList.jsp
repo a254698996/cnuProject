@@ -25,21 +25,22 @@
  		}
  		function addRole(userId) {
  			$("input[name='currUserId']").val(userId);
+ 			$("input[type='checkbox']").each(function(index,param){
+				 $(this).prop('checked',false);
+			});
  			$.ajax({ url: "${pageContext.request.contextPath}/admin/getUserRole/"+userId,
 			     type:"GET",
 			     async:false,
 			     dataType:"json",
 				 success: function(data){
-					
 					 for (var i = 0; i < data.length; i++) {
-// 						 alert("userId "+data[i].userId+"  roleId "+data[i].roleId);
 					     var tempUserId=data[i].userId;
 					     var tempRoleId=data[i].roleId;
-			 			$("input[name='roleIds']").each(function(index,param){
+			 			$("input[type='checkbox']").each(function(index,param){
 			 				if($(this).val() == tempRoleId){
-			 					$(this).attr("checked","checked");
+			 					 alert("  比较值  tempUserId "+tempUserId+"  tempRoleId "+tempRoleId+"   $(this).val()  "+$(this).val());
+			 					 $(this).prop('checked',true);
 			 				}
-// 		 					roleIds.push($(this).val());
 		 				});
 					 }
 	             },
@@ -53,7 +54,6 @@
  			var userId=$("input[name='currUserId']").val();
  			var roleIds=new Array();
  			$("input[name='roleIds']:checked").each(function(index,param){
-//  				alert(index+"  "+$(this).val());
  				roleIds.push($(this).val());
  			});
  			$.ajax({ url: "${pageContext.request.contextPath}/admin/updateRole/"+userId,
@@ -136,7 +136,7 @@
                      	 <c:forEach items="${roleList }" var="role">
                      	    <input type="checkbox" name="roleIds"   value="${role.id}">${role.name }&nbsp;&nbsp;
                      	 </c:forEach>
-                     	 <input type="hidden" name="currUserId" />
+                     	 <input type="text" name="currUserId" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" onclick="submitUpdateRole();"  data-dismiss="modal">保存</button>
