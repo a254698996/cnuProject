@@ -1,14 +1,17 @@
 package web.entity;
 
+import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "t_user")
 public class User extends BaseEntity {
 	public final static String SESSION_USER = "user";
-	
+
 	private String nickname;
 	private String username;
 	private String password;
@@ -20,6 +23,12 @@ public class User extends BaseEntity {
 	private String passwordask;
 	private String passwordanswer;
 	private int state;
+
+	@Transient
+	private Set<String> roleSet;
+
+	@Transient
+	private Set<String> permissionSet;
 
 	public int getState() {
 		return state;
@@ -107,6 +116,22 @@ public class User extends BaseEntity {
 
 	public void setPasswordanswer(String passwordanswer) {
 		this.passwordanswer = passwordanswer;
+	}
+
+	public Set<String> getRoleSet() {
+		return roleSet;
+	}
+
+	public void setRoleSet(Set<String> roleSet) {
+		this.roleSet = roleSet;
+	}
+
+	public Set<String> getPermissionSet() {
+		return permissionSet;
+	}
+
+	public void setPermissionSet(Set<String> permissionSet) {
+		this.permissionSet = permissionSet;
 	}
 
 }

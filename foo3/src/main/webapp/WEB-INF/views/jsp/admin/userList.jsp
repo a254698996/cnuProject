@@ -38,7 +38,7 @@
 					     var tempRoleId=data[i].roleId;
 			 			$("input[type='checkbox']").each(function(index,param){
 			 				if($(this).val() == tempRoleId){
-			 					 alert("  比较值  tempUserId "+tempUserId+"  tempRoleId "+tempRoleId+"   $(this).val()  "+$(this).val());
+// 			 					 alert("  比较值  tempUserId "+tempUserId+"  tempRoleId "+tempRoleId+"   $(this).val()  "+$(this).val());
 			 					 $(this).prop('checked',true);
 			 				}
 		 				});
@@ -134,9 +134,9 @@
             </div>
             <div class="modal-body">
                      	 <c:forEach items="${roleList }" var="role">
-                     	    <input type="checkbox" name="roleIds"   value="${role.id}">${role.name }&nbsp;&nbsp;
+                     	    <input type="checkbox" name="roleIds"   value="${role.id}">${role.remark }&nbsp;&nbsp;
                      	 </c:forEach>
-                     	 <input type="text" name="currUserId" />
+                     	 <input type="hidden" name="currUserId" />
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" onclick="submitUpdateRole();"  data-dismiss="modal">保存</button>

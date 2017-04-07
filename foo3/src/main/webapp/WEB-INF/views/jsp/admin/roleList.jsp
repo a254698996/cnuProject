@@ -2,6 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="tag" uri="/WEB-INF/taglibs/paginationTaglib.tld"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<%@ taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>  
 <c:set var="ctx" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html>
   <head>
@@ -89,7 +90,15 @@
   </head>
 <body> 
 	<div class="table-responsive">
-<!--      	<button type="button" class="btn btn-primary" id="openAccBtn">开户</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
+		<shiro:user> 
+     		<button type="button" class="btn btn-primary" id="openAccBtn">开户</button>&nbsp;&nbsp;&nbsp;&nbsp;
+     	</shiro:user>
+<shiro:hasRole name="admin">
+	     	<button type="button" class="btn btn-primary" id="openAccBtn">ddd</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	     	<button type="button" class="btn btn-primary" id="openAccBtn">xxxx</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	     	<button type="button" class="btn btn-primary" id="openAccBtn">ssss</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	     	<button type="button" class="btn btn-primary" id="openAccBtn">33333</button>&nbsp;&nbsp;&nbsp;&nbsp;
+ </shiro:hasRole>
        <table class="table  table-hover table-bordered">
          <thead>
            <tr>

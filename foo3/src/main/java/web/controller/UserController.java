@@ -5,6 +5,9 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.UsernamePasswordToken;
 import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +27,6 @@ import web.service.IRoleService;
 import web.service.IUserRoleService;
 import web.service.IUserService;
 import web.util.MD5Tools;
-import web.util.SessionUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -44,7 +46,7 @@ public class UserController {
 	@Autowired
 	@Lazy
 	IUserRoleService<UserRole, Serializable> userRoleService;
-	
+
 	@RequestMapping(value = "toLogin", method = RequestMethod.GET)
 	public String toLogin() {
 		return getPath("userLogin");
@@ -52,18 +54,20 @@ public class UserController {
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
 	public ModelAndView userLogin(User user, HttpServletRequest request) {
-		user.setPassword(MD5Tools.MD5(user.getPassword()));
-		User returnUser = userService.queryBeanByHql(user);
-		if (returnUser != null) {
-			SessionUtil.setAttribute(request, User.SESSION_USER, returnUser);
-//			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(), MD5Tools.MD5(user.getPassword()));
-//			SecurityUtils.getSubject().
-  			return new ModelAndView("user/index");
-		} else {
+		// User returnUser = userService.getUserAllInfo(user);
+		// if (returnUser != null) {
+		// SessionUtil.setAttribute(request, User.SESSION_USER, returnUser);
+		try {
+			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(),
+					MD5Tools.MD5(user.getPassword()));
+			SecurityUtils.getSubject().login(usernamePasswordToken);
+		} catch (AuthenticationException e) {
+			e.printStackTrace();
 			ModelAndView modelAndView = new ModelAndView(getPath("userLogin"));
 			modelAndView.addObject("msg", "用户名或密码错误");
 			return modelAndView;
 		}
+		return new ModelAndView("redirect:/admin/userList");
 	}
 
 	@ResponseBody
@@ -86,12 +90,12 @@ public class UserController {
 		if (unique) {
 			user.setPassword(MD5Tools.MD5(user.getPassword()));
 			userService.save(user);
-			
+
 			List<Role> roleList = roleService.findBy("name", "user");
-			if(roleList!=null&&!roleList.isEmpty()){
+			if (roleList != null && !roleList.isEmpty()) {
 				Role role = roleList.get(0);
 				UserRole userRole = new UserRole();
-				userRole.setRoleId(String.valueOf( role.getId()));
+				userRole.setRoleId(String.valueOf(role.getId()));
 				userRole.setUserId(String.valueOf(user.getId()));
 				userRoleService.save(userRole);
 			}
