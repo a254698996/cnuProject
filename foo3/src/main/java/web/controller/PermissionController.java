@@ -69,19 +69,19 @@ public class PermissionController {
 		Page page = userService.pagedQuery(hql, pageIndex, Page.defaultPageSize, list.toArray());
 
 		hql = "select p, rp from Permission p ,RolePermission rp";
-		Page pagedQuery = rolePermissionService.pagedQuery(hql, pageIndex, Page.defaultPageSize);
+		Page pagedQuery = rolePermissionService.pagedQuery(hql, pageIndex, Integer.MAX_VALUE);
 		Set<RolePermission> rpSet = new HashSet<RolePermission>();
 		Set<Permission> pAllSet = new HashSet<Permission>();
-		
+
 		if (pagedQuery.getList() != null && !pagedQuery.getList().isEmpty()) {
 			List<Object> list2 = pagedQuery.getList();
 			for (Object object : list2) {
 				Object[] objArr = (Object[]) object;
 				Permission permission = (Permission) objArr[0];
 				RolePermission rp = (RolePermission) objArr[1];
-				rpSet.add(rp); 
+				rpSet.add(rp);
 				pAllSet.add(permission);
-			} 
+			}
 		}
 
 		ModelAndView mav = new ModelAndView(getPath("roleList"));
@@ -93,18 +93,18 @@ public class PermissionController {
 		mav.getModel().put("count", page.getTotalCount());
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "updatePermission/{roleId}", method = RequestMethod.POST)
 	public ResponseEntity<Integer> updatePermission(@PathVariable String roleId, String permissions) {
-		 List<RolePermission> oldRolePermission = rolePermissionService.findBy("roleId", roleId);
-		 rolePermissionService.removeAll(oldRolePermission);
+		List<RolePermission> oldRolePermission = rolePermissionService.findBy("roleId", roleId);
+		rolePermissionService.removeAll(oldRolePermission);
 		if (StringUtils.isNotBlank(permissions)) {
 			String[] split = permissions.split(",");
 			for (String permission : split) {
-				 RolePermission rolePermission = new RolePermission();
-				 rolePermission.setRoleId(roleId);
-				 rolePermission.setPermissionId(permission);
-				 rolePermissionService.save(rolePermission);
+				RolePermission rolePermission = new RolePermission();
+				rolePermission.setRoleId(roleId);
+				rolePermission.setPermissionId(permission);
+				rolePermissionService.save(rolePermission);
 			}
 		}
 		return new ResponseEntity<Integer>(1, HttpStatus.OK);
@@ -117,11 +117,21 @@ public class PermissionController {
 
 	@RequestMapping(value = "addRole", method = RequestMethod.POST)
 	public ModelAndView addRole(Role role, HttpServletRequest request) {
-		ModelAndView modelAndView = new ModelAndView(getPath("userLogin"));
-		modelAndView.addObject("msg", "用户名或密码错误");
-		return modelAndView;
+		roleService.save(role);
+		return new ModelAndView("redirect:/permission/roleList");
+	}
+	
+	@RequestMapping(value = "toAddPermission", method = RequestMethod.GET)
+	public String toAddPermission() {
+		return getPath("addPermission");
 	}
 
+	@RequestMapping(value = "addPermission", method = RequestMethod.POST)
+	public ModelAndView addPermission(Permission permission, HttpServletRequest request) {
+		permissionService.save(permission);
+		return new ModelAndView("redirect:/permission/roleList");
+	}
+	
 	private String getPath(String path) {
 		return JSP_PATH + path;
 	}

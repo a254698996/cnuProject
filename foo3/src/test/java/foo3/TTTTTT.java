@@ -2,11 +2,14 @@ package foo3;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import util.JSONUtils;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
+import web.entity.RolePermission;
 
 public class TTTTTT {
 
@@ -31,8 +34,26 @@ public class TTTTTT {
 		// System.out.println(object);
 		// }
 
-//		goods();
-		getProperty();
+		// goods();
+//		getProperty();
+		
+		rolePermissionSet();
+	}
+
+	private static void rolePermissionSet() {
+
+		Set<RolePermission> set = new HashSet<>();
+		for (int i = 0; i < 5; i++) {
+			RolePermission rp = new RolePermission();
+			rp.setRoleId((i + 1) + "");
+			rp.setPermissionId((i + 2) + "");
+			rp.setId(i);
+			set.add(rp);
+		}
+		for (RolePermission rolePermission : set) {
+			System.out.println(JSONUtils.obj2json(rolePermission));
+		}
+
 	}
 
 	private static void goods() {
@@ -51,16 +72,16 @@ public class TTTTTT {
 		g.setId("1111");
 		g.setExchangeGroupId("qwe");
 		g.setName("ddd");
-		
+
 		Class<? extends Goods> clazz = g.getClass();
-//		Field[] fields = clazz.getFields();
+		// Field[] fields = clazz.getFields();
 		Field[] fields = clazz.getDeclaredFields();
-		 
+
 		for (Field field : fields) {
 			System.out.println(field);
-			
+
 		}
-		
+
 	}
 
 }

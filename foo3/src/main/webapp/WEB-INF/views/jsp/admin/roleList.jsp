@@ -11,6 +11,14 @@
     <script src="${ctx}/static/bootstrap/js/jquery.js"></script>
     <script src="${ctx}/static/bootstrap/js/bootstrap.min.js"></script>
      <script type="text/javascript">
+    	$(document).ready(function(){
+     		$("#addRoleBtn").click(function(){
+     			document.location="${pageContext.request.contextPath}/permission/toAddRole";
+     		});
+     		$("#addPermissionBtn").click(function(){
+     			document.location="${pageContext.request.contextPath}/permission/toAddPermission";
+     		});
+	    });
  		function changeUserState(id) {
  				document.location="${pageContext.request.contextPath}/admin/changeUserState/"+id;
  		}
@@ -91,13 +99,11 @@
 <body> 
 	<div class="table-responsive">
 		<shiro:user> 
-     		<button type="button" class="btn btn-primary" id="openAccBtn">开户</button>&nbsp;&nbsp;&nbsp;&nbsp;
+<!--      		<button type="button" class="btn btn-primary" id="openAccBtn">开户</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
      	</shiro:user>
 <shiro:hasRole name="admin">
-	     	<button type="button" class="btn btn-primary" id="openAccBtn">ddd</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	     	<button type="button" class="btn btn-primary" id="openAccBtn">xxxx</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	     	<button type="button" class="btn btn-primary" id="openAccBtn">ssss</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	     	<button type="button" class="btn btn-primary" id="openAccBtn">33333</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	     	<button type="button" class="btn btn-primary" id="addRoleBtn">新增角色</button>&nbsp;&nbsp;&nbsp;&nbsp;
+	     	<button type="button" class="btn btn-primary" id="addPermissionBtn">新增权限</button>&nbsp;&nbsp;&nbsp;&nbsp;
  </shiro:hasRole>
        <table class="table  table-hover table-bordered">
          <thead>
@@ -127,7 +133,7 @@
                        </c:forEach>
                     </td>
 					<td>
-						<button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${role.id}')">禁用</button>
+<%-- 						<button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${role.id}')">禁用</button> --%>
 						<button type="button" class="btn btn-info btn-xs" onclick="updatePermission('${role.id}')">更新权限</button>
 					</td>
 				</tr>
@@ -157,5 +163,6 @@
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
+    
 </body>
 </html>
