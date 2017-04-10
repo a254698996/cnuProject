@@ -1,6 +1,7 @@
 package web.controller;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,10 +20,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.hibernate.dao.base.Page;
+
 import web.dto.UserDto;
+import web.entity.GoodsCategory;
+import web.entity.NoticeActivity;
 import web.entity.Role;
 import web.entity.User;
 import web.entity.UserRole;
+import web.service.IGoodsCategoryService;
+import web.service.INoticeActivityService;
 import web.service.IRoleService;
 import web.service.IUserRoleService;
 import web.service.IUserService;
@@ -47,9 +54,33 @@ public class UserController {
 	@Lazy
 	IUserRoleService<UserRole, Serializable> userRoleService;
 
+	@Autowired
+	@Lazy
+	IGoodsCategoryService<GoodsCategory, Serializable> goodsCategoryService;
+
+	@Autowired
+	@Lazy
+	INoticeActivityService<NoticeActivity, Serializable> noticeActivityService;
+
 	@RequestMapping(value = "toLogin", method = RequestMethod.GET)
 	public String toLogin() {
 		return getPath("userLogin");
+	}
+
+	@RequestMapping(value = "userIndex", method = RequestMethod.GET)
+	public ModelAndView userIndex() {
+		ModelAndView modelAndView = new ModelAndView("ggt/index");
+
+		Page goodsCategoryPage = goodsCategoryService.pagedQuery(Page.defaultStartIndex, 7, "code", true);
+		modelAndView.addObject("goodsCategoryList", goodsCategoryPage.getList());
+		
+		Page pagedQuery = noticeActivityService.pagedQuery("from NoticeActivity n where n.type=1 and n.state=1 and n.endDate <= ? ", Page.defaultStartIndex, 3, new Date() );
+		modelAndView.addObject("noticeList", pagedQuery.getList());
+		
+//		pagedQuery = noticeActivityService.pagedQuery("from NoticeActivity n where n.type=2 and state=1 ", Page.defaultStartIndex, 3 );
+//		modelAndView.addObject("activityList", pagedQuery.getList());
+
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
@@ -67,7 +98,8 @@ public class UserController {
 			modelAndView.addObject("msg", "用户名或密码错误");
 			return modelAndView;
 		}
-		return new ModelAndView("redirect:/admin/userList");
+		// return new ModelAndView("redirect:/admin/userList");
+		return new ModelAndView("redirect:/user/userIndex");
 	}
 
 	@ResponseBody

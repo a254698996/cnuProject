@@ -45,6 +45,7 @@
                 /js/** = anon
                 /lib/** = anon
                 /static/** = anon
+                /upload/** = anon
 				/** = authc
 <!-- 				# more URL-to-FilterChain definitions here -->
 			</value>

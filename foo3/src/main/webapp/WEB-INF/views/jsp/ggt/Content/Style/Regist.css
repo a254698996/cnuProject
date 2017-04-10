@@ -1,0 +1,44 @@
+.Ioutside{ width:1002px; height:auto; margin:0px auto; margin-bottom:10px; overflow:hidden;}
+
+/*¶¥²¿ÏÂÃæ*/
+.Ibanner{ width:1002px; height:77px; padding-top:22px;}
+.Ibanner .Ilogo{ width:143px; height:49px; background:url(/App_Themes/UI/Images/Index_r5_c3.jpg) no-repeat; float:left;}
+.Ibanner .Iline{ background:url(../Images/Index_r6_c8.jpg) no-repeat; width:3px; height:41px; float:left; margin:8px 6px 0px 5px;}
+.Ibanner .Ititle  
+{
+    width: 202px;
+    height: 41px;
+    float: left;
+    line-height:41px;
+    font-size:24px;
+    font-family:Î¢ÈíÑÅºÚ;
+    color:#333333;
+    overflow:hidden;
+}
+.Ibanner .Iscan{ width:430px; height:51px; float:left; margin-left:89px;}
+.Ibanner .Iscan .Iscantext{ width:340px; height:34px; background:url(/App_Themes/UI/Images/Index_r5_c13.jpg) no-repeat; float:left; }
+.Ibanner .Iscan .Iscantext .ScanInput{ width:303px;height:25px;margin-left:33px;margin-top:2px;border:none;background:url(/App_Themes/UI/Images/Index_r5_c13.jpg) -30px -2px; line-height:25px;}
+.Ibanner .Iscan .Iscanbutton{ width:340px; height:34px; background:url(/App_Themes/UI/Images/Index_r5_c19.jpg); width:90px; height:34px; float:left; cursor:pointer;}
+.Ibanner .Iscan span{ font-size:12px; color:#646464; float:left; margin-right:7px; margin-top:4px;}
+.Ibanner .Ifbbutton{ width:102px; height:34px; float:left;cursor:pointer; background:url(/App_Themes/UI/Images/Index_r5_c25.jpg); margin-left:20px;}
+
+
+.LogoBehind{  width:202px; height:41px; float:left; font-size:24px; background:url(/App_Themes/UI/Images/1_r2_c4.jpg) 0px 8px;}
+.ReTitle{ width:998px; height:35px; background:url(../images/re_r2_c2.jpg); float:left; margin-left:1px; border:1px solid #DDDDDD;}
+.ReTitle .Retitle{ font-size:14px; color:#666666; font-weight:bold; line-height:33px; width:auto; margin-left:10px; width:200px; float:left;}
+.ReTitle .ReLogin{ font-size:14px; float:right; text-align:right; line-height:33px; margin-right:10px; color:#666666;}
+.ReTitle .ReLogin .Rea{ color:#FF7800;}
+.ReContent{ width:998px; height:auto; border:1px solid #DDDDDD; background:url(/App_Themes/UI/Images/sr_r3_c9.jpg); float:left; margin-left:1px; border-top:none; padding:25px 0px;}
+.ReContent .box
+{
+    width:950px; 
+    height:auto;
+    margin:0px auto;
+}
+.ReCode{cursor:pointer;display: inline-block;width:120px; height:120px;}
+
+.RePro{ width:998px; line-height:23px; font-size:24px; font-weight:bold; text-align:center; color:red; margin-top:80px;}
+.Retz{ width:998px;  font-size:12px; color:#666666; text-align:center; line-height:100px;}
+.Retz a{ font-size:12px; color:#666666; text-align:center; line-height:100px;}
+
+

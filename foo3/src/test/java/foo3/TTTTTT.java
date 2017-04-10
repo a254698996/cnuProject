@@ -1,5 +1,6 @@
 package foo3;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -37,9 +38,24 @@ public class TTTTTT {
 		// goods();
 //		getProperty();
 		
-		rolePermissionSet();
+//		rolePermissionSet();
+		try {
+			System.out.println(dataLenFormat(333323411, 6) );
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
+	
+	public static String dataLenFormat(int i, int len) throws UnsupportedEncodingException {
+		StringBuffer sb = new StringBuffer();
+		sb.append(i);
 
+		while (sb.length() < len) {
+			sb.insert(0, "0");
+		}
+
+		return sb.toString();
+	}
 	private static void rolePermissionSet() {
 
 		Set<RolePermission> set = new HashSet<>();

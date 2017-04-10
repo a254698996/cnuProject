@@ -1,0 +1,31 @@
+﻿.jquery-bitmapcutter-cl, .jquery-bitmapcutter-cr{float:left; margin:5px; height:auto; -moz-user-select:none}
+.jquery-bitmapcutter-holder{border:outset 1px #7d9edb; position:relative; overflow:hidden}
+.jquery-bitmapcutter-holder img{position:relative; left:0; top:0}
+.jquery-bitmapcutter-cutter{position:absolute; border:1px dashed #000; z-index:200; background: url(pointer.png) no-repeat center center #EEF3F7; cursor:move; overflow:hidden}
+.jquery-bitmapcutter-cutter .jquery-bitmapcutter-resize{background:url(resize.gif) no-repeat center center; width:11px; height:11px; cursor:nw-resize; display:block; position:absolute; right:0; bottom:0}
+.jquery-bitmapcutter-opts{height:48px; margin-top:10px; position:relative}
+.jquery-bitmapcutter-opts div{height:16px; display:block; margin-top:2px}
+.jquery-bitmapcutter-opts a{text-decoration:none; display:block; height:22px; width:22px; margin-right:5px; position:relative; border:1px outset Transparent; background:url(suoxiao.png) no-repeat center center}
+.jquery-bitmapcutter-opts .r1c1 a, .jquery-bitmapcutter-opts .r3c1 a{margin:auto}
+.jquery-bitmapcutter-opts .r2c1{text-align:center}
+.jquery-bitmapcutter-opts .r2c1 a{float:left}
+.jquery-bitmapcutter-opts a:hover{border:1px outset #a5b6c8}
+.jquery-bitmapcutter-opts a:active{border:1px inset #a5b6c8}
+.jquery-bitmapcutter-opts a.zoomout{background-position:0 0}
+.jquery-bitmapcutter-opts a.zoomin{ float:right;  width:22px; height:22px; background:url(fangda.png) no-repeat center center}
+.jquery-bitmapcutter-opts a.clockwise{background-position:-65px 0}
+.jquery-bitmapcutter-opts a.original{background-position:-48px 0}
+.jquery-bitmapcutter-opts a.counterclockwise{background-position:-32px 0}
+.jquery-bitmapcutter-opts a.up{background-position:-81px 0}
+.jquery-bitmapcutter-opts a.down{background-position:-96px 0}
+.jquery-bitmapcutter-opts a.left{background-position:-113px 0}
+.jquery-bitmapcutter-opts a.right{background-position:-128px 0}
+.jquery-bitmapcutter-info{text-align:center; font-family:Verdana; font-size:10px; margin-top:15px}
+.jquery-loader{background:url(indicator.gif) no-repeat center center}
+.jquery-bitmapcutter-thumbnail{width:50px; height:50px; border:outset 1px #7d9edb; overflow:hidden; position:relative}
+.jquery-bitmapcutter-thumbnail img{position:relative; left:0; top:0}
+.jquery-bitmapcutter-cr .generate{  background-color:#868686;  color:#FFF;  display:inline-block;  font-family:"NSimSun";  font-size:14px;  height:30px;  line-height:30px;  text-align:center;  text-decoration:none;  width:100px;  margin-top:10px}
+.jquery-bitmapcutter-cr a:hover.generate{background-position:center -19px}
+.jquery-bitmapcutter-cr a:active.generate{background-position:center -38px; color:#dedede}
+.jquery-bitmapcutter-cr .process{font-family:Verdana; font-size:10px; width:150px; margin-top:10px; background:url(indicator.gif) no-repeat left top; text-indent:20px; line-height:18px}
+.jquery-bitmapcutter-newimg{ display:block; border:outset 1px #7d9edb; margin-top:20px}

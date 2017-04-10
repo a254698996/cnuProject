@@ -1,0 +1,25 @@
+.coin-slider {
+	OVERFLOW: hidden; ZOOM: 1; POSITION: relative
+}
+.coin-slider A {
+	BORDER-TOP-STYLE: none; BORDER-RIGHT-STYLE: none; BORDER-LEFT-STYLE: none; TEXT-DECORATION: none; BORDER-BOTTOM-STYLE: none; outline: none
+}
+.cs-buttons {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; FONT-SIZE: 0px; FLOAT: left; PADDING-BOTTOM: 10px; PADDING-TOP: 10px;
+}
+.cs-buttons A {
+	 FLOAT: left; MARGIN-LEFT: 5px; WIDTH: 10px; COLOR: #b8c4cf; TEXT-INDENT: -1000px; HEIGHT: 10px; 
+	/*background:url(../images/baise.jpg) no-repeat;*/
+	  HEIGHT: 10px;
+	 border:1px #e2e2e2 dotted;
+}
+.cs-active { background:url(../images/luse.jpg) no-repeat; border:0px;}
+.cs-title {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-BOTTOM: 10px; WIDTH: 679px; COLOR: #ffffff; PADDING-TOP: 10px; BACKGROUND-COLOR: #000000
+}
+.cs-prev {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-BOTTOM: 0px; COLOR: #ffffff; PADDING-TOP: 0px; BACKGROUND-COLOR: #000000
+}
+.cs-next {
+	PADDING-RIGHT: 10px; PADDING-LEFT: 10px; PADDING-BOTTOM: 0px; COLOR: #ffffff; PADDING-TOP: 0px; BACKGROUND-COLOR: #000000
+}

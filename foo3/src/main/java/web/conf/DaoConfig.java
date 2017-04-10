@@ -21,6 +21,7 @@ import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
 import web.entity.GoodsScore;
 import web.entity.Menu;
+import web.entity.NoticeActivity;
 import web.entity.Permission;
 import web.entity.Person;
 import web.entity.Role;
@@ -35,6 +36,7 @@ import web.service.IGoodsPicService;
 import web.service.IGoodsScoreService;
 import web.service.IGoodsService;
 import web.service.IMenuService;
+import web.service.INoticeActivityService;
 import web.service.IPermissionService;
 import web.service.IPersonService;
 import web.service.IRolePermissionService;
@@ -49,6 +51,7 @@ import web.service.impl.GoodsPicService;
 import web.service.impl.GoodsScoreService;
 import web.service.impl.GoodsService;
 import web.service.impl.MenuService;
+import web.service.impl.NoticeActivityService;
 import web.service.impl.PermissionService;
 import web.service.impl.PersonService;
 import web.service.impl.RolePermissionService;
@@ -198,5 +201,14 @@ public class DaoConfig {
 		logger.info("IRolePermissionService  created");
 		return new RolePermissionService(RolePermission.class,
 				(HibernateEntityDao<RolePermission, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	@Lazy
+	public INoticeActivityService<NoticeActivity, Serializable> getNoticeActivityService() {
+		logger.info("INoticeActivityService  created");
+		return new NoticeActivityService(NoticeActivity.class,
+				(HibernateEntityDao<NoticeActivity, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
 	}
 }

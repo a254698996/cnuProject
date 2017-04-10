@@ -1,0 +1,209 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <title>网站接入 - 新浪微博</title>
+    <link type="text/css" href="http://timg.sjs.sinajs.cn/t35/appstyle/opent/css/oauth/oauth.css?1330394400000"
+          rel="stylesheet"/>
+    <script type="text/javascript" src="http://api.t.sina.com.cn/oauth/js/sso/ssologin.js"></script>
+    <script type="text/javascript" src="http://api.t.sina.com.cn/oauth/js/oauthSSO.js"></script>
+    <script type="text/javascript">
+
+        function submitForm() {
+            if (document.getElementById("regagreementCheckbox").checked) {
+                if (document.getElementById("userId") && document.getElementById("passwd")) {
+                    document.getElementById("userId").value = "";
+                    document.getElementById("passwd").value = "";
+                }
+                document.forms['authZForm'].submit();
+            } else {
+            }
+        }
+        function closeWindow() {
+            var browserName = navigator.appName;
+            if (browserName == "Netscape") {
+                window.open('', '_parent', '');
+                window.close();
+            }
+            else if (browserName == "Microsoft Internet Explorer") {
+                window.opener = self;
+                window.open('', '_parent', '');
+                window.close();
+            }
+        }
+
+        function closeAllTip() {
+            closeTip("tipDiv");
+        }
+        function viewErrorTipOnDialog(tipDiv) {
+            openTip(tipDiv);
+            Vdun.setCenter(tipDiv, {
+                top: 0, left: -30
+            });
+        }
+        function viewErrorTipOnPage(tipDiv) {
+            openTip(tipDiv);
+            Vdun.setCenter(tipDiv, {
+                top: 50, left: 150
+            });
+        }
+
+        function viewFlowDivOnPage(tipDiv) {
+            openTip(tipDiv);
+            Vdun.setCenter(tipDiv, {
+                top: 50
+            });
+        }
+    </script>
+</head>
+<body>
+<div class="oauth_top">
+    <div class="au_cWrap clearFix">
+        <div class="logo"><img src="http://timg.sjs.sinajs.cn/t35/appstyle/opent/images/oauth/logo_s.png"
+                               alt=""/>与微博连接</div>
+        <div class="rt_link">没有微博帐号？&nbsp;<a
+                href="http://service.weibo.com/reg/regindex.php?appsrc=3R9B6v&backurl=&diy="
+                target="_blank">注册</a></div>
+        </div>
+</div>
+<div class="txt_oauth">
+    <div class="au_cWrap">
+        
+        使用你的微博帐号访问 <a href="http://app.weibo.com/t/feed/3R9B6v" target="_blank" class="fb">麻溜儿网</a> ，更方便的分享精彩生活
+        </div>
+</div>
+<div class="oauth_cont">
+    <div class="au_cWrap clearFix">
+        <div class="lf">
+            <div class="clearFix">
+                <div class="msg_txtls"> 将允许网站进行以下操作：
+                    <ul class="gs_uls">
+                        <li>获得你的个人信息，好友关系</li><li>分享内容到你的微博</li><li>获得你的评论</li></ul>
+                </div>
+                <div class="mt_arr"><img src="http://timg.sjs.sinajs.cn/t35/appstyle/opent/images/oauth/img_arr1.png"
+                                         alt=""/></div>
+            </div>
+            <div class="lt_msg">你可以随时在 <a href="http://weibo.com/setting/connections" target="_blank ">我的设置</a> 里取消授权。
+            </div>
+        </div>
+        <div class="rt">
+            <div class="clearFix">
+                <div class="lf_img"><img src="http://ww1.sinaimg.cn/square/96f04c01jw1dqh9bqx6sag.gif" width="80px"/></div>
+                <div class="des_txt">
+                    <h3>麻溜儿网</h3>
+                    <p>
+                        <a href="http://app.weibo.com/t/feed/3R9B6v" target="_blank">http://app.weibo.com/t/feed/3R9B6v</a><br/>
+                        共 <span class="gray6">35</span> 人连接该网站
+                        </p>
+                </div>
+            </div>
+            <form name="authZForm" action="http://api.t.sina.com.cn/oauth/authorize" method="post">
+                <input type="hidden" name="action" value="submit"/>
+                <input type="hidden" name="regCallback" value=""/>
+                <input type="hidden" name="oauth_token" value="25110cb9eef3dfeb2cf7f23589330085"/>
+                <input type="hidden" name="oauth_callback" value="http://www.maliuer.com/API/Sina.htm"/>
+                <input type="hidden" name="from" value=""/>
+                <input type="hidden" name="forcelogin" value=""/>
+                <input type="hidden" name="vdCheckflag" value="1"/>
+                <input type="hidden" name="verifyToken" value="null"/>
+                    <div class="form_wrap clearFix" id="inputDiv">
+
+                    <div class="row_fm">
+                        <div class="lable_fm">帐号：</div>
+                        <div class="inp_fm">
+                            <input class="iptbg" id="userId" name="userId" tabindex="1" type="text" title="邮箱/会员帐号/手机号"
+                                   onclick="closeTip('tipDiv')"/>
+                        </div>
+                    </div>
+                    <div class="row_fm">
+                        <div class="lable_fm">密码：</div>
+                        <div class="inp_fm">
+                            <input class="iptbg" id="passwd" name="passwd" tabindex="2" type="password"
+                                   onclick="closeTip('tipDiv')" title="请输入密码"/>
+                        </div>
+                    </div>
+
+                    </div>
+
+                <!-- 动态密码弹层 -->
+                <div class="WB_dialog" style=" position:absolute; top:200px; left:500px; width:327px;display:none"
+                     display:none
+                " id="vdunDialog">
+                <div class="WB_panel">
+                    <div class="input_box1">
+                        <a href="authorize.htm#" class="oauth_layer_close" onclick="closeTip('vdunDialog');closeTip('tipDiv')"></a>
+                        <dl class="oauth_layer_form clearfix">
+                            <dt><span class="oauth_icon icon_shield"></span>请输入与你账号绑定的微盾动态密码</dt>
+                            <dd><input class="WB_iptxt" id="vsnval" name="vsnval" type="password"
+                                       style=" color:#9a9a9a;" maxlength="6" onclick="closeTip('tipDiv')"/></dd>
+                        </dl>
+                        <p class="oauth_layer_formbtn"><a href="authorize.htm#" onclick="doSSOSubmit(true);"
+                                                          class="WB_btnA"><span>确定</span></a><a
+                                href="javascript:closeWindow();" class="WB_btnB"><span>取消</span></a></p>
+                    </div>
+                </div>
+        </div>
+        <div class="WB_dialog" id="doorDiv" style=" position:absolute;top:550px; left:500px; width:327px;display:none">
+            <div class="WB_panel">
+                <div class="input_box1">
+                    <a href="authorize.htm#" class="oauth_layer_close" onclick="closeTip('doorDiv');closeTip('tipDiv')"></a>
+                    <dl class="oauth_layer_form layer_form02 clearFix">
+                        <dt><span class="oauth_icon icon_shield"></span>请输入验证码</dt>
+                        <dd><input type="text" id="ssoDoor" name="ssoDoor" class="WB_iptxt input_code"
+                                   style=" color:#9a9a9a;" onclick="closeTip('tipDiv');" maxlength="5"><span
+                                class="code_img"><img src="authorize.htm" id="aw" alt="" width="75" height="30"></span><a href="authorize.htm#"
+                                                                                                             onclick="doChangePic()"
+                                                                                                             class="code_change">换一换</a>
+                        </dd>
+                    </dl>
+                    <p class="oauth_layer_formbtn"><a href="authorize.htm#" onclick="doCodeSubmit();" class="btn_greenS"><em>确定</em></a><a
+                            onclick="closeTip('doorDiv');" class="btn_grayS"><em>取消</em></a></p>
+                </div>
+            </div>
+        </div>
+        <script type="text/javascript" src="http://tjs.sjs.sinajs.cn/open/site/js/oauth/vdun.js"></script>
+        <script type="text/javascript">
+            Vdun.setCenter('vdunDialog', {
+                top: 50
+            });
+            Vdun.setCenter('doorDiv', {
+                top: 50
+            });
+            <!-- /动态密码弹层 -->
+
+        </script>
+
+
+        </form>
+    </div>
+</div>
+</div>
+<div class="oauth_btn clearFix">
+    <div class="au_cWrap">
+        <div class="lf_half gray6">
+            <input id="regagreementCheckbox" name="regagreementCheckbox" type="checkbox" class="ipt_cb"
+                   checked="checked" disabled="disabled"/>
+            我已阅读<a href="http://login.sina.com.cn/regagreement.html" target="_blank">新浪网络服务使用协议</a></div>
+        <div class="lf_half_r">
+            <a id="sub" onclick="doSSOSubmit(false);" class="btn_greenS"><em>连接</em></a>
+            <a class="btn_grayS" onclick="closeWindow();"><em>取消</em></a>
+        </div>
+    </div>
+</div>
+<div class="WB_tips_yls" style="width:200px; position:absolute; top:200px; left:600px;display:none" id="tipDiv">
+</div>
+<script type="text/javascript" src="http://tjs.sjs.sinajs.cn/open/site/js/oauth/input.js"></script>
+<script type="text/javascript">
+    (function () {
+        if (self !== top) {
+            var img = new Image();
+            var src = 'https://api.weibo.com/oauth2/images/bg_layerr.png?oauth=1&page=web&refer=' + document.referrer + '&rnd=' + (+new Date());
+            img.src = src
+            img = null; //释放局部变量
+        }
+    })();
+</script>
+</body>
+</html>
+

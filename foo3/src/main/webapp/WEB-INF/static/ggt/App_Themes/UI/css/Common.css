@@ -1,0 +1,96 @@
+﻿@import url('/App_Themes/Public/sM.css');
+@import url('/App_Themes/UI/css/reset.css');
+/**********顶部状态栏**********/
+.status{ height:39px; border-bottom:1px #e9e9e9 solid;}
+.status_inner{ width:990px; margin:0 auto; padding-top:7px;}
+.area{ float:left; }
+.area_name{ font-size:18px;  color:#ca1712; font-family:"微软雅黑";display:inline-block; float:left;}
+.area_btn a{ display:inline-block; width:78px; height:25px; color:#505050; font-size:12px; background:url(../images/area_btn.jpg) no-repeat; line-height:27px; text-indent:10px; margin-left:5px;}
+.area_btn a:hover{ color:#ca1712;}
+/********登陆框**************/
+.login{ float:right; color:#565656; padding-top:3px;height:22px;}
+.login a{color:#646464;}
+.login img{ float:left; padding-left:15px;}
+.aaa{ float:left; margin-top:3px; vertical-align:middle;}
+.login_form{ float:left; }
+.form_btn{ float:left; width:105px;}
+.username_out{ margin-right:10px; background:url(../images/username_bg.jpg) no-repeat; width:136px; height:22px;  line-height:21px; text-align:right; display:inline-block;}
+.userpassword_out{ margin-right:10px; display:inline-block;background:url(../images/userpassword_bg.jpg) no-repeat; width:136px; height:22px; line-height:21px;display:inline-block;text-align:right;}
+.username{  width:115px; border:0px;height:22px;line-height:21px; background:url(../images/username_bg.jpg)  top right no-repeat;}
+.userpassword{  width:115px; border:0px;height:22px;line-height:21px;background:url(../images/username_bg.jpg)  top right no-repeat;}
+.login_btn{ width:45px; height:22px; background:url(../images/login_bg.jpg) no-repeat;border:0px; cursor:hand;float:left; /*margin-right:5px; display:inline;*/}
+.reg_btn{width:45px; height:22px;border:0px;cursor:hand; margin-right:5px; float:left; padding-left:10px;}
+.wangji{text-decoration:underline; color:#747474; display:block; width:70px; float:right; height:22px; line-height:22px;}
+.wangji:hover{ color:#e02416;}
+.keep{ float:right; padding-top:3px;}
+.keep a{ display:inline-block; width:57px; height:19px; background:url(../images/keep_bg.jpg) no-repeat; font-size:12px; text-align:center; line-height:22px;color:#6c6c6c;}
+.keep a:hover{ color:#111;}
+
+/**********顶部**********/
+.top{ height:121px; background:url(../images/top_bg.jpg) repeat-x;border-bottom:1px #fff solid;}
+.top_inner{width:990px; margin:0 auto;}
+/**********logo部分**********/
+.logo{ float:left; padding-top:35px;}
+.logo_r{ float:right; width:640px;}
+.tel{ text-align:right;}
+.guanzhu{ height:20px; padding-top:10px; text-align:right; padding-bottom:10px;}
+#ckepop{ float:right;}
+.fabu{ margin-left:10px; display:inline-block; width:120px; height:37px; background:url(../images/fabu.gif) no-repeat;}
+.fabu:hover{background:url(../images/fabu.gif) 0 -37px no-repeat;}
+.biaoqian{ width:340px; float:right;  height:30px; line-height:30px; overflow:hidden; padding-left:5px;}
+.biaoqian a{color:#777; padding:0 3px;}
+.biaoqian a:hover{ color:#111; text-decoration:underline;}
+/**********search**********/
+.search{overflow:hidden;}
+.search_bar{ background:url(../images/search_bg.png) no-repeat; width:295px; height:30px; float:left; position:relative;}
+.search_bar_input{ width:245px; margin-top:4px; margin-left:10px; height:20px; border:0px; line-height:20px; color:#555;}
+.search_btn{ width:27px; height:22px; background:url(../images/search_btn_bg.png) no-repeat; border:0px; position:absolute; right:5px; top:3px; cursor:pointer;}
+
+/**********导航**********/
+.nav{ height:67px; background:url(../images/nav_bg.jpg) repeat-x;}
+.nav_inner{width:990px; margin:0 auto; position:relative; background:url(../images/nav_inner_bg.jpg) no-repeat; padding-left:15px;}
+.nav_sub{ height:18px; background:url(../images/nav_sub_bg.jpg) repeat-x; font-size:1px;}
+.nav_inner ul{ overflow:hidden; padding-top:18px; padding-left:0px;}
+.nav_inner ul li{ float:left; margin-right:15px;}
+.last_nav_li{ margin-right:0px;}
+.nav_inner ul li a{ display:block; width:95px; height:43px;  text-align:center;}
+.nav_inner ul li a:hover{ background:url(../images/nav_hover.gif) no-repeat;}
+.yinwen{ color:#ffe600; font-size:14px; font-family:"Times New Roman", Times, serif; font-style:italic; font-weight:bold; display:block;}
+.zhongwen{ color:#fff; font-size:14px; font-family:"微软雅黑";}
+.shangchen{ display:block; width:72px; height:59px; background:url(../images/mall_tu.jpg) no-repeat; position:absolute; right:0px; top:8px;}
+.shangchen:hover{ background:url(../images/mall_tu_hover.jpg) no-repeat;}
+.nav_active{ background:url(../images/nav_hover.gif) no-repeat;}
+
+/*******内页底部*******/
+.neiye_bom_bg{ background:url(../images/neiye_bom_bg.jpg) repeat-x; height:19px;}
+/**********上下滚动条****************/
+
+/**********网页底部**********/
+.footer{ background:#416a17;}
+/**********友情链接**********/
+.f_link{ color:#c0e49b; width:990px; margin:0 auto; padding:20px 0px;}
+.f_link a{color:#c0e49b; padding:0 5px;}
+.f_link a:hover{ color:#8bf220; text-decoration:underline;}
+/**********网页版权**********/
+.copyright{ border-top:1px #75be27 solid; text-align:right; font-family:"微软雅黑";}
+.copyright_inner{width:990px; margin:0 auto; padding:20px 0px;}
+.sec_nav{ display:inline; padding-right:20px; color:#e0e560;}
+.sec_nav a{color:#e0e560;} 
+.sec_nav a:hover{ color:#fefffd;}
+.banquan{ color:#d4c439;}
+.banquan a{ color:#f09811; padding-left:10px;}
+.banquan a:hover{ text-decoration:underline;}
+.foot_logo{ padding-right:5px;}
+/**********网页底部联系方式**********/
+.foot_contact{background:#5f9922 url(../images/contact_foot_bg.jpg) repeat-x;}
+.foot_ka{width:990px; margin:0 auto; }
+.foot_contact_innner{width:990px; margin:0 auto; padding:15px 0px; padding-top:10px;}
+.foot_c{ background:#7cac49; width:290px; height:100px; float:left; display:inline;}
+.c_qq{ margin:0 60px; }
+.c_tu{ margin:8px; float:left;}
+.qqnum{ margin-top:15px; width:200px; float:left; overflow:hidden; }
+.qqnum a{ padding-right:5px; display:inline-block; padding-top:5px;}
+.mail{ font-weight:bold; color:#f9e53a; display:block; margin-top:8px; float:left;width:200px;}
+.mail_txt{ float:left; color:#ffffff;}
+.tihuan{ color:#1d2c0e;}
+.fenxiang{ width:200px; float:left; height:20px; padding:5px 0px; }
