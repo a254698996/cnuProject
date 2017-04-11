@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import web.content.Constant;
 import web.content.Constant.UserType;
 import web.dto.UserDto;
 import web.entity.GoodsCategory;
@@ -74,13 +75,17 @@ public class UserController {
 	public ModelAndView userIndex() {
 		ModelAndView modelAndView = new ModelAndView("ggt/index");
 
-		Page goodsCategoryPage = goodsCategoryService.pagedQuery(Page.defaultStartIndex, 7, "code", true);
+		Page goodsCategoryPage =goodsCategoryService.pagedQuery("from GoodsCategory g where g.pcode is null ", Page.defaultStartIndex, 7);
 		modelAndView.addObject("goodsCategoryList", goodsCategoryPage.getList());
 
 		Page pagedQuery = noticeActivityService.pagedQuery(
-				"from NoticeActivity n where n.type=1 and n.state=1 and n.endDate <= ? ", Page.defaultStartIndex, 3,
-				new Date());
+				"from NoticeActivity n where n.type=1 and n.state=? and n.endDate >= ? and n.sendDate <=? ", Page.defaultStartIndex, 3,
+				new Object[]{ Constant.State.STATE_NORMAL, new Date(),new Date()});
 		modelAndView.addObject("noticeList", pagedQuery.getList());
+		  pagedQuery = noticeActivityService.pagedQuery(
+				"from NoticeActivity n where n.type=2 and n.state=? and n.endDate >= ? and n.sendDate <=? ", Page.defaultStartIndex, 4,
+				new Object[]{ Constant.State.STATE_NORMAL, new Date(),new Date()});
+		modelAndView.addObject("activityList", pagedQuery.getList());
 
 		// pagedQuery = noticeActivityService.pagedQuery("from NoticeActivity n
 		// where n.type=2 and state=1 ", Page.defaultStartIndex, 3 );

@@ -26,8 +26,9 @@
 <body>   
 	  新增物品分类 
 		<form action="<%=request.getContextPath() %>/goodsCategory/add" method="post">
-		code:<input type="text" name="code"></br>
-		name:<input type="text" name="name"></br>
+		编码:<input type="text" name="code"></br>
+		名称:<input type="text" name="name"></br>
+		英文名称:<input type="text" name="ename"></br>
 		isSub:<input type="text" name="isSub"></br>
 		<input type="submit"/>
 	</form>

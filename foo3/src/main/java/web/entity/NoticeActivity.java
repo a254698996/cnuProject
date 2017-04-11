@@ -11,16 +11,16 @@ import javax.persistence.Table;
 @Table(name = "t_notice_activity")
 public class NoticeActivity extends BaseEntity {
 
-	private int type; 
-	private String name; 
-	private String conent; 
+	private int type;
+	private String name;
+	private String conent;
 	@Column(name = "send_date")
 	private Date sendDate;
 	@Column(name = "end_date")
-	private Date endDate; 
-	private String state; 
+	private Date endDate;
+	private int state;
 	@Column(name = "img_url")
-	private String imgUrl; 
+	private String imgUrl;
 
 	public int getType() {
 		return type;
@@ -62,11 +62,11 @@ public class NoticeActivity extends BaseEntity {
 		this.endDate = endDate;
 	}
 
-	public String getState() {
+	public int getState() {
 		return state;
 	}
 
-	public void setState(String state) {
+	public void setState(int state) {
 		this.state = state;
 	}
 

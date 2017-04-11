@@ -10,6 +10,7 @@ import javax.persistence.Table;
 public class GoodsCategory extends BaseEntity {
 
 	private String code;
+	private String ename;
 	private String name;
 	@Column(name = "pcode")
 	private String pcode;
@@ -55,5 +56,13 @@ public class GoodsCategory extends BaseEntity {
 
 	public void setIsSub(String isSub) {
 		this.isSub = isSub;
+	}
+
+	public String getEname() {
+		return ename;
+	}
+
+	public void setEname(String ename) {
+		this.ename = ename;
 	}
 }

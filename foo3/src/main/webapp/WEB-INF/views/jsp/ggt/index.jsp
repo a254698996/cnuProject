@@ -187,30 +187,17 @@
 		<div class="nav">
 			<div class="nav_inner">
 				<ul>
-					<li>
-						<a href="${ctx}/user/userIndex" title="首页"><span class="yinwen">Home</span><span class="zhongwen">首页</span></a>
+			  	 <li>
+					<a href="${ctx}/user/userIndex" title="首页"><span class="yinwen">Home</span><span class="zhongwen">首页</span></a>
+				</li>
+				<c:forEach items="${goodsCategoryList }" var="gc">
+				  	 <li>
+						<a href="${ctx}/user/userIndex" title="${gc.ename }"><span class="yinwen">${gc.ename }</span><span class="zhongwen">${gc.name }</span></a>
 					</li>
-					<li>
-						<a href="Commodity/List/6.htm" title="学习资料"><span class="yinwen">Learning</span><span class="zhongwen">学习资料</span></a>
-					</li>
-					<li>
-						<a href="Commodity/List/7.htm" title="数码电器"><span class="yinwen">Digital</span><span class="zhongwen">数码电器</span></a>
-					</li>
-					<li>
-						<a href="Commodity/List/8.htm" title="服装服饰"><span class="yinwen">Clothing</span><span class="zhongwen">服装服饰</span></a>
-					</li>
-					<li>
-						<a href="Commodity/List/9.htm" title="箱包配饰"><span class="yinwen">Bags</span><span class="zhongwen">箱包配饰</span></a>
-					</li>
-					<li>
-						<a href="Commodity/List/10.htm" title="美容护发"><span class="yinwen">Beauty</span><span class="zhongwen">美容护发</span></a>
-					</li>
-					<li>
-						<a href="Commodity/List/11.htm" title="运动户外"><span class="yinwen">Sports</span><span class="zhongwen">运动户外</span></a>
-					</li>
-					<li class="last_nav_li" title="生活超市">
-						<a href="Commodity/List/12.htm"><span class="yinwen">Supermarket</span><span class="zhongwen">生活超市</span></a>
-					</li>
+				</c:forEach>
+<!-- 					<li class="last_nav_li" title="生活超市"> -->
+<!-- 						<a href="Commodity/List/12.htm"><span class="yinwen">Supermarket</span><span class="zhongwen">生活超市</span></a> -->
+<!-- 					</li> -->
 				</ul>
 <!-- 				<a class="shangchen" href="http://mall.maliuer.com/" title="商城"></a> -->
 			</div>
@@ -256,18 +243,24 @@
 			<!--main_banner-->
 			<div class="main_banner_r">
 				<ul>
+                     <c:forEach items="${noticeList }" var="notice">
+	                     <li> <a class="ggao" href="Home/Detail/13.htm">
+								${notice.conent }</a><span class="gonggao_date">
+								[ <fmt:formatDate type="date"  value="${notice.sendDate }" />]
+								</span></li>
+						 <li>
+                     </c:forEach>
+<!-- 					<li> -->
+<!-- 						<a class="ggao" href="Home/Detail/13.htm"> -->
+<!-- 							校园代理招募活动火热启动</a><span class="gonggao_date">[2012-05-03]</span></li> -->
 
-					<li>
-						<a class="ggao" href="Home/Detail/13.htm">
-							校园代理招募活动火热启动</a><span class="gonggao_date">[2012-05-03]</span></li>
+<!-- 					<li> -->
+<!-- 						<a class="ggao" href="Home/Detail/10.htm"> -->
+<!-- 							麻溜儿商城强势回归</a><span class="gonggao_date">[2012-04-25]</span></li> -->
 
-					<li>
-						<a class="ggao" href="Home/Detail/10.htm">
-							麻溜儿商城强势回归</a><span class="gonggao_date">[2012-04-25]</span></li>
-
-					<li>
-						<a class="ggao" href="Home/Detail/5.htm">
-							麻溜儿网正式上线开放测试</a><span class="gonggao_date">[2012-03-12]</span></li>
+<!-- 					<li> -->
+<!-- 						<a class="ggao" href="Home/Detail/5.htm"> -->
+<!-- 							麻溜儿网正式上线开放测试</a><span class="gonggao_date">[2012-03-12]</span></li> -->
 
 				</ul>
 				<div class="new_person">
@@ -414,71 +407,20 @@
                         <img src="${ctx}/static/ggt/App_Themes/UI/images/hot_h_bg.jpg" width="307" height="88" alt="热点活动" /></a>
                 </h1>
 					<ul>
-
-						<li>
-							<div class="hot_tu">
-
-								<a href="Home/Detail/14.htm" target="_blank">
-									<img src="${ctx}/upload/userfiles/images/201205222048110233562_82_82.jpg" />
-								</a>
-
-							</div>
-							<span class="hot_num">Hot EVENTS.01</span>
-							<h2>
-                            <a href="Home/Detail/14.htm" target="_blank">
-                                发布闲置物品，抽幸运大奖活动火爆启动！</a>
-                        </h2>
-							<span class="hot_date">[2012-05-22]</span>
-						</li>
-
-						<li>
-							<div class="hot_tu">
-
-								<a href="Home/Detail/11.htm" target="_blank">
-									<img src="" />
-								</a>
-
-							</div>
-							<span class="hot_num">Hot EVENTS.02</span>
-							<h2>
-                            <a href="Home/Detail/11.htm" target="_blank">
-                                麻溜儿商城满48元全国包邮</a>
-                        </h2>
-							<span class="hot_date">[2012-04-25]</span>
-						</li>
-
-						<li>
-							<div class="hot_tu">
-
-								<a href="Home/Detail/9.htm" target="_blank">
-									<img src="${ctx}/upload/userfiles/images/201203142300454055053_82_82.jpg" />
-								</a>
-
-							</div>
-							<span class="hot_num">Hot EVENTS.03</span>
-							<h2>
-                            <a href="Home/Detail/9.htm" target="_blank">
-                                麻溜儿商城全新上线，给力活动进行中</a>
-                        </h2>
-							<span class="hot_date">[2012-03-14]</span>
-						</li>
-
-						<li>
-							<div class="hot_tu">
-
-								<a href="Home/Detail/8.htm" target="_blank">
-									<img src="${ctx}/upload/userfiles/images/201203141440068429683_82_82.jpg" />
-								</a>
-
-							</div>
-							<span class="hot_num">Hot EVENTS.04</span>
-							<h2>
-                            <a href="Home/Detail/8.htm" target="_blank">
-                                麻溜儿商城下单就送礼！</a>
-                        </h2>
-							<span class="hot_date">[2012-03-14]</span>
-						</li>
-
+                          <c:forEach items="${activityList}" var="active" varStatus="status">  
+								<li>
+									<div class="hot_tu">
+										<a href="Home/Detail/14.htm" target="_blank">
+											<img src="${ctx}/upload/${active.imgUrl }" width="100" height="100" />
+										</a>	
+									</div>
+									<span class="hot_num">Hot EVENTS.0${ status.index + 1}</span>
+									<h2>
+		                            <a href="Home/Detail/14.htm" target="_blank">${active.name }</a>
+		                        </h2>
+									<span class="hot_date">[ <fmt:formatDate type="date"  value="${active.sendDate }" />]</span>
+								</li>
+						 </c:forEach>
 					</ul>
 				</div>
 				<!--热点活动结束-->

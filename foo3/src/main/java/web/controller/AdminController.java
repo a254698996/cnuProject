@@ -74,9 +74,11 @@ public class AdminController {
 	IGoodsCategoryService<GoodsCategory, Serializable> goodsCategoryService;
 
 	@RequestMapping(value = "adminIndex", method = RequestMethod.GET)
-	public String adminIndex() {
-
-		return getPath("adminIndex");
+	public ModelAndView adminIndex() {
+		List menuList = menuService.find("from Menu" );
+		ModelAndView modelAndView = new ModelAndView(getPath("adminIndex"));
+		modelAndView.addObject("menuList", menuList);
+		return modelAndView;
 	}
 
 	@RequestMapping(value = "userList", method = RequestMethod.GET)

@@ -20,8 +20,9 @@
 	  更新物品分类 
 		<form action="<%=request.getContextPath() %>/goodsCategory/update" method="post">
 		<input type="hidden" name="id" value="${goodsCategory.id}">
-		code:<input type="text" name="code" value="${goodsCategory.code}"></br>
-		name:<input type="text" name="name"  value="${goodsCategory.name}"></br>
+		编码:<input type="text" name="code" value="${goodsCategory.code}"></br>
+		名称:<input type="text" name="name"  value="${goodsCategory.name}"></br>
+		英文名称:<input type="text" name="ename"  value="${goodsCategory.ename}"></br>
 		isSub:<input type="text" name="isSub"></br>
 		<input type="submit"/>
 	</form>

@@ -52,6 +52,7 @@
            <tr>
              <th>编码</th>
              <th>名称</th>
+             <th>英文名称</th>
              <th>父码</th>
              <th>是否是子码</th>
              <th>操作</th>
@@ -62,6 +63,7 @@
 				<tr>
 					<td>${goodsCategory.code}</td>
                     <td>${goodsCategory.name}</td>
+                    <td>${goodsCategory.ename}</td>
 					<td>${goodsCategory.pcode}</td>
 					<td>${goodsCategory.isSub}</td>
 					<td>

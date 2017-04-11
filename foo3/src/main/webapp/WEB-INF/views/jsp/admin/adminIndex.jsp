@@ -64,21 +64,9 @@ ul.nav-tabs.affix {
 			}
 		});
 	});
-	function toUser(){
-		$("#adminIframe").attr("src","${ctx}/admin/userList");
-	}
-	function toNotice(){
-// 		$("#adminIframe").attr("src","${ctx}/admin/userList");
-	}
-	function toActity(){
-// 		$("#adminIframe").attr("src","${ctx}/admin/userList");
-	}
-	function toRole(){
-		$("#adminIframe").attr("src","${ctx}/permission/roleList");
-	}
-	function toGoods(){
-		$("#adminIframe").attr("src","${ctx}/goods/list");
-	}
+	function toMenu(url){
+		$("#adminIframe").attr("src","${ctx}/"+url);
+	} 
 </script>
 </head>
 <body data-spy="scroll" data-target="#myScrollspy">
@@ -89,15 +77,13 @@ ul.nav-tabs.affix {
 		<div class="row">
 			<div class="col-xs-3" id="myScrollspy">
 				<ul class="nav nav-tabs nav-stacked" id="myNav">
-					<li><a href="#" onclick="toUser();">用户管理</a></li>
-					<li><a href="#" onclick="toNotice();">公告管理</a></li>
-					<li><a href="#" onclick="toActity();">活动管理</a></li>
-					<li><a href="#" onclick="toRole();">角色管理</a></li>
-					<li><a href="#" onclick="toGoods();">物品管理</a></li>
+				<c:forEach items="${menuList}" var="menu">
+				 	<li><a href="#" onclick="toMenu('${menu.url}');">${menu.name}</a></li>
+				</c:forEach> 
 				</ul>
 			</div>
 			<div class="col-xs-9">
-				 <iframe src="${ctx}/admin/userList" id="adminIframe" width="850" height="400">
+				 <iframe src="${ctx}/menu/list" id="adminIframe" width="850" height="400">
 				 
 				 </iframe>
 			</div>
