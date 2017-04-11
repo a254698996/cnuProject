@@ -22,7 +22,10 @@ public class User extends BaseEntity {
 	private String sname;
 	private String passwordask;
 	private String passwordanswer;
-	private int state;
+	private Integer state;
+
+	@Transient
+	private String userType;
 
 	@Transient
 	private Set<String> roleSet;
@@ -30,11 +33,11 @@ public class User extends BaseEntity {
 	@Transient
 	private Set<String> permissionSet;
 
-	public int getState() {
+	public Integer getState() {
 		return state;
 	}
 
-	public void setState(int state) {
+	public void setState(Integer state) {
 		this.state = state;
 	}
 
@@ -132,6 +135,14 @@ public class User extends BaseEntity {
 
 	public void setPermissionSet(Set<String> permissionSet) {
 		this.permissionSet = permissionSet;
+	}
+
+	public String getUserType() {
+		return userType;
+	}
+
+	public void setUserType(String userType) {
+		this.userType = userType;
 	}
 
 }

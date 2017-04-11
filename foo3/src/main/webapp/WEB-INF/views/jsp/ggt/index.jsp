@@ -1,3 +1,5 @@
+<%@page import="org.apache.shiro.session.Session"%>
+<%@page import="org.apache.shiro.SecurityUtils"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -116,10 +118,12 @@
 	<body>
 		<div class="status">
 			<div class="status_inner">
-				<!--选择地区-->
 				<div class="login" style=" text-align:right;">
-
-					<a href="${ctx}/user/toLogin"><img src="${ctx}/static/ggt/App_Themes/UI/images/login_bg.jpg" /></a>
+				<%   if(SecurityUtils.getSubject().getPrincipal()== null){ %>
+                   <a href="${ctx}/user/toLogin"><img src="${ctx}/static/ggt/App_Themes/UI/images/login_bg.jpg" /></a>
+                  <% }else{ %>
+                	  欢迎[<%=SecurityUtils.getSubject().getPrincipal() %>]登录，<a href="${pageContext.request.contextPath}/user/userLoginOut">退出</a> 
+                	  <% } %> 
 					<a href="${ctx}/user/toReg"><img src="${ctx}/static/ggt/App_Themes/UI/images/reg_bg.jpg" /></a>
 					<div class="myclear">
 					</div>
@@ -208,7 +212,7 @@
 						<a href="Commodity/List/12.htm"><span class="yinwen">Supermarket</span><span class="zhongwen">生活超市</span></a>
 					</li>
 				</ul>
-				<a class="shangchen" href="http://mall.maliuer.com/" title="商城"></a>
+<!-- 				<a class="shangchen" href="http://mall.maliuer.com/" title="商城"></a> -->
 			</div>
 		</div>
 		<!--导航-->

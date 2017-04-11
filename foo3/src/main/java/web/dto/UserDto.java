@@ -2,6 +2,7 @@ package web.dto;
 
 public class UserDto {
 	private int id;
+//	private String passwordask;
 	private String passwordanswer;
 	private String newPassword;
 	private String reNewPassword;
@@ -37,5 +38,13 @@ public class UserDto {
 	public void setPasswordanswer(String passwordanswer) {
 		this.passwordanswer = passwordanswer;
 	}
+
+//	public String getPasswordask() {
+//		return passwordask;
+//	}
+//
+//	public void setPasswordask(String passwordask) {
+//		this.passwordask = passwordask;
+//	}
 
 }

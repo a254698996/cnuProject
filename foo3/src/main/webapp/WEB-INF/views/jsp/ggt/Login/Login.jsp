@@ -1,3 +1,4 @@
+<%@page import="org.apache.shiro.SecurityUtils"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -7,7 +8,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <title>找回密码</title>
+    <title>登录-麻溜儿网-大学生闲置物品交易平台</title>
     <meta name="keywords" content="二手货|闲置物品|校园二手|大学生二手交易|大学生闲置物品交易" />
     <meta name="description" content="服务于大学生群体的闲置物品交易平台，在麻溜儿网，您可以便捷、自主、高效的处理身边的闲置物品。" />
     <meta name="copyright" content="麻溜儿 " />
@@ -123,14 +124,16 @@
             <div class="area">
             </div>
             <!--选择地区-->
-            <div class="login" style=" text-align:right;">
-                
-                    <a href="${ctx}/user/toLogin"><img src="${ctx}/static/ggt/App_Themes/UI/images/login_bg.jpg" /></a>
+          <div class="login" style=" text-align:right;">
+				<%   if(SecurityUtils.getSubject().getPrincipal()== null){ %>
+                   <a href="${ctx}/user/toLogin"><img src="${ctx}/static/ggt/App_Themes/UI/images/login_bg.jpg" /></a>
+                  <% }else{ %>
+                	  欢迎[<%=SecurityUtils.getSubject().getPrincipal() %>]登录，<a href="${pageContext.request.contextPath}/user/userLoginOut">退出</a> 
+                	  <% } %> 
 					<a href="${ctx}/user/toReg"><img src="${ctx}/static/ggt/App_Themes/UI/images/reg_bg.jpg" /></a>
-					   
-                <div class="myclear">
-                </div>
-            </div>
+					<div class="myclear">
+					</div>
+				</div>
             <!--登陆栏目-->
             
             <!--设置首页-->
@@ -213,61 +216,49 @@
         <div class="Loconten">
             <input type="hidden" name="ToUrls" value="http://www.maliuer.com/"/>
             <div class="Loleft">
-             <form action="<%=request.getContextPath() %>/user/getPassword" method="post">
+              <form method="post"  action="<%=request.getContextPath()%>/user/userLogin"  >
                 <table style="width: 100%; height: 100%">
                     <tr>
                         <td style="width: 150px;" align="right" class="title">
-                          问题:
+                            用户名：
                         </td>
                         <td>
-                             ${user.passwordask} ?<input  type="hidden" name="id" value="${user.id}">
-                             <input  type="hidden" name="passwordask" value="${user.passwordask}">
-                        </td>
-                        <td>
-                            <div id="UserNameTip" style="width: 181px; position:relative;">
-                            </div>
-                        </td>
-                    </tr>
-                  <tr>
-                        <td style="width: 150px;" align="right" class="title">
-                         回答:
-                        </td>
-                        <td>
-                            <input  type="text" name="passwordanswer"  >
+                            <input type="text" name="username" id="username"/>
                         </td>
                         <td>
                             <div id="UserNameTip" style="width: 181px; position:relative;">
                             </div>
                         </td>
                     </tr>
-                  <tr>
-                        <td style="width: 150px;" align="right" class="title">
-                         新密码:
+                    <tr>
+                        <td align="right" class="title">
+                            密&nbsp;&nbsp;码：
                         </td>
                         <td>
-                            <input  type="password" name="newPassword"  >
+                            <input type="password" name="password" id="password"/>
                         </td>
                         <td>
-                            <div id="UserNameTip" style="width: 181px; position:relative;">
+                            <div id="UserPwdTip" style="width: 181px;position:relative;">
                             </div>
                         </td>
                     </tr>
-                  <tr>
-                        <td style="width: 150px;" align="right" class="title">
-                         重复新密码:
+                    <tr>
+                        <td>
+                            &nbsp;
                         </td>
                         <td>
-                            <input  type="password" name="reNewPassword"  >
+                            <label><input name="userType" type="radio" value="user" checked="checked" />用户 </label> 
+							<label><input name="userType" type="radio" value="admin" />管理员</label> 
+<!--                             <span>30天内自动登录</span> -->
+ 				      		 <label id ="toGetPasswordBut" style="color: red">忘记密码？</label> 
                         </td>
                         <td>
-                            <div id="UserNameTip" style="width: 181px; position:relative;">
-                            </div>
+                            &nbsp;
                         </td>
                     </tr>
                     <tr>
                         <td colspan="3" align="center">
-<!--                             <input type="image" src="http://www.maliuer.com/App_Themes/UI/Images/Login_r12_c8.jpg" /> -->
-								<input type="submit">
+                            <input type="image" src="http://www.maliuer.com/App_Themes/UI/Images/Login_r12_c8.jpg" />
                         </td>
                     </tr>
                 </table>

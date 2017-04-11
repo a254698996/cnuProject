@@ -43,14 +43,14 @@ public class UserRealm extends AuthorizingRealm {
 		User user = new User();
 		user.setUsername(realToken.getUsername());
 		user.setPassword(String.valueOf(realToken.getPassword()));
-		user.setState(Constant.State.STATE_NORMAL);
+//		user.setState(Constant.State.STATE_NORMAL);
 
 		User returnUser = userService.queryBeanByHql(user);
 		if (returnUser == null) {
 			throw new UnknownAccountException();// 没找到帐号
 		}
 
-		if (Constant.State.STATE_NORMAL != user.getState()) {
+		if (Constant.State.STATE_NORMAL != returnUser.getState()) {
 			throw new LockedAccountException(); // 帐号锁定
 		}
 

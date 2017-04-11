@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
+import org.apache.shiro.authc.LockedAccountException;
+import org.apache.shiro.authc.UnknownAccountException;
 import org.apache.shiro.authc.UsernamePasswordToken;
 import org.json.JSONObject;
 import org.slf4j.Logger;
@@ -22,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import web.content.Constant.UserType;
 import web.dto.UserDto;
 import web.entity.GoodsCategory;
 import web.entity.NoticeActivity;
@@ -64,7 +67,7 @@ public class UserController {
 
 	@RequestMapping(value = "toLogin", method = RequestMethod.GET)
 	public String toLogin() {
-		return getPath("userLogin");
+		return "ggt/Login/Login";
 	}
 
 	@RequestMapping(value = "userIndex", method = RequestMethod.GET)
@@ -73,12 +76,15 @@ public class UserController {
 
 		Page goodsCategoryPage = goodsCategoryService.pagedQuery(Page.defaultStartIndex, 7, "code", true);
 		modelAndView.addObject("goodsCategoryList", goodsCategoryPage.getList());
-		
-		Page pagedQuery = noticeActivityService.pagedQuery("from NoticeActivity n where n.type=1 and n.state=1 and n.endDate <= ? ", Page.defaultStartIndex, 3, new Date() );
+
+		Page pagedQuery = noticeActivityService.pagedQuery(
+				"from NoticeActivity n where n.type=1 and n.state=1 and n.endDate <= ? ", Page.defaultStartIndex, 3,
+				new Date());
 		modelAndView.addObject("noticeList", pagedQuery.getList());
-		
-//		pagedQuery = noticeActivityService.pagedQuery("from NoticeActivity n where n.type=2 and state=1 ", Page.defaultStartIndex, 3 );
-//		modelAndView.addObject("activityList", pagedQuery.getList());
+
+		// pagedQuery = noticeActivityService.pagedQuery("from NoticeActivity n
+		// where n.type=2 and state=1 ", Page.defaultStartIndex, 3 );
+		// modelAndView.addObject("activityList", pagedQuery.getList());
 
 		return modelAndView;
 	}
@@ -94,12 +100,28 @@ public class UserController {
 			SecurityUtils.getSubject().login(usernamePasswordToken);
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
-			ModelAndView modelAndView = new ModelAndView(getPath("userLogin"));
-			modelAndView.addObject("msg", "用户名或密码错误");
+
+			ModelAndView modelAndView = new ModelAndView("ggt/Login/Login");
+			if (e instanceof LockedAccountException) {
+				modelAndView.addObject("msg", "该用被锁定");
+			}else if(e instanceof UnknownAccountException){
+				modelAndView.addObject("msg", "用户名或密码错误");
+			}else {
+				modelAndView.addObject("msg", "未知错误");
+			}
 			return modelAndView;
 		}
 		// return new ModelAndView("redirect:/admin/userList");
+		if (user.getUserType().equals(UserType.ADMIN)) {
+			return new ModelAndView("redirect:/admin/adminIndex");
+		}
 		return new ModelAndView("redirect:/user/userIndex");
+	}
+
+	@RequestMapping(value = "userLoginOut", method = RequestMethod.GET)
+	public String userLoginOut(User user, HttpServletRequest request) {
+		SecurityUtils.getSubject().logout();
+		return "ggt/Login/Login";
 	}
 
 	@ResponseBody
@@ -149,23 +171,29 @@ public class UserController {
 
 	@RequestMapping(value = "getPassword", method = RequestMethod.POST)
 	public ModelAndView getPassword(UserDto userParam) {
+		User user = userService.get(userParam.getId());
 		if (!userParam.getNewPassword().equals(userParam.getReNewPassword())) {
 			ModelAndView modelAndView = new ModelAndView(getPath("getPassword"));
 			logger.error("两次输入的新密码不一至!");
 			modelAndView.addObject("msg", "两次输入的新密码不一至");
+			modelAndView.addObject("user", user);
 			return modelAndView;
 		}
-		User user = userService.get(userParam.getId());
 		if (userParam.getPasswordanswer().equals(user.getPasswordanswer())) {
 			user.setPassword(MD5Tools.MD5(userParam.getNewPassword()));
 			userService.update(user);
+			if (SecurityUtils.getSubject().getPrincipal() != null) {
+				return new ModelAndView("redirect:/user/userIndex");
+			}
 		} else {
 			ModelAndView modelAndView = new ModelAndView(getPath("getPassword"));
 			logger.error("答案不正确!");
 			modelAndView.addObject("msg", "答案不正确");
+			modelAndView.addObject("user", user);
 			return modelAndView;
 		}
-		return new ModelAndView(getPath("userLogin"));
+		// return new ModelAndView(getPath("userLogin"));
+		return new ModelAndView("redirect:/user/toLogin");
 	}
 
 	private String getPath(String path) {
