@@ -4,6 +4,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+import javax.transaction.Transactional.TxType;
+
 import org.apache.commons.lang.StringUtils;
 
 import com.hibernate.dao.base.Page;
@@ -24,13 +27,14 @@ public class GoodsService extends ServiceImpl<Goods, Serializable> implements IG
 	}
 
 	@Override
-	public Page getList(Integer pageIndex, int pageSize, Integer userId, String _SCH_name, Integer exchangeGroupId) {
+	@Transactional(value = TxType.NOT_SUPPORTED)
+	public Page getList(Integer pageIndex, int pageSize, Integer userId, String _SCH_name, Integer exchangeGroupId,Integer grounding ) {
 		if (pageIndex == null) {
 			pageIndex = Page.defaultStartIndex;
 		}
 
 		StringBuffer hql = new StringBuffer(
-				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code ");
+				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code   ");
 		Page page = null;
 
 		List<Object> paramList = new ArrayList<Object>();
@@ -48,6 +52,11 @@ public class GoodsService extends ServiceImpl<Goods, Serializable> implements IG
 		if (exchangeGroupId != null) {
 			hql.append(" and  g.exchangeGroupId = ?");
 			paramList.add(exchangeGroupId);
+		}
+		
+		if ( grounding  != null) {
+			hql.append(" and  g.state = ?");
+			paramList.add(grounding);
 		}
 
 		page = pagedQuery(hql.toString(), pageIndex, Page.defaultPageSize, paramList.toArray());

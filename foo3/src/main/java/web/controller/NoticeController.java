@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import web.conf.SysInit;
 import web.content.Constant;
 import web.entity.NoticeActivity;
 import web.service.INoticeActivityService;
@@ -76,16 +77,21 @@ public class NoticeController {
 		noticeActivityService.save(na);
 		return new ModelAndView("redirect:/notice/list");
 	}
-	
+
 	@RequestMapping(value = "changeState/{id}", method = RequestMethod.GET)
 	public ModelAndView changeState(@PathVariable int id) {
-		 NoticeActivity noticeActivity = noticeActivityService.get(id);
+		NoticeActivity noticeActivity = noticeActivityService.get(id);
 		if (noticeActivity.getState() == Constant.State.STATE_NORMAL) {
 			noticeActivity.setState(Constant.State.STATE_NOT_NORMAL);
 		} else {
 			noticeActivity.setState(Constant.State.STATE_NORMAL);
 		}
 		noticeActivityService.update(noticeActivity);
+		if (noticeActivity.getType() == NoticeActivity.NOTICE) {
+			SysInit.noticeList = noticeActivityService.getIndexNoticeList(3);
+		}else if (noticeActivity.getType() == NoticeActivity.ACTIVITY) {
+			SysInit.activityList = noticeActivityService.getIndexActivityList(4);
+		}
 		return new ModelAndView("redirect:/notice/list");
 	}
 

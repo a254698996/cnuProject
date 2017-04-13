@@ -115,7 +115,9 @@
 <body>
 	新增物品 
 	<form id="myForm"  action="<%=request.getContextPath()%>/goods/updateGoods" method="post"  enctype="multipart/form-data">
-	  <input type="text" name="id" value="${goods.id }">
+	  <input type="hidden" name="id" value="${goods.id }">
+	  <input type="hidden" name="userId" value="${goods.userId }">
+	  <input type="hidden" name="adminGrounding" value="${goods.adminGrounding }">
 	   名称<input type="text" name="name" value="${goods.name }"><br>
 		<label class="control-lable">大类</label>
 		  <select onchange="selectCode(this)"  name="goodsCategoryCode">

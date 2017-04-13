@@ -127,16 +127,19 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	}
 
 	@Override
+	@Transactional(value = TxType.NOT_SUPPORTED)
 	public T queryBeanByHql(T clazz) {
 		return hedao.queryBeanByHql(clazz);
 	}
 
 	@Override
+	@Transactional(value = TxType.NOT_SUPPORTED)
 	public Page pagedQuery(String hql, int pageNo, int pageSize, Object... values) {
 		return hdao.pagedQuery(hql, pageNo, pageSize, values);
 	}
 
 	@Override
+	@Transactional(value = TxType.NOT_SUPPORTED)
 	public Page pagedQuery(String hql, int pageNo, int pageSize, Object[] propertyArr, Object[] propertyMatetype,
 			Object[] propertyVal) {
 		return hdao.pagedQuery(hql, pageNo, pageSize, propertyArr,  propertyMatetype, propertyVal);

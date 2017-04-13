@@ -15,6 +15,8 @@ public class User extends BaseEntity {
 	private String nickname;
 	private String username;
 	private String password;
+	@Transient
+	private String repassword;
 	private String email;
 	private String phone;
 	private String memo;
@@ -143,6 +145,14 @@ public class User extends BaseEntity {
 
 	public void setUserType(String userType) {
 		this.userType = userType;
+	}
+
+	public String getRepassword() {
+		return repassword;
+	}
+
+	public void setRepassword(String repassword) {
+		this.repassword = repassword;
 	}
 
 }

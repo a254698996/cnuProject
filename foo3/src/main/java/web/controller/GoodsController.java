@@ -2,6 +2,7 @@ package web.controller;
 
 import java.io.File;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -29,13 +30,16 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import web.conf.SysInit;
 import web.dto.GoodsDto;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
+import web.entity.User;
 import web.service.IGoodsCategoryService;
 import web.service.IGoodsPicService;
 import web.service.IGoodsService;
+import web.util.SessionUtil;
 
 @Controller
 @RequestMapping("/goods")
@@ -58,7 +62,7 @@ public class GoodsController {
 
 	@RequestMapping(value = "showGoods", method = RequestMethod.GET)
 	public ModelAndView showGoods(Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,HttpServletRequest request) {
-		Page page = goodsService.getList(pageIndex, 100, null, _SCH_name,null);
+		Page page = goodsService.getList(pageIndex, 100, null, _SCH_name,null,null);
 		ModelAndView mav = new ModelAndView(getPath("showGoods"));
 		mav.getModel().put("steps", page.getPageSize());
 		mav.getModel().put("pageIndex", pageIndex);
@@ -90,7 +94,7 @@ public class GoodsController {
 //		User currUser = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
  
 //		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, currUser.getId()+"", _SCH_name);
-		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, null, _SCH_name,null);
+		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, null, _SCH_name,null,null);
 		 
 		ModelAndView mav = new ModelAndView(getPath("goodsList"));
 		mav.getModelMap().put("goodsList", page.getList());
@@ -167,7 +171,7 @@ public class GoodsController {
 	}
 
 	@RequestMapping(value = "addGoods", method = RequestMethod.POST)
-	public ModelAndView addGoods(Goods goods, Integer[] goodsPicIds) {
+	public ModelAndView addGoods(Goods goods, Integer[] goodsPicIds,HttpServletRequest request) {
 		String goodsId = UUID.randomUUID().toString();
 		
 		if(goodsPicIds!=null &&goodsPicIds.length>0){
@@ -179,23 +183,54 @@ public class GoodsController {
 					goods.setTitleUrl(goodsPic.getUrl());
 				}
 			}
+		}else{
+			ModelAndView mav = new ModelAndView(getPath("addGoods"));
+			mav.addObject("msg", "至少需要上传一张图片");
+			return mav;
 		}
-		
+		User currUser = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+		goods.setUserId(currUser.getId());
 		goods.setId(goodsId);
+		goods.setAdminGrounding(Goods.GROUNDING);
+		goods.setSendDate(new Timestamp(System.currentTimeMillis()));
 		goodsService.save(goods);
 		
-		return new ModelAndView("redirect:/goods/list");
+//		return new ModelAndView("redirect:/goods/list");
+		return new ModelAndView("redirect:/user/owner");
 	}
 
 	@RequestMapping(value = "grounding/{id}", method = RequestMethod.GET)
-	public ModelAndView grounding(@PathVariable String id) {
+	public ModelAndView grounding(@PathVariable String id,HttpServletRequest request) {
 		Goods goods = goodsService.get(id);
+		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER );
+		user.getRoleSet().contains("admin");
+		
 		if (goods.getState() == Goods.NOT_GROUNDING) {
 			goods.setState(Goods.GROUNDING);
 		} else {
 			goods.setState(Goods.NOT_GROUNDING);
 		}
+		if(goods.getAdminGrounding() == Goods.GROUNDING){
+			goodsService.update("web.entity.Goods", goods);
+			Page page = goodsService.getList(Page.defaultStartIndex, 16, null, null, null,Goods.GROUNDING);
+			SysInit.goodsList = page.getList();
+		}
+		return new ModelAndView("redirect:/user/owner");
+	}
+	
+	@RequestMapping(value = "adminGrounding/{id}", method = RequestMethod.GET)
+	public ModelAndView adminGrounding(@PathVariable String id,HttpServletRequest request) {
+		Goods goods = goodsService.get(id);
+		if (goods.getState() == Goods.NOT_GROUNDING) {
+			goods.setState(Goods.GROUNDING);
+			goods.setAdminGrounding(Goods.GROUNDING);
+		} else {
+			goods.setAdminGrounding(Goods.NOT_GROUNDING);
+			goods.setState(Goods.NOT_GROUNDING);
+		}
 		goodsService.update("web.entity.Goods", goods);
+		Page page = goodsService.getList(Page.defaultStartIndex, 16, null, null, null,Goods.GROUNDING);
+		SysInit.goodsList = page.getList();
 		return new ModelAndView("redirect:/goods/list");
 	}
 
@@ -265,9 +300,11 @@ public class GoodsController {
 		if (goodsPicList != null && !goodsPicList.isEmpty()) {
 			goods.setTitleUrl(goodsPicList.get(0).getUrl());
 		}
+		goods.setSendDate(new Timestamp(System.currentTimeMillis()));
 		goodsService.update(goods);
 		
-		return new ModelAndView("redirect:/goods/list");
+//		return new ModelAndView("redirect:/goods/list");
+		return new ModelAndView("redirect:/user/owner");
 	}
 
 	private Goods getGoodsById(String id) {

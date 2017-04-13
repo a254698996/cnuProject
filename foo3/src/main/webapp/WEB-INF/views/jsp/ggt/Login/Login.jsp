@@ -267,7 +267,7 @@
             <div class="Loright">
                 <div class="LoPic">
                 </div>
-                <a href="../Regist/Regist.htm"></a>
+                <a href="${ctx }/user/toReg"></a>
             </div>
         </div>
         

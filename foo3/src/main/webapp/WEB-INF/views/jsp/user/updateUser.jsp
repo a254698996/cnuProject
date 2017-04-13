@@ -19,7 +19,7 @@
     });
 </script>
     <div class="Ioutside">
-      	<form action="<%=request.getContextPath() %>/user/reg" method="post">
+      <form action="<%=request.getContextPath() %>/user/user" method="post">
         <div class="ReContent">
             <table class="table2">
                 <tr>
@@ -27,7 +27,8 @@
 <span style="color: red;">*</span> 用 户 名：
                     </td>
                     <td style="width: 300px;">
-                        <input type="text" name="username" id="username" />
+                        <input type="text" name="username" id="username" value="${user.username }" />
+                        <input type="hidden" name="id" value="${user.id } " />
                     </td>
                     <td>
                         <div id="UserAccTip" style="width: 181px; position: relative;">
@@ -63,7 +64,7 @@
 <span style="color: red;">*</span> 电子邮箱：
                     </td>
                     <td>
-                        <input type="text" name="email" id="email" />
+                        <input type="text" name="email" id="email" value="${user.email }" />
                     </td>
                     <td>
                         <div id="EmailTip" style="width: 181px; position: relative;">
@@ -75,7 +76,7 @@
 <span style="color: red;">*</span>  电话：
                     </td>
                     <td>
-                        <input type="text" name="phone" id="phone" />
+                        <input type="text" name="phone" id="phone" value="${user.phone }" />
                     </td>
                     <td>
                         <div id="EmailTip" style="width: 181px; position: relative;">
@@ -87,7 +88,7 @@
 <span style="color: red;">*</span> 学号：
                     </td>
                     <td>
-                        <input type="text" name="sno" id="sno" />
+                        <input type="text" name="sno" id="sno" value="${user.sno }" />
                     </td>
                     <td>
                         <div id="EmailTip" style="width: 181px; position: relative;">
@@ -99,7 +100,7 @@
 <span style="color: red;">*</span> 姓名：
                     </td>
                     <td>
-                        <input type="text" name="sname" id="sname" />
+                        <input type="text" name="sname" id="sname" value="${user.sname }" />
                     </td>
                     <td>
                         <div id="EmailTip" style="width: 181px; position: relative;">
@@ -111,7 +112,7 @@
 <span style="color: red;">*</span> 找回密码问题：
                     </td>
                     <td>
-                        <input type="text" name="passwordask" id="passwordask" />
+                        <input type="text" name="passwordask" id="passwordask"  value="${user.passwordask }" />
                     </td>
                     <td>
                         <div id="EmailTip" style="width: 181px; position: relative;">
@@ -123,7 +124,7 @@
 <span style="color: red;">*</span>  找回密码答案：
                     </td>
                     <td>
-                        <input type="text" name="passwordanswer" id="passwordanswer" />
+                        <input type="text" name="passwordanswer" id="passwordanswer"  value="${user.passwordanswer }" />
                     </td>
                     <td>
                         <div id="EmailTip" style="width: 181px; position: relative;">
@@ -144,11 +145,12 @@
                         &nbsp;
                     </td>
                     <td>
-                        <input type="image" src="http://www.maliuer.com/App_Themes/UI/Images/rere_r2_c2.jpg" id="tijiao" value=""
-                            style="float: left;" />
-                        <input type="reset" value="" style="background-image: url(http://www.maliuer.com/App_Themes/UI/Images/re_r2_c4.jpg);
-                            border: solid 0px red; height: 34px; width: 90px; float: left; margin-left: 10px;
-                            cursor: pointer;" />
+<!--                         <input type="image" src="http://www.maliuer.com/App_Themes/UI/Images/rere_r2_c2.jpg" id="tijiao" value="" -->
+<!--                             style="float: left;" /> -->
+<!--                         <input type="reset" value="" style="background-image: url(http://www.maliuer.com/App_Themes/UI/Images/re_r2_c4.jpg); -->
+<!-- /*                             border: solid 0px red; height: 34px; width: 90px; float: left; margin-left: 10px; */ -->
+<!--                             cursor: pointer;" /> -->
+							<input type="submit" value="提交">
                     </td>
                     <td>
                         <div id="Div4" style="width: 181px">

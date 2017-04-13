@@ -76,7 +76,7 @@ public class ExchangeGroupController {
 		ExchangeGroup exchangeGroup = exchangeGroupService.get(id);
 
 		Page goodsList = goodsService.getList(Page.defaultStartIndex, Integer.MAX_VALUE, userIdParam, null,
-				exchangeGroup.getId());
+				exchangeGroup.getId(),null);
 
 		ModelAndView mav = new ModelAndView(getPath("exchangeGroupList"));
 		mav.getModelMap().put("exchangeGroup", exchangeGroup);

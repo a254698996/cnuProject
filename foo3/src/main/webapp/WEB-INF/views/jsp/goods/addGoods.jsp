@@ -1,3 +1,5 @@
+<%@page import="web.conf.SysInit"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
@@ -28,7 +30,12 @@
 	href="${ctx}/static/bootstrap-fileinput/css/fileinput.min.css">
 <script type="text/javascript">
 	$(document).ready(function() {
-		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic","${ctx}/goods/deleteGoodsPic")
+		initFileInput("file-Portrait1", "${ctx}/goods/addGoodsPic","${ctx}/goods/deleteGoodsPic");
+ 		//后台返回提示
+			var code=$('#msg').val();
+			if(code!=''){
+				$('#myModal').modal('show');
+			}
 	});
 	function initFileInput(ctrlName, uploadUrl,deleteUrl) {
 		var control = $('#' + ctrlName);
@@ -114,7 +121,9 @@
 		<label class="control-lable">大类</label>
 		  <select onchange="selectCode(this)" name="goodsCategoryCode">
 			<option>请选择</option>
-			<c:forEach items="${pList }" var="goodsCategory">
+			   <% List<Object> goodsCategoryList = SysInit.goodsCategoryList;  
+					pageContext.setAttribute("goodsCategoryList", goodsCategoryList); 	%>
+			<c:forEach items="${goodsCategoryList }" var="goodsCategory">
 				 <option value="<c:out value='${goodsCategory.code}'/>">
 					<c:out value='${goodsCategory.name}' />
 			     </option>
@@ -127,7 +136,23 @@
 		<div class="row" style="height: 300px">
 			<input id="file-Portrait1"  name="files"  type="file" multiple>
 		</div>
-		<input type="submit"/>
+		<input type="submit" id="submitBut" />
 	</form>
+	<!-- 模态框（Modal） -->
+<input type="hidden" value="${msg}" id="msg">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body" id="pageMsg" >${msg}</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 </body>
 </html>

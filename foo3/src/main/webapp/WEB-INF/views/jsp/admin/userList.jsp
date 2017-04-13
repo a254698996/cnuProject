@@ -92,7 +92,7 @@
        <table class="table  table-hover table-bordered">
          <thead>
            <tr>
-             <th>昵称</th>
+<!--              <th>昵称</th> -->
              <th>用户名</th>
              <th>email</th>
              <th>电话</th>
@@ -105,7 +105,7 @@
          <tbody>  
            <c:forEach items="${userList}" var="user" varStatus="itr">
 				<tr>
-					<td>${user.nickname}</td>
+<%-- 					<td>${user.nickname}</td> --%>
                     <td>${user.username}</td>
 					<td>${user.email}</td>
                     <td>${user.phone}</td>

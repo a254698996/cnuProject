@@ -106,7 +106,6 @@ public class DaoConfig {
 
 	@SuppressWarnings("unchecked")
 	@Bean
-	@Lazy
 	public IGoodsCategoryService<GoodsCategory, Serializable> getGoodsCategoryService() {
 		logger.info("IGoodsCategoryService  created");
 		return new GoodsCategoryService(GoodsCategory.class,
@@ -205,7 +204,6 @@ public class DaoConfig {
 
 	@SuppressWarnings("unchecked")
 	@Bean
-	@Lazy
 	public INoticeActivityService<NoticeActivity, Serializable> getNoticeActivityService() {
 		logger.info("INoticeActivityService  created");
 		return new NoticeActivityService(NoticeActivity.class,

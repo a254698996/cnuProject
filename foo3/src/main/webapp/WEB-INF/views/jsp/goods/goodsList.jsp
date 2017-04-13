@@ -19,14 +19,14 @@
      			$("input[name='goodsIds']:checkbox:checked").each(function(index,param){
      				   goodsIds[index]=$(this).val();
      			 });
-     			document.location="${ctx}/goods/groundings/"+goodsIds.toString();
+     			document.location="${ctx}/goods/adminGrounding/"+goodsIds.toString();
      		});
 	    });
      	function update(id) {
    		   document.location="${pageContext.request.contextPath}/goods/toUpdate/"+id;
    		}
  		function grounding(id) {
-  		   document.location="${pageContext.request.contextPath}/goods/grounding/"+id;
+  		   document.location="${pageContext.request.contextPath}/goods/adminGrounding/"+id;
   		}
      </script>
   </head>
@@ -38,20 +38,20 @@
 	  </div>
 	  <button type="submit" class="btn btn-default">搜索</button><br/>
 	</form>
-	 <button type="button" class="btn btn-primary popover-show"
-	            title="错误提示" data-container="body"
-	            data-toggle="popover" 
-	            data-content="没有输入密码"
-	            id="addBut"  >
-	  		         新增
-	    </button>
-	    <button type="button" class="btn btn-primary popover-show"
-	            title="错误提示" data-container="body"
-	            data-toggle="popover" 
-	            data-content="没有输入密码"
-	            id="groundingBut"  >
-	  		    上架
-	    </button>
+<!-- 	 <button type="button" class="btn btn-primary popover-show" -->
+<!-- 	            title="错误提示" data-container="body" -->
+<!-- 	            data-toggle="popover"  -->
+<!-- 	            data-content="没有输入密码" -->
+<!-- 	            id="addBut"  > -->
+<!-- 	  		         新增 -->
+<!-- 	    </button> -->
+<!-- 	    <button type="button" class="btn btn-primary popover-show" -->
+<!-- 	            title="错误提示" data-container="body" -->
+<!-- 	            data-toggle="popover"  -->
+<!-- 	            data-content="没有输入密码" -->
+<!-- 	            id="groundingBut"  > -->
+<!-- 	  		    上架 -->
+<!-- 	    </button> -->
 	<div class="table-responsive">
        <table class="table  table-hover table-bordered">
          <thead>
@@ -82,7 +82,7 @@
 						 </c:choose>
 					</td>
 					<td>
-						<button type="button" class="btn btn-info btn-xs" onclick="update('${goods.id}')">更新</button>
+<%-- 						<button type="button" class="btn btn-info btn-xs" onclick="update('${goods.id}')">更新</button> --%>
 						 <c:choose>
 						     <c:when test="${goods.state eq 1 }">
 						      		<button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">下架</button>

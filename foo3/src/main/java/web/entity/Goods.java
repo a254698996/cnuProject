@@ -1,6 +1,7 @@
 package web.entity;
 
 import java.io.Serializable;
+import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -38,6 +39,11 @@ public class Goods implements Serializable {
 	private String goodsCategorySubName;
 
 	private int state;
+
+	private int adminGrounding;
+	
+	@Column(name = "send_date")
+	private Timestamp sendDate;
 
 	public int getState() {
 		return state;
@@ -125,6 +131,22 @@ public class Goods implements Serializable {
 
 	public void setUserId(int userId) {
 		this.userId = userId;
+	}
+
+	public int getAdminGrounding() {
+		return adminGrounding;
+	}
+
+	public void setAdminGrounding(int adminGrounding) {
+		this.adminGrounding = adminGrounding;
+	}
+
+	public Timestamp getSendDate() {
+		return sendDate;
+	}
+
+	public void setSendDate(Timestamp sendDate) {
+		this.sendDate = sendDate;
 	}
 
 }

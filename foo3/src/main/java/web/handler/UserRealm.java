@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import web.content.Constant;
 import web.entity.User;
 import web.service.IUserService;
+import web.util.SessionUtil;
 
 //  http://jinnianshilongnian.iteye.com/blog/2022468
 @Component("myRealm")
@@ -58,6 +59,7 @@ public class UserRealm extends AuthorizingRealm {
 				user.getPassword(), // 密码
 				getName() // realm name
 		);
+		
 		return authenticationInfo;
 	}
 }

@@ -10,6 +10,8 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_notice_activity")
 public class NoticeActivity extends BaseEntity {
+	public static final int NOTICE = 1;
+	public static final int ACTIVITY = 2;
 
 	private int type;
 	private String name;

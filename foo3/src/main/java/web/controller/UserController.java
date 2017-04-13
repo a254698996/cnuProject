@@ -1,11 +1,11 @@
 package web.controller;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.AuthenticationException;
 import org.apache.shiro.authc.LockedAccountException;
@@ -19,6 +19,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -27,17 +28,21 @@ import com.hibernate.dao.base.Page;
 import web.content.Constant;
 import web.content.Constant.UserType;
 import web.dto.UserDto;
+import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.NoticeActivity;
 import web.entity.Role;
 import web.entity.User;
 import web.entity.UserRole;
 import web.service.IGoodsCategoryService;
+import web.service.IGoodsService;
 import web.service.INoticeActivityService;
 import web.service.IRoleService;
 import web.service.IUserRoleService;
 import web.service.IUserService;
 import web.util.MD5Tools;
+import web.util.RegexValidateUtil;
+import web.util.SessionUtil;
 
 @Controller
 @RequestMapping("/user")
@@ -66,6 +71,10 @@ public class UserController {
 	@Lazy
 	INoticeActivityService<NoticeActivity, Serializable> noticeActivityService;
 
+	@Autowired
+	@Lazy
+	IGoodsService<Goods, Serializable> goodsService;
+
 	@RequestMapping(value = "toLogin", method = RequestMethod.GET)
 	public String toLogin() {
 		return "ggt/Login/Login";
@@ -75,20 +84,23 @@ public class UserController {
 	public ModelAndView userIndex() {
 		ModelAndView modelAndView = new ModelAndView("ggt/index");
 
-		Page goodsCategoryPage =goodsCategoryService.pagedQuery("from GoodsCategory g where g.pcode is null ", Page.defaultStartIndex, 7);
-		modelAndView.addObject("goodsCategoryList", goodsCategoryPage.getList());
-
-		Page pagedQuery = noticeActivityService.pagedQuery(
-				"from NoticeActivity n where n.type=1 and n.state=? and n.endDate >= ? and n.sendDate <=? ", Page.defaultStartIndex, 3,
-				new Object[]{ Constant.State.STATE_NORMAL, new Date(),new Date()});
-		modelAndView.addObject("noticeList", pagedQuery.getList());
-		  pagedQuery = noticeActivityService.pagedQuery(
-				"from NoticeActivity n where n.type=2 and n.state=? and n.endDate >= ? and n.sendDate <=? ", Page.defaultStartIndex, 4,
-				new Object[]{ Constant.State.STATE_NORMAL, new Date(),new Date()});
-		modelAndView.addObject("activityList", pagedQuery.getList());
-
-		// pagedQuery = noticeActivityService.pagedQuery("from NoticeActivity n
-		// where n.type=2 and state=1 ", Page.defaultStartIndex, 3 );
+		// Page goodsCategoryPage = goodsCategoryService.pagedQuery("from
+		// GoodsCategory g where g.pcode is null ",
+		// Page.defaultStartIndex, 7);
+		// modelAndView.addObject("goodsCategoryList",
+		// goodsCategoryPage.getList());
+		//
+		// Page pagedQuery = noticeActivityService.pagedQuery(
+		// "from NoticeActivity n where n.type=1 and n.state=? and n.endDate >=
+		// ? and n.sendDate <=? ",
+		// Page.defaultStartIndex, 3, new Object[] {
+		// Constant.State.STATE_NORMAL, new Date(), new Date() });
+		// modelAndView.addObject("noticeList", pagedQuery.getList());
+		// pagedQuery = noticeActivityService.pagedQuery(
+		// "from NoticeActivity n where n.type=2 and n.state=? and n.endDate >=
+		// ? and n.sendDate <=? ",
+		// Page.defaultStartIndex, 4, new Object[] {
+		// Constant.State.STATE_NORMAL, new Date(), new Date() });
 		// modelAndView.addObject("activityList", pagedQuery.getList());
 
 		return modelAndView;
@@ -96,22 +108,21 @@ public class UserController {
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
 	public ModelAndView userLogin(User user, HttpServletRequest request) {
-		// User returnUser = userService.getUserAllInfo(user);
-		// if (returnUser != null) {
-		// SessionUtil.setAttribute(request, User.SESSION_USER, returnUser);
 		try {
 			UsernamePasswordToken usernamePasswordToken = new UsernamePasswordToken(user.getUsername(),
 					MD5Tools.MD5(user.getPassword()));
 			SecurityUtils.getSubject().login(usernamePasswordToken);
+			User userAllInfo = userService.getUserAllInfo(user);
+			SessionUtil.setAttribute(request, User.SESSION_USER, userAllInfo);
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
 
 			ModelAndView modelAndView = new ModelAndView("ggt/Login/Login");
 			if (e instanceof LockedAccountException) {
 				modelAndView.addObject("msg", "该用被锁定");
-			}else if(e instanceof UnknownAccountException){
+			} else if (e instanceof UnknownAccountException) {
 				modelAndView.addObject("msg", "用户名或密码错误");
-			}else {
+			} else {
 				modelAndView.addObject("msg", "未知错误");
 			}
 			return modelAndView;
@@ -145,9 +156,48 @@ public class UserController {
 
 	@RequestMapping(value = "reg", method = RequestMethod.POST)
 	public ModelAndView reg(User user) {
+		ModelAndView modelAndView = new ModelAndView(getPath("reg"));
+		if (StringUtils.isBlank(user.getUsername())) {
+			modelAndView.addObject("msg", "用户名不能为空");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getPassword())) {
+			modelAndView.addObject("msg", "密码不能为空");
+			return modelAndView;
+		}
+		if (!user.getPassword().equals(user.getRepassword())) {
+			modelAndView.addObject("msg", "两次输入密码不一至");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getEmail()) || !RegexValidateUtil.checkEmail(user.getEmail())) {
+			modelAndView.addObject("msg", "邮箱为空或者格式不正确");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getPhone()) || !RegexValidateUtil.checkMobileNumber(user.getPhone())) {
+			modelAndView.addObject("msg", "电话为空或者格式不正确");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getSno())) {
+			modelAndView.addObject("msg", "学号不能为空");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getSname())) {
+			modelAndView.addObject("msg", "姓名不能为空");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getPasswordask())) {
+			modelAndView.addObject("msg", "密码找回问题不能为空");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getPasswordanswer())) {
+			modelAndView.addObject("msg", "密码找回答案不能为空");
+			return modelAndView;
+		}
+
 		boolean unique = userService.isUnique(user, "username");
 		if (unique) {
 			user.setPassword(MD5Tools.MD5(user.getPassword()));
+			user.setState(Constant.State.STATE_NORMAL);
 			userService.save(user);
 
 			List<Role> roleList = roleService.findBy("name", "user");
@@ -159,7 +209,6 @@ public class UserController {
 				userRoleService.save(userRole);
 			}
 		} else {
-			ModelAndView modelAndView = new ModelAndView(getPath("reg"));
 			modelAndView.addObject("msg", "用户名称重复");
 			return modelAndView;
 		}
@@ -199,6 +248,78 @@ public class UserController {
 		}
 		// return new ModelAndView(getPath("userLogin"));
 		return new ModelAndView("redirect:/user/toLogin");
+	}
+
+	@RequestMapping(value = "owner", method = RequestMethod.GET)
+	public ModelAndView owner(String _SCH_name, Integer exchangeGroupId,
+			@RequestParam(required = false) Integer pageIndex, HttpServletRequest request) {
+
+		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+		Page page = goodsService.getList(Page.defaultStartIndex, Page.defaultPageSize, user.getId(), _SCH_name,
+				exchangeGroupId, null);
+
+		ModelAndView mav = new ModelAndView(getPath("owner"));
+		mav.getModelMap().put("goodsList", page.getList());
+		mav.getModel().put("steps", page.getPageSize());
+		mav.getModel().put("pageIndex", pageIndex);
+		mav.getModel().put("count", page.getTotalCount());
+		return mav;
+	}
+
+	@RequestMapping(value = "toUpdate", method = RequestMethod.GET)
+	public ModelAndView toUpdate(HttpServletRequest request) {
+		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+		ModelAndView modelAndView = new ModelAndView("user/updateUser");
+		modelAndView.addObject("user", user);
+		return modelAndView;
+	}
+
+	@RequestMapping(value = "user", method = RequestMethod.POST)
+	public ModelAndView user(User user, HttpServletRequest request) {
+		ModelAndView modelAndView = new  ModelAndView("user/updateUser");
+		if (StringUtils.isBlank(user.getUsername())) {
+			modelAndView.addObject("msg", "用户名不能为空");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getPassword())) {
+			modelAndView.addObject("msg", "密码不能为空");
+			return modelAndView;
+		}
+		if (!user.getPassword().equals(user.getRepassword())) {
+			modelAndView.addObject("msg", "两次输入密码不一至");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getEmail()) || !RegexValidateUtil.checkEmail(user.getEmail())) {
+			modelAndView.addObject("msg", "邮箱为空或者格式不正确");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getPhone()) || !RegexValidateUtil.checkMobileNumber(user.getPhone())) {
+			modelAndView.addObject("msg", "电话为空或者格式不正确");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getSno())) {
+			modelAndView.addObject("msg", "学号不能为空");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getSname())) {
+			modelAndView.addObject("msg", "姓名不能为空");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getPasswordask())) {
+			modelAndView.addObject("msg", "密码找回问题不能为空");
+			return modelAndView;
+		}
+		if (StringUtils.isBlank(user.getPasswordanswer())) {
+			modelAndView.addObject("msg", "密码找回答案不能为空");
+			return modelAndView;
+		}
+
+		user.setPassword(MD5Tools.MD5(user.getPassword()));
+		user.setState(Constant.State.STATE_NORMAL);
+
+		userService.update(user);
+		SessionUtil.setAttribute(request, User.SESSION_USER, user);
+		return new ModelAndView("redirect:/user/owner");
 	}
 
 	private String getPath(String path) {
