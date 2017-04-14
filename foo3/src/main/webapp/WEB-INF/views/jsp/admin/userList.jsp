@@ -111,9 +111,26 @@
                     <td>${user.phone}</td>
 					<td>${user.sno}</td>
                     <td>${user.sname}</td>  
-                    <td>${user.state}</td>                   
+                    <td>
+                    	<c:choose>
+						     <c:when test="${user.state eq 1 }">
+						        	正常
+						     </c:when>
+							 <c:otherwise >
+							  		锁定
+							 </c:otherwise>
+						 </c:choose>
+                     </td>                   
 					<td>
-						<button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${user.id}')">禁用</button>
+						<c:choose>
+						     <c:when test="${user.state eq 1 }">
+						      		<button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${user.id}')">锁定</button>
+						     </c:when>
+							 <c:otherwise >
+								  <button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${user.id}')">正常</button>
+							 </c:otherwise>
+						 </c:choose>
+						
 						<button type="button" class="btn btn-info btn-xs" onclick="addRole('${user.id}')">更新角色</button>
 					</td>
 				</tr>

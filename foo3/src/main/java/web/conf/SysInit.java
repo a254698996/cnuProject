@@ -49,49 +49,12 @@ public class SysInit implements InitializingBean {
 
 	@Override
 	public void afterPropertiesSet() throws Exception {
-		setActivityList(null);
-		setGoodsCategoryList(null);
-		setNoticeList(null);
-		setGoodsList(null);
+		Page page = goodsService.getList(Page.defaultStartIndex, 16, null, null, null, Goods.GROUNDING);
+		SysInit.goodsList = page.getList();
+		page = goodsCategoryService.pagedQuery("from GoodsCategory g where g.pcode is null ", Page.defaultStartIndex,
+				7);
+		SysInit.goodsCategoryList = page.getList();
+		SysInit.noticeList = noticeActivityService.getIndexNoticeList(3);
+		SysInit.activityList = noticeActivityService.getIndexActivityList(4);
 	}
-
-	public static void reSetGoodsList(List<Object> goodsList) {
-		SysInit.goodsList = goodsList;
-	}
-
-	public void setGoodsList(List<Object> goodsList) {
-		if (goodsList != null) {
-			SysInit.goodsList = goodsList;
-		} else {
-			Page page = goodsService.getList(Page.defaultStartIndex, 16, null, null, null, Goods.GROUNDING);
-			SysInit.goodsList = page.getList();
-		}
-	}
-
-	public void setGoodsCategoryList(List<Object> goodsCategoryList) {
-		if (goodsCategoryList != null) {
-			SysInit.goodsCategoryList = goodsCategoryList;
-		} else {
-			Page page = goodsCategoryService.pagedQuery("from GoodsCategory g where g.pcode is null ",
-					Page.defaultStartIndex, 7);
-			SysInit.goodsCategoryList = page.getList();
-		}
-	}
-
-	public void setNoticeList(List<Object> noticeList) {
-		if (noticeList != null) {
-			SysInit.noticeList = noticeList;
-		} else {
-			SysInit.noticeList = noticeActivityService.getIndexNoticeList(3);
-		}
-	}
-
-	public void setActivityList(List<Object> activityList) {
-		if (activityList != null) {
-			SysInit.activityList = activityList;
-		} else {
-			SysInit.activityList = noticeActivityService.getIndexActivityList(4);
-		}
-	}
-	
 }

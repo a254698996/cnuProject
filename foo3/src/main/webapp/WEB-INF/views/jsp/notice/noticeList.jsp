@@ -6,9 +6,12 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"><html>
   <head>
     <title>公告活动列表</title>
-    <link href="${ctx}/static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="${ctx}/static/bootstrap/css/bootstrap.min.css" rel="stylesheet" media="screen">
+    <link href="${ctx}/static/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css" rel="stylesheet" media="screen">
     <script src="${ctx}/static/bootstrap/js/jquery.js"></script>
     <script src="${ctx}/static/bootstrap/js/bootstrap.min.js"></script>
+	<script type="text/javascript" src="${ctx}/static/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js" charset="UTF-8"></script>
+	<script type="text/javascript" src="${ctx}/static/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js" charset="UTF-8"></script>
      <script type="text/javascript">
      	$(document).ready(function(){
      		$("#addBtn").click(function(){
@@ -76,14 +79,18 @@
      </script>
   </head>
 <body> 
-<form class="form-inline" action="${ctx}/notice/list">
+<form class="form-inline" action="${ctx}/notice/list" method="get">
 	  <div class="form-group">
-	    <label class="sr-only" for="exampleInputPassword3">学号</label>
-	    <input type="text" name="sno" class="form-control" value="${param.sno}" placeholder="学号">
-	     <label class="sr-only" for="exampleInputPassword3">用户名</label>
-	    <input type="text" name="username" class="form-control" value="${param.username}" placeholder="用户名">
-	     <label class="sr-only" for="exampleInputPassword3">姓名</label>
-	    <input type="text" name="sname" class="form-control" value="${param.sname}" placeholder="姓名">
+	    <label class="sr-only" for="exampleInputPassword3">名称</label>
+	    <input type="text" name="name" class="form-control" value="${param.name}" placeholder="名称">
+	     <label class="sr-only" for="exampleInputPassword3">内容</label>
+	    <input type="text" name="conent" class="form-control" value="${param.conent}" placeholder="内容">
+             <div class="input-group date form_date col-md-5" data-date="" data-date-format="yyyy-mm-dd" data-link-field="dtp_input2" data-link-format="yyyy-mm-dd">
+                 <input class="form-control" size="16" type="text" value="${param.sendDateParam}" readonly>
+                 <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+				<span class="input-group-addon"><span class="glyphicon glyphicon-calendar"></span></span>
+             </div>
+			<input type="hidden" id="dtp_input2" name="sendDateParam" value="${param.sendDateParam}" /><br/>
 	  </div>
 	  <button type="submit" class="btn btn-default">搜索</button><br/>
 	</form>
@@ -108,10 +115,35 @@
                     <td>${notice.conent}</td>
 				    <td>${notice.sendDate}</td>
 				    <td>${notice.endDate}</td>
-				    <td>${notice.type}</td>
-				    <td>${notice.state}</td>
+				    <td>
+				     <c:choose>
+						     <c:when test="${notice.type eq 1 }">
+						        	公告
+						     </c:when>
+							 <c:otherwise >
+							  		活动
+							 </c:otherwise>
+						 </c:choose>
+				    </td>
+				    <td>
+				    <c:choose>
+						     <c:when test="${notice.state eq 1 }">
+						        	启用
+						     </c:when>
+							 <c:otherwise >
+							  		禁用
+							 </c:otherwise>
+						 </c:choose>
+			       </td>
 					<td>
-						<button type="button" class="btn btn-info btn-xs" onclick="changeState('${notice.id}')">禁用</button>
+						<c:choose>
+						     <c:when test="${notice.state eq 1 }">
+						      		<button type="button" class="btn btn-info btn-xs" onclick="changeState('${notice.id}')">禁用</button>
+						     </c:when>
+							 <c:otherwise >
+								  <button type="button" class="btn btn-info btn-xs" onclick="changeState('${notice.id}')">启用</button>
+							 </c:otherwise>
+						 </c:choose>
 					</td>
 				</tr>
 			</c:forEach>
@@ -140,5 +172,20 @@
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
+    
+    <script type="text/javascript">
+   
+		$('.form_date').datetimepicker({
+	        language:  'zh-CN',
+	        weekStart: 1,
+	        todayBtn:  1,
+			autoclose: 1,
+			todayHighlight: 1,
+			startView: 2,
+			minView: 2,
+			forceParse: 0
+	    });
+		 
+    </script>
 </body>
 </html>

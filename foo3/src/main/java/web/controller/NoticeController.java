@@ -1,9 +1,12 @@
 package web.controller;
 
 import java.io.Serializable;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import web.conf.SysInit;
 import web.content.Constant;
 import web.entity.NoticeActivity;
 import web.service.INoticeActivityService;
+import web.util.DateFormatUtil;
 
 @Controller
 @RequestMapping("/notice")
@@ -34,7 +38,7 @@ public class NoticeController {
 	INoticeActivityService<NoticeActivity, Serializable> noticeActivityService;
 
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public ModelAndView list(NoticeActivity user, @RequestParam(required = false) Integer pageIndex) {
+	public ModelAndView list(NoticeActivity notice,String sendDateParam, @RequestParam(required = false) Integer pageIndex) {
 		if (pageIndex == null) {
 			pageIndex = Page.defaultStartIndex;
 		}
@@ -42,20 +46,24 @@ public class NoticeController {
 
 		List<Object> list = new ArrayList<Object>();
 
-		// if (StringUtils.isNotBlank(user.getSno())) {
-		// hql += "and u.sno like ? ";
-		// list.add("%" + user.getSno() + "%");
-		// }
-		//
-		// if (StringUtils.isNotBlank(user.getSname())) {
-		// hql += "and u.sname like ? ";
-		// list.add("%" + user.getSname() + "%");
-		// }
-		//
-		// if (StringUtils.isNotBlank(user.getUsername())) {
-		// hql += "and u.username like ? ";
-		// list.add("%" + user.getUsername() + "%");
-		// }
+		 if (StringUtils.isNotBlank(notice.getName())) {
+		 hql += "and u.name like ? ";
+		 list.add("%" + notice.getName() + "%");
+		 }
+		
+		 if (StringUtils.isNotBlank(notice.getConent())) {
+		 hql += "and u.conent like ? ";
+		 list.add("%" + notice.getConent() + "%");
+		 }
+		
+		 if (sendDateParam!=null) {
+			 try {
+				 Date parse = DateFormatUtil.getDateFormat(DateFormatUtil.DEFAULT_DATE_FORMAT).parse(sendDateParam);
+				 list.add(parse);
+				 hql += "and  ? between u.sendDate  and u.endDate ";
+			} catch (ParseException e) {
+			}
+		 }
 
 		Page page = noticeActivityService.pagedQuery(hql, pageIndex, Page.defaultPageSize, list.toArray());
 

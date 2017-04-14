@@ -146,7 +146,7 @@
 			<div class="top_inner">
 				<div class="logo">
 					<a href="">
-						<img src="${ctx}/static/ggt/App_Themes/UI/images/logo.gif" width="263" height="58" alt="麻溜儿" /></a>
+						<img  src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="263" height="58" alt="麻溜儿" /></a>
 				</div>
 				<div class="logo_r">
 					<div class="guanzhu">
@@ -191,7 +191,7 @@
 				%>
 				<c:forEach items="${goodsCategoryList }" var="gc" >
 				  	 <li>
-						<a href="${ctx}/user/userIndex" title="${gc.ename }"><span class="yinwen">${gc.ename }</span><span class="zhongwen">${gc.name }</span></a>
+						<a href="${ctx}/user/indexList/${gc.id}" title="${gc.ename }"><span class="yinwen">${gc.ename }</span><span class="zhongwen">${gc.name }</span></a>
 					</li>
 				</c:forEach>
 <!-- 					<li class="last_nav_li" title="生活超市"> -->

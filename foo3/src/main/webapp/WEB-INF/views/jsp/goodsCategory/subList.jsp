@@ -47,7 +47,7 @@
              <th>编码</th>
              <th>名称</th>
              <th>父码</th>
-             <th>是否是子码</th>
+<!--              <th>是否是子码</th> -->
              <th>操作</th>
            </tr>
          </thead>
@@ -57,7 +57,7 @@
 					<td>${goodsCategory.code}</td>
                     <td>${goodsCategory.name}</td>
 					<td>${goodsCategory.pcode}</td>
-					<td>${goodsCategory.isSub}</td>
+<%-- 					<td>${goodsCategory.isSub}</td> --%>
 					<td>
 						<button type="button" class="btn btn-info btn-xs" onclick="changeState('${goodsCategory.id}')">禁用</button>
 						<button type="button" class="btn btn-info btn-xs" onclick="updateSub('${goodsCategory.id}')">更新</button>

@@ -8,29 +8,38 @@
 					<div id="gamesHolder">
 						<div id="games" style="overflow: hidden;">
 
-							<a href="http://www.maliuer.com/Home/Detail/13.htm" target="_blank">
-								<img src="${ctx}/upload/2012-05-03/2012050316115003848049.jpg" class="hd"><span><b>麻溜儿网校园代理火热招募中…</b></span></a>
+<!-- 							<a href="http://www.maliuer.com/Home/Detail/13.htm" target="_blank"> -->
+								<img src="${ctx}/upload/index/B1.jpg" class="hd"><span><b>麻溜儿网校园代理火热招募中…</b></span>
+<!-- 								</a> -->
 
-							<a href="http://www.maliuer.com/LuckDraw/Index.htm" target="_blank">
-								<img src="${ctx}/upload/2012-05-22/2012052221044338315841.jpg" class="hd"><span><b>即日起发布闲置物品，即可参与幸运大抽奖活动！轻轻点击入场吧！</b></span></a>
+<!-- 							<a href="http://www.maliuer.com/LuckDraw/Index.htm" target="_blank"> -->
+								<img src="${ctx}/upload/index/B2.jpg" class="hd"><span><b>即日起发布闲置物品，即可参与幸运大抽奖活动！轻轻点击入场吧！</b></span>
+<!-- 								</a> -->
 
-							<a href="http://www.maliuer.com" target="_blank">
-								<img src="${ctx}/upload/2012-03-12/2012031214490142631528.jpg" class="hd"><span><b>挖掘寝室新价值，引领节约新风潮！</b></span></a>
 
-							<a href="http://www.maliuer.com" target="_blank">
-								<img src="${ctx}/upload/2012-03-12/2012031214490144202186.jpg" class="hd"><span><b>麻溜儿网正式开放测试，欢迎您提出宝贵意见，我们将虚心聆听！</b></span></a>
+<!-- 							<a href="http://www.maliuer.com/Home/Detail/13.htm" target="_blank"> -->
+<%-- 								<img src="${ctx}/upload/2012-05-03/2012050316115003848049.jpg" class="hd"><span><b>麻溜儿网校园代理火热招募中…</b></span></a> --%>
 
-							<a href="http://www.maliuer.com/Login/Login.htm" target="_blank">
-								<img src="${ctx}/upload/2012-03-12/2012031214490150453772.jpg" class="hd"><span><b>身边的人都已经加入麻溜儿啦！身为大学生一员的你还在等什么？快来加入吧！</b></span></a>
+<!-- 							<a href="http://www.maliuer.com/LuckDraw/Index.htm" target="_blank"> -->
+<%-- 								<img src="${ctx}/upload/2012-05-22/2012052221044338315841.jpg" class="hd"><span><b>即日起发布闲置物品，即可参与幸运大抽奖活动！轻轻点击入场吧！</b></span></a> --%>
 
-							<a href="http://mall.maliuer.com" target="_blank">
-								<img src="${ctx}/upload/2012-03-12/2012031214503639874276.jpg" class="hd"><span><b>麻溜儿商城，打造大学生自己的精品商城，现在下单即有精美礼品赠送哦！</b></span></a>
+<!-- 							<a href="http://www.maliuer.com" target="_blank"> -->
+<%-- 								<img src="${ctx}/upload/2012-03-12/2012031214490142631528.jpg" class="hd"><span><b>挖掘寝室新价值，引领节约新风潮！</b></span></a> --%>
 
-							<a href="http://www.maliuer.com/Login/Login.htm" target="_blank">
-								<img src="${ctx}/upload/2012-03-12/2012031214552472234842.jpg" class="hd"><span><b>2012登船集结号！赶快卖了闲置物品，攒钱买船票吧！</b></span></a>
+<!-- 							<a href="http://www.maliuer.com" target="_blank"> -->
+<%-- 								<img src="${ctx}/upload/2012-03-12/2012031214490144202186.jpg" class="hd"><span><b>麻溜儿网正式开放测试，欢迎您提出宝贵意见，我们将虚心聆听！</b></span></a> --%>
 
-							<a href="http://www.maliuer.com" target="_blank">
-								<img src="${ctx}/upload/2012-03-12/2012031214560295829234.jpg" class="hd"><span><b>挖掘寝室新价值，引领节约新风潮！</b></span></a>
+<!-- 							<a href="http://www.maliuer.com/Login/Login.htm" target="_blank"> -->
+<%-- 								<img src="${ctx}/upload/2012-03-12/2012031214490150453772.jpg" class="hd"><span><b>身边的人都已经加入麻溜儿啦！身为大学生一员的你还在等什么？快来加入吧！</b></span></a> --%>
+
+<!-- 							<a href="http://mall.maliuer.com" target="_blank"> -->
+<%-- 								<img src="${ctx}/upload/2012-03-12/2012031214503639874276.jpg" class="hd"><span><b>麻溜儿商城，打造大学生自己的精品商城，现在下单即有精美礼品赠送哦！</b></span></a> --%>
+
+<!-- 							<a href="http://www.maliuer.com/Login/Login.htm" target="_blank"> -->
+<%-- 								<img src="${ctx}/upload/2012-03-12/2012031214552472234842.jpg" class="hd"><span><b>2012登船集结号！赶快卖了闲置物品，攒钱买船票吧！</b></span></a> --%>
+
+<!-- 							<a href="http://www.maliuer.com" target="_blank"> -->
+<%-- 								<img src="${ctx}/upload/2012-03-12/2012031214560295829234.jpg" class="hd"><span><b>挖掘寝室新价值，引领节约新风潮！</b></span></a> --%>
 
 						</div>
 					</div>
@@ -43,7 +52,7 @@
 					pageContext.setAttribute("noticeList", noticeList);
 				%>
                      <c:forEach items="${noticeList }" var="notice">
-	                     <li> <a class="ggao" href="Home/Detail/13.htm">
+	                     <li> <a class="ggao" href="${ctx }/user/indexNotice/${notice.id }">
 								${notice.conent }</a><span class="gonggao_date">
 								[ <fmt:formatDate type="date"  value="${notice.sendDate }" />]
 								</span></li>
@@ -121,13 +130,13 @@
                           <c:forEach items="${activityList}" var="active" varStatus="status">  
 								<li>
 									<div class="hot_tu">
-										<a href="Home/Detail/14.htm" target="_blank">
+										<a href="${ctx }/user/indexNotice/${active.id }" target="_blank">
 											<img src="${ctx}/upload/${active.imgUrl }" width="100" height="100" />
 										</a>	
 									</div>
 									<span class="hot_num">Hot EVENTS.0${ status.index + 1}</span>
 									<h2>
-		                            <a href="Home/Detail/14.htm" target="_blank">${active.name }</a>
+		                            <a href="${ctx }/user/indexNotice/${active.id }" target="_blank">${active.name }</a>
 		                        </h2>
 									<span class="hot_date">[ <fmt:formatDate type="date"  value="${active.sendDate }" />]</span>
 								</li>

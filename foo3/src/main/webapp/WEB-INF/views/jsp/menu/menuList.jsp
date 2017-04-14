@@ -49,7 +49,7 @@
            <tr>
              <th>名称</th>
              <th>地址</th>
-             <th>状态</th>
+<!--              <th>状态</th> -->
              <th>操作</th>
            </tr>
          </thead>
@@ -58,9 +58,9 @@
 				<tr>
 					<td>${menu.name}</td>
                     <td>${menu.url}</td>
-					<td>${menu.state}</td>
+<%-- 					<td>${menu.state}</td> --%>
 					<td>
-						<button type="button" class="btn btn-info btn-xs" onclick="changeState('${menu.id}')">禁用</button>
+<%-- 						<button type="button" class="btn btn-info btn-xs" onclick="changeState('${menu.id}')">禁用</button> --%>
 						<button type="button" class="btn btn-info btn-xs" onclick="update('${menu.id}')">更新</button>
 						<button type="button" class="btn btn-info btn-xs" onclick="remove('${menu.id}')">删除</button>
 					</td>

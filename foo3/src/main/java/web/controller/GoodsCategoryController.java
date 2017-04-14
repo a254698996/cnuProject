@@ -15,7 +15,10 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import web.conf.SysInit;
+import web.content.Constant;
 import web.entity.GoodsCategory;
+import web.entity.NoticeActivity;
 import web.service.IGoodsCategoryService;
 
 @Controller

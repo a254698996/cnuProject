@@ -154,7 +154,7 @@ public class AdminController {
 		userService.update(user);
 		return new ModelAndView("redirect:/admin/userList");
 	}
-
+	
 	private String getPath(String path) {
 		return JSP_PATH + path;
 	}

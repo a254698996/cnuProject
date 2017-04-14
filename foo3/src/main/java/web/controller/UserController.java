@@ -1,6 +1,9 @@
 package web.controller;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +20,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -40,6 +44,7 @@ import web.service.INoticeActivityService;
 import web.service.IRoleService;
 import web.service.IUserRoleService;
 import web.service.IUserService;
+import web.util.DateUtil;
 import web.util.MD5Tools;
 import web.util.RegexValidateUtil;
 import web.util.SessionUtil;
@@ -80,30 +85,72 @@ public class UserController {
 		return "ggt/Login/Login";
 	}
 
+	@RequestMapping(value = "indexNotice/{id}", method = RequestMethod.GET)
+	public ModelAndView indexNotice(@PathVariable Integer id ) {
+		NoticeActivity noticeActivity = noticeActivityService.get(id);
+		ModelAndView modelAndView = new ModelAndView("ggt/index_notice");
+		modelAndView.addObject("notice", noticeActivity);
+		return  modelAndView;
+	}
+	
 	@RequestMapping(value = "userIndex", method = RequestMethod.GET)
-	public ModelAndView userIndex() {
-		ModelAndView modelAndView = new ModelAndView("ggt/index");
+	public String userIndex() {
+		return "ggt/index" ;
+	}
+	 
+	@RequestMapping(value = "indexList/{id}", method = RequestMethod.GET)
+	public ModelAndView indexList(@PathVariable Integer id,Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,HttpServletRequest request) {
+		if (pageIndex == null) {
+			pageIndex = Page.defaultStartIndex;
+		}
 
-		// Page goodsCategoryPage = goodsCategoryService.pagedQuery("from
-		// GoodsCategory g where g.pcode is null ",
-		// Page.defaultStartIndex, 7);
-		// modelAndView.addObject("goodsCategoryList",
-		// goodsCategoryPage.getList());
-		//
-		// Page pagedQuery = noticeActivityService.pagedQuery(
-		// "from NoticeActivity n where n.type=1 and n.state=? and n.endDate >=
-		// ? and n.sendDate <=? ",
-		// Page.defaultStartIndex, 3, new Object[] {
-		// Constant.State.STATE_NORMAL, new Date(), new Date() });
-		// modelAndView.addObject("noticeList", pagedQuery.getList());
-		// pagedQuery = noticeActivityService.pagedQuery(
-		// "from NoticeActivity n where n.type=2 and n.state=? and n.endDate >=
-		// ? and n.sendDate <=? ",
-		// Page.defaultStartIndex, 4, new Object[] {
-		// Constant.State.STATE_NORMAL, new Date(), new Date() });
-		// modelAndView.addObject("activityList", pagedQuery.getList());
+		StringBuffer hql = new StringBuffer("select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code   ");
+		Page page = null;
 
-		return modelAndView;
+		List<Object> paramList = new ArrayList<Object>();
+
+		if (StringUtils.isNotBlank(_SCH_name)) {
+			hql.append(" and  g.name like ?");
+			paramList.add("%" + _SCH_name + "%");
+		}
+
+		if (id !=null) {
+			hql.append(" and  c.id = ?");
+			paramList.add(id);
+		} 
+
+		page = goodsService.pagedQuery(hql.toString(), pageIndex, Page.defaultPageSize, paramList.toArray());
+
+		List<Object> list = page.getList();
+		List<Object> goodsList = new ArrayList<>();
+		if (list != null && !list.isEmpty()) {
+			for (Object object : list) {
+				Object[] objs = (Object[]) object;
+				Goods goods = (web.entity.Goods) objs[0];
+				GoodsCategory c = (web.entity.GoodsCategory) objs[1];
+				GoodsCategory subC = (web.entity.GoodsCategory) objs[2];
+				goods.setGoodsCategoryName(c.getName());
+				goods.setGoodsCategorySubName(subC.getName());
+				
+				try {
+					if(goods.getSendDate()!=null){
+						goods.setDaysBetween( DateUtil.daysBetween(goods.getSendDate(), new Date()));
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				goodsList.add(goods);
+			}
+		}
+		page.setList(goodsList);
+		 
+		ModelAndView mav = new ModelAndView("ggt/index_list");
+		mav.getModelMap().put("goodsList", page.getList());
+		mav.getModel().put("steps", page.getPageSize());
+		mav.getModel().put("pageIndex", pageIndex);
+		mav.getModel().put("count", page.getTotalCount());
+		mav.getModel().put("categoryId",id);
+		return mav;
 	}
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)

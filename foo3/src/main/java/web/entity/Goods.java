@@ -44,6 +44,9 @@ public class Goods implements Serializable {
 	
 	@Column(name = "send_date")
 	private Timestamp sendDate;
+	
+	@Transient
+	private int daysBetween;
 
 	public int getState() {
 		return state;
@@ -147,6 +150,14 @@ public class Goods implements Serializable {
 
 	public void setSendDate(Timestamp sendDate) {
 		this.sendDate = sendDate;
+	}
+
+	public int getDaysBetween() {
+		return daysBetween;
+	}
+
+	public void setDaysBetween(int daysBetween) {
+		this.daysBetween = daysBetween;
 	}
 
 }
