@@ -52,7 +52,7 @@
 					pageContext.setAttribute("noticeList", noticeList);
 				%>
                      <c:forEach items="${noticeList }" var="notice">
-	                     <li> <a class="ggao" href="${ctx }/user/indexNotice/${notice.id }">
+	                     <li> <a class="ggao" href="${ctx }/index/indexNotice/${notice.id }">
 								${notice.conent }</a><span class="gonggao_date">
 								[ <fmt:formatDate type="date"  value="${notice.sendDate }" />]
 								</span></li>
@@ -130,13 +130,13 @@
                           <c:forEach items="${activityList}" var="active" varStatus="status">  
 								<li>
 									<div class="hot_tu">
-										<a href="${ctx }/user/indexNotice/${active.id }" target="_blank">
+										<a href="${ctx }/index/indexNotice/${active.id }" target="_blank">
 											<img src="${ctx}/upload/${active.imgUrl }" width="100" height="100" />
 										</a>	
 									</div>
 									<span class="hot_num">Hot EVENTS.0${ status.index + 1}</span>
 									<h2>
-		                            <a href="${ctx }/user/indexNotice/${active.id }" target="_blank">${active.name }</a>
+		                            <a href="${ctx }/index/indexNotice/${active.id }" target="_blank">${active.name }</a>
 		                        </h2>
 									<span class="hot_date">[ <fmt:formatDate type="date"  value="${active.sendDate }" />]</span>
 								</li>

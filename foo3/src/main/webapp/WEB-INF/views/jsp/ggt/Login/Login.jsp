@@ -1,3 +1,5 @@
+<%@page import="web.conf.SysInit"%>
+<%@page import="java.util.List"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"%>
@@ -71,12 +73,12 @@
      				$('#myModal').modal('show');
      				return ;
      			}
-     			$.ajax({ url: "${pageContext.request.contextPath}/user/userExist?username="+username, 
+     			$.ajax({ url: "${pageContext.request.contextPath}/index/userExist?username="+username, 
      				     type:"post",async:false ,dataType:"json",
      				     success: function(data){
      				    	var dataObj=eval("("+data+")");
      				    	 if(dataObj.exist==true){
-     				    		var url="${pageContext.request.contextPath}/user/toGetPassword?username="+username;
+     				    		var url="${pageContext.request.contextPath}/index/toGetPassword?username="+username;
      			     			document.location=url;
      				    	 }else{
      				    		$("#pageMsg").html("用户名不正确");
@@ -126,11 +128,11 @@
             <!--选择地区-->
           <div class="login" style=" text-align:right;">
 				<%   if(SecurityUtils.getSubject().getPrincipal()== null){ %>
-                   <a href="${ctx}/user/toLogin"><img src="${ctx}/static/ggt/App_Themes/UI/images/login_bg.jpg" /></a>
+                   <a href="${ctx}/index/toLogin"><img src="${ctx}/static/ggt/App_Themes/UI/images/login_bg.jpg" /></a>
                   <% }else{ %>
                 	  欢迎[<%=SecurityUtils.getSubject().getPrincipal() %>]登录，<a href="${pageContext.request.contextPath}/user/userLoginOut">退出</a> 
                 	  <% } %> 
-					<a href="${ctx}/user/toReg"><img src="${ctx}/static/ggt/App_Themes/UI/images/reg_bg.jpg" /></a>
+					<a href="${ctx}/index/toReg"><img src="${ctx}/static/ggt/App_Themes/UI/images/reg_bg.jpg" /></a>
 					<div class="myclear">
 					</div>
 				</div>
@@ -147,7 +149,7 @@
 			<div class="top_inner">
 				<div class="logo">
 					<a href="">
-						<img src="${ctx}/static/ggt/App_Themes/UI/images/logo.gif" width="263" height="58" alt="麻溜儿" /></a>
+						<img src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="263" height="58" alt="麻溜儿" /></a>
 				</div>
 				<div class="logo_r">
 					<div class="guanzhu">
@@ -190,21 +192,23 @@
 			</div>
 		</div>
 		<!--顶部-->
-    <div class="nav">
-        <div class="nav_inner">
-            <ul>
-                <li><a href="${ctx}/user/userIndex" title="首页"><span class="yinwen">Home</span><span class="zhongwen">首页</span></a></li>
-                <li><a href="../Commodity/List/6.htm" title="学习资料"><span class="yinwen">Learning</span><span class="zhongwen">学习资料</span></a></li>
-                <li><a href="../Commodity/List/7.htm" title="数码电器"><span class="yinwen">Digital</span><span class="zhongwen">数码电器</span></a></li>
-                <li><a href="../Commodity/List/8.htm" title="服装服饰"><span class="yinwen">Clothing</span><span class="zhongwen">服装服饰</span></a></li>
-                <li><a href="../Commodity/List/9.htm" title="箱包配饰"><span class="yinwen">Bags</span><span class="zhongwen">箱包配饰</span></a></li>
-                <li><a href="../Commodity/List/10.htm" title="美容护发"><span class="yinwen">Beauty</span><span class="zhongwen">美容护发</span></a></li>
-                <li><a href="../Commodity/List/11.htm" title="运动户外"><span class="yinwen">Sports</span><span class="zhongwen">运动户外</span></a></li>
-                <li class="last_nav_li" title="生活超市"><a href="../Commodity/List/12.htm"><span class="yinwen">Supermarket</span><span class="zhongwen">生活超市</span></a></li>
-            </ul>
-<!--             <a class="shangchen" href="http://mall.maliuer.com/" title="商城"></a> -->
-        </div>
-    </div>
+		<div class="nav">
+			<div class="nav_inner">
+				<ul>
+			  	 <li>
+					<a href="${ctx}/index/userIndex" title="首页"><span class="yinwen">Home</span><span class="zhongwen">首页</span></a>
+				</li>
+				<%  List<Object> goodsCategoryList = SysInit.goodsCategoryList; 
+					pageContext.setAttribute("goodsCategoryList", goodsCategoryList);
+				%>
+				<c:forEach items="${goodsCategoryList }" var="gc" >
+				  	 <li>
+						<a href="${ctx}/index/indexList/${gc.id}" title="${gc.ename }"><span class="yinwen">${gc.ename }</span><span class="zhongwen">${gc.name }</span></a>
+					</li>
+				</c:forEach>
+				</ul>
+			</div>
+		</div>
     <!--导航-->
     <div class="nav_sub"></div>
     
@@ -216,7 +220,7 @@
         <div class="Loconten">
             <input type="hidden" name="ToUrls" value="http://www.maliuer.com/"/>
             <div class="Loleft">
-              <form method="post"  action="<%=request.getContextPath()%>/user/userLogin"  >
+              <form method="post"  action="<%=request.getContextPath()%>/index/userLogin"  >
                 <table style="width: 100%; height: 100%">
                     <tr>
                         <td style="width: 150px;" align="right" class="title">
@@ -267,7 +271,7 @@
             <div class="Loright">
                 <div class="LoPic">
                 </div>
-                <a href="${ctx }/user/toReg"></a>
+                <a href="${ctx }/index/toReg"></a>
             </div>
         </div>
         

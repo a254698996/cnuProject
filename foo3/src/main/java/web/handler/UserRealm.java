@@ -20,7 +20,6 @@ import org.springframework.stereotype.Component;
 import web.content.Constant;
 import web.entity.User;
 import web.service.IUserService;
-import web.util.SessionUtil;
 
 //  http://jinnianshilongnian.iteye.com/blog/2022468
 @Component("myRealm")
@@ -39,12 +38,12 @@ public class UserRealm extends AuthorizingRealm {
 		return authorizationInfo;
 	}
 
-	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) throws AuthenticationException {
+	protected AuthenticationInfo doGetAuthenticationInfo(AuthenticationToken token) 
+			throws AuthenticationException {
 		UsernamePasswordToken realToken = (UsernamePasswordToken) token;
 		User user = new User();
 		user.setUsername(realToken.getUsername());
 		user.setPassword(String.valueOf(realToken.getPassword()));
-//		user.setState(Constant.State.STATE_NORMAL);
 
 		User returnUser = userService.queryBeanByHql(user);
 		if (returnUser == null) {

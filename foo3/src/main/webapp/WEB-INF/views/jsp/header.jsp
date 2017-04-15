@@ -12,7 +12,7 @@
 <html>
 
 	<head>
-		<title>GGT</title>
+		<title>大学生物品交换平台</title>
 		<meta name="keywords" content="二手货|闲置物品|校园二手|大学生二手交易|大学生闲置物品交易" />
 		<meta name="description" content="服务于大学生群体的闲置物品交易平台，在麻溜儿网，您可以便捷、自主、高效的处理身边的闲置物品。" />
 		<meta name="copyright" content="麻溜儿 " />
@@ -125,11 +125,11 @@
 			<div class="status_inner">
 				<div class="login" style=" text-align:right;">
 				<%   if(SecurityUtils.getSubject().getPrincipal()== null){ %>
-                   <a href="${ctx}/user/toLogin"><img src="${ctx}/static/ggt/App_Themes/UI/images/login_bg.jpg" /></a>
+                   <a href="${ctx}/index/toLogin"><img src="${ctx}/static/ggt/App_Themes/UI/images/login_bg.jpg" /></a>
                   <% }else{ %>
-                	  欢迎[<a href="${ctx}/user/owner"><%=SecurityUtils.getSubject().getPrincipal() %></a>]登录，<a href="${pageContext.request.contextPath}/user/userLoginOut">退出</a> 
+                	  欢迎[<a href="${ctx}/user/owner"><%=SecurityUtils.getSubject().getPrincipal() %></a>] ，<a href="${pageContext.request.contextPath}/user/userLoginOut">退出</a> 
                 	  <% } %> 
-					<a href="${ctx}/user/toReg"><img src="${ctx}/static/ggt/App_Themes/UI/images/reg_bg.jpg" /></a>
+					<a href="${ctx}/index/toReg"><img src="${ctx}/static/ggt/App_Themes/UI/images/reg_bg.jpg" /></a>
 					<div class="myclear">
 					</div>
 				</div>
@@ -184,14 +184,14 @@
 			<div class="nav_inner">
 				<ul>
 			  	 <li>
-					<a href="${ctx}/user/userIndex" title="首页"><span class="yinwen">Home</span><span class="zhongwen">首页</span></a>
+					<a href="${ctx}/index/userIndex" title="首页"><span class="yinwen">Home</span><span class="zhongwen">首页</span></a>
 				</li>
 				<%  List<Object> goodsCategoryList = SysInit.goodsCategoryList; 
 					pageContext.setAttribute("goodsCategoryList", goodsCategoryList);
 				%>
 				<c:forEach items="${goodsCategoryList }" var="gc" >
 				  	 <li>
-						<a href="${ctx}/user/indexList/${gc.id}" title="${gc.ename }"><span class="yinwen">${gc.ename }</span><span class="zhongwen">${gc.name }</span></a>
+						<a href="${ctx}/index/indexList/${gc.id}" title="${gc.ename }"><span class="yinwen">${gc.ename }</span><span class="zhongwen">${gc.name }</span></a>
 					</li>
 				</c:forEach>
 <!-- 					<li class="last_nav_li" title="生活超市"> -->

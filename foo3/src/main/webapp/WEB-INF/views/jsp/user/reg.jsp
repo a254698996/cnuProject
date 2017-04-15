@@ -19,7 +19,7 @@
     });
 </script>
     <div class="Ioutside">
-      	<form action="<%=request.getContextPath() %>/user/reg" method="post">
+      	<form action="<%=request.getContextPath() %>/index/reg" method="post">
         <div class="ReContent">
             <table class="table2">
                 <tr>
