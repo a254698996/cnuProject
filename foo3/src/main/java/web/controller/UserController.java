@@ -76,7 +76,6 @@ public class UserController {
 			modelAndView.addObject("user", user);
 			return modelAndView;
 		}
-		// return new ModelAndView(getPath("userLogin"));
 		return new ModelAndView("redirect:/user/toLogin");
 	}
 

@@ -8,7 +8,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>GGT后台管理</title>
+<title>大学生物品交换网后台管理</title>
 <link href="${ctx}/static/bootstrap/css/bootstrap.min.css"
 	rel="stylesheet">
 <script src="${ctx}/static/bootstrap/js/jquery.js"></script>
@@ -72,7 +72,7 @@ ul.nav-tabs.affix {
 <body data-spy="scroll" data-target="#myScrollspy">
 	<div class="container">
 		<div class="jumbotron">
-			<h2>GGT后台管理</h2>
+			<h2>大学生物品交换网后台管理</h2>
 		</div>
 		<div class="row">
 			<div class="col-xs-3" id="myScrollspy">

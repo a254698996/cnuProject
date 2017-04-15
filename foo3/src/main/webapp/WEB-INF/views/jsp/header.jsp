@@ -1,5 +1,6 @@
 <%@page import="java.util.List"%>
 <%@page import="web.conf.SysInit"%>
+<%@page import="java.lang.Object"%>
 <%@page import="org.apache.shiro.session.Session"%>
 <%@page import="org.apache.shiro.SecurityUtils"%>
 <%@ page language="java" contentType="text/html; charset=utf-8"

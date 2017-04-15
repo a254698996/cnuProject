@@ -23,8 +23,8 @@
 		编码:<input type="text" name="code" value="${goodsCategory.code}"></br>
 		名称:<input type="text" name="name"  value="${goodsCategory.name}"></br>
 		英文名称:<input type="text" name="ename"  value="${goodsCategory.ename}"></br>
-		isSub:<input type="text" name="isSub"></br>
-		<input type="submit"/>
+<!-- 		isSub:<input type="text" name="isSub"></br> -->
+		<input type="submit" value="提交"/>
 	</form>
 </body>
 </html>

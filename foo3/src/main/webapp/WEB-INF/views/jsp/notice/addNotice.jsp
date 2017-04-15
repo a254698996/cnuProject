@@ -95,7 +95,7 @@
 			不发布:<input type="radio" name="state" value="0"></br>
                               图片: <div class="row" style="height: 280px">
 					<input id="file-Portrait1"  name="files"  type="file">
-				</div><br>
+				</div><br><br><br><br>
 			<input type="submit"/>
 	</form>
 </body>
