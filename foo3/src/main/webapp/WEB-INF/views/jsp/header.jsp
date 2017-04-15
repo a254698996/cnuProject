@@ -160,9 +160,9 @@
 					
 					<div class="search">
 						<div class="search_bar">
-							<form action="Commodity/SearchList.htm" name="sform" id="sform">
-								<input class="search_bar_input" name="CommTitle" type="text" value="你想要的^_^" onblur="if(!value){value=defaultValue;}" onfocus="if(value==defaultValue){value='';}" id="CommTitle" />
-								<input class="search_btn" type="button" value="" id="sousuo" />
+							<form action="${ctx}/index/searchList" name="sform" id="sform">
+								<input class="search_bar_input" name="_SCH_name" type="text" value="你想要的^_^" onblur="if(!value){value=defaultValue;}" onfocus="if(value==defaultValue){value='';}" id="CommTitle" />
+								<input class="search_btn" type="sbumit" value="" id="sousuo" />
 							</form>
 						</div>
 <!-- 						<div class="biaoqian"> -->

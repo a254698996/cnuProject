@@ -114,7 +114,7 @@
     <div class="box">
         <div class="boxone">
             <div class="onebox"> 
-            <form action="${ctx }/index/indexList/${categoryId}" method="get"></form>
+            <form action="${ctx }/index/searchList" method="get"></form>
                 <div class="oneboxtwo">
                     <input type="text" name="_SCH_name" class="inputt">
                     <input type="image" src="http://www.maliuer.com/Content/images/search.gif"></div>
@@ -167,7 +167,7 @@
             <div class="boxthreead"> </div>
             
                     <!-- maxResults=steps -->
-		  <tag:paginate steps="${steps}" pageIndex= "${pageIndex }" count="${count}" uri="${ctx}/index/indexList/${categoryId}?pageIndex={0}" parms="${parms}" />
+		  <tag:paginate steps="${steps}" pageIndex= "${pageIndex }" count="${count}" uri="${ctx}/index/searchList?pageIndex={0}" parms="${parms}" />
         </div>
     </div>
     </form>

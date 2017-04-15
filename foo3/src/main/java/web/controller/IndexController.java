@@ -154,6 +154,57 @@ public class IndexController {
 		mav.getModel().put("categoryId", id);
 		return mav;
 	}
+	
+	
+	@RequestMapping(value = "searchList", method = RequestMethod.GET)
+	public ModelAndView searchList( String _SCH_name, @RequestParam(required = false) Integer pageIndex, HttpServletRequest request) {
+		if (pageIndex == null) {
+			pageIndex = Page.defaultStartIndex;
+		}
+		
+		StringBuffer hql = new StringBuffer(
+				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code   ");
+		Page page = null;
+		
+		List<Object> paramList = new ArrayList<Object>();
+		
+		if (StringUtils.isNotBlank(_SCH_name)) {
+			hql.append(" and  g.name like ?");
+			paramList.add("%" + _SCH_name + "%");
+		}
+		
+		page = goodsService.pagedQuery(hql.toString(), pageIndex, Page.defaultPageSize, paramList.toArray());
+		
+		List<Object> list = page.getList();
+		List<Object> goodsList = new ArrayList<>();
+		if (list != null && !list.isEmpty()) {
+			for (Object object : list) {
+				Object[] objs = (Object[]) object;
+				Goods goods = (web.entity.Goods) objs[0];
+				GoodsCategory c = (web.entity.GoodsCategory) objs[1];
+				GoodsCategory subC = (web.entity.GoodsCategory) objs[2];
+				goods.setGoodsCategoryName(c.getName());
+				goods.setGoodsCategorySubName(subC.getName());
+				
+				try {
+					if (goods.getSendDate() != null) {
+						goods.setDaysBetween(DateUtil.daysBetween(goods.getSendDate(), new Date()));
+					}
+				} catch (ParseException e) {
+					e.printStackTrace();
+				}
+				goodsList.add(goods);
+			}
+		}
+		page.setList(goodsList);
+		
+		ModelAndView mav = new ModelAndView("ggt/index_list_search");
+		mav.getModelMap().put("goodsList", page.getList());
+		mav.getModel().put("steps", page.getPageSize());
+		mav.getModel().put("pageIndex", pageIndex);
+		mav.getModel().put("count", page.getTotalCount());
+		return mav;
+	}
 
 	@RequestMapping(value = "userLogin", method = RequestMethod.POST)
 	public ModelAndView userLogin(User user, HttpServletRequest request) {
