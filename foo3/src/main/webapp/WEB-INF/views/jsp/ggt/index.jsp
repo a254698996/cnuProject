@@ -97,11 +97,11 @@
 					pageContext.setAttribute("goodsList", goodsList); 	%>
                      <c:forEach items="${goodsList }" var="goods">
 	                    <li>
-							<a href="Commodity/Detail/593.htm" class="rec_tu">
+							<a href="${ctx}/index/indexGoodsDetail/${goods.id }" class="rec_tu">
 <!-- 								<img src="http://pic.maliuer.com/UploadFolder/2012-05-14/2012051416253736584636_150_180.jpg?a=1" /></a> -->
 								<img width="150" height="180" src="${ctx}/upload/${goods.titleUrl}" /></a>
 							<h2>
-                            <a href="Commodity/Detail/593.htm">
+                            <a href="${ctx}/index/indexGoodsDetail/${goods.id }">
                                 		${goods.name }</a>
                         </h2>
 							<span class="rec_date">发布日期:[${goods.sendDate }]</span>

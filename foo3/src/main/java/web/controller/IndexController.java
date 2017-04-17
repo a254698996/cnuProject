@@ -32,13 +32,17 @@ import com.hibernate.dao.base.Page;
 import web.content.Constant;
 import web.content.Constant.UserType;
 import web.dto.UserDto;
+import web.entity.ExchangeOrder;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
+import web.entity.GoodsPic;
 import web.entity.NoticeActivity;
 import web.entity.Role;
 import web.entity.User;
 import web.entity.UserRole;
+import web.service.IExchangeOrderService;
 import web.service.IGoodsCategoryService;
+import web.service.IGoodsPicService;
 import web.service.IGoodsService;
 import web.service.INoticeActivityService;
 import web.service.IRoleService;
@@ -80,6 +84,14 @@ public class IndexController {
 	@Lazy
 	IGoodsService<Goods, Serializable> goodsService;
 
+	@Autowired
+	@Lazy
+	IGoodsPicService<GoodsPic, Serializable> goodsPicService;
+	
+	@Autowired
+	@Lazy
+	IExchangeOrderService<ExchangeOrder, Serializable> exchangeOrderService;
+
 	@RequestMapping(value = "toLogin", method = RequestMethod.GET)
 	public String toLogin() {
 		return "ggt/Login/Login";
@@ -96,6 +108,36 @@ public class IndexController {
 	@RequestMapping(value = "userIndex", method = RequestMethod.GET)
 	public String userIndex() {
 		return "ggt/index";
+	}
+
+	@RequestMapping(value = "indexGoodsDetail/{id}", method = RequestMethod.GET)
+	public ModelAndView indexGoodsDetail(@PathVariable String id,@RequestParam(required = false) Integer pageIndex) {
+		Goods goods = goodsService.getGoodsById(id);
+		ModelAndView mav = new ModelAndView("ggt/index_goods_detail");
+		mav.addObject("goods", goods);
+		pageIndex = pageIndex == null ? Page.defaultStartIndex : pageIndex;
+		Page page = exchangeOrderService.pagedQuery("select g,c ,subC,eo ,u from User u, ExchangeOrder  eo,Goods g ,GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code  and eo.exchangeGoodsId=g.id and eo.exchangeUserId=u.id and eo.goodsId=? ", pageIndex, Page.defaultPageSize,new Object[]{id});
+		List<Object> goodsList = new ArrayList<>();
+		if (page.getList() != null && !page.getList().isEmpty()) {
+			for (Object obj : page.getList()) {
+				Object[] objs = (Object[]) obj;
+				Goods exchangeGoods = (web.entity.Goods) objs[0];
+				GoodsCategory c = (web.entity.GoodsCategory) objs[1];
+				GoodsCategory subC = (web.entity.GoodsCategory) objs[2];
+				ExchangeOrder eo = (web.entity.ExchangeOrder) objs[3];
+				User user = (web.entity.User) objs[4];
+				exchangeGoods.setGoodsCategoryName(c.getName());
+				exchangeGoods.setGoodsCategorySubName(subC.getName());
+				exchangeGoods.setEo(eo);
+				eo.setUser(user);
+				goodsList.add(exchangeGoods);
+			}
+		}
+		mav.getModelMap().put("goodsList", goodsList);
+		mav.getModel().put("steps", page.getPageSize());
+		mav.getModel().put("pageIndex", pageIndex);
+		mav.getModel().put("count", page.getTotalCount());
+		return mav;
 	}
 
 	@RequestMapping(value = "indexList/{id}", method = RequestMethod.GET)
@@ -154,27 +196,27 @@ public class IndexController {
 		mav.getModel().put("categoryId", id);
 		return mav;
 	}
-	
-	
+
 	@RequestMapping(value = "searchList", method = RequestMethod.GET)
-	public ModelAndView searchList( String _SCH_name, @RequestParam(required = false) Integer pageIndex, HttpServletRequest request) {
+	public ModelAndView searchList(String _SCH_name, @RequestParam(required = false) Integer pageIndex,
+			HttpServletRequest request) {
 		if (pageIndex == null) {
 			pageIndex = Page.defaultStartIndex;
 		}
-		
+
 		StringBuffer hql = new StringBuffer(
 				"select g ,c ,subC from Goods g, GoodsCategory c, GoodsCategory subC where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code   ");
 		Page page = null;
-		
+
 		List<Object> paramList = new ArrayList<Object>();
-		
+
 		if (StringUtils.isNotBlank(_SCH_name)) {
 			hql.append(" and  g.name like ?");
 			paramList.add("%" + _SCH_name + "%");
 		}
-		
+
 		page = goodsService.pagedQuery(hql.toString(), pageIndex, Page.defaultPageSize, paramList.toArray());
-		
+
 		List<Object> list = page.getList();
 		List<Object> goodsList = new ArrayList<>();
 		if (list != null && !list.isEmpty()) {
@@ -185,7 +227,7 @@ public class IndexController {
 				GoodsCategory subC = (web.entity.GoodsCategory) objs[2];
 				goods.setGoodsCategoryName(c.getName());
 				goods.setGoodsCategorySubName(subC.getName());
-				
+
 				try {
 					if (goods.getSendDate() != null) {
 						goods.setDaysBetween(DateUtil.daysBetween(goods.getSendDate(), new Date()));
@@ -197,7 +239,7 @@ public class IndexController {
 			}
 		}
 		page.setList(goodsList);
-		
+
 		ModelAndView mav = new ModelAndView("ggt/index_list_search");
 		mav.getModelMap().put("goodsList", page.getList());
 		mav.getModel().put("steps", page.getPageSize());
@@ -316,7 +358,7 @@ public class IndexController {
 		modelAndView.addObject("user", dataUser);
 		return modelAndView;
 	}
- 
+
 	@RequestMapping(value = "getPassword", method = RequestMethod.POST)
 	public ModelAndView getPassword(UserDto userParam) {
 		User user = userService.get(userParam.getId());
@@ -343,7 +385,7 @@ public class IndexController {
 		// return new ModelAndView(getPath("userLogin"));
 		return new ModelAndView("redirect:/index/toLogin");
 	}
-	
+
 	private String getPath(String path) {
 		return JSP_PATH + path;
 	}

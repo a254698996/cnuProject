@@ -95,6 +95,9 @@
 		 <label class="control-lable">新增物品 </label>
 	<form id="myForm" action="<%=request.getContextPath()%>/goods/addGoods" method="post"  enctype="multipart/form-data">
 	   <label class="control-lable">名称</label><input type="text" name="name" ><br>
+	   <label class="control-lable">交易地点</label><input type="text" name="exchangeAddress" ><br>
+	   <label class="control-lable">物品描述</label><br>
+	   <textarea rows="3" cols="80"name="goodsDesc" ></textarea><br>
 		<label class="control-lable">大类</label>
 		  <select onchange="selectCode(this)" name="goodsCategoryCode">
 			<option>请选择</option>

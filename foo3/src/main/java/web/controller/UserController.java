@@ -12,6 +12,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,8 +22,10 @@ import com.hibernate.dao.base.Page;
 
 import web.content.Constant;
 import web.dto.UserDto;
+import web.entity.ExchangeOrder;
 import web.entity.Goods;
 import web.entity.User;
+import web.service.IExchangeOrderService;
 import web.service.IGoodsService;
 import web.service.IUserService;
 import web.util.MD5Tools;
@@ -43,7 +46,40 @@ public class UserController {
 	@Autowired
 	@Lazy
 	IGoodsService<Goods, Serializable> goodsService;
-     
+
+	@Autowired
+	@Lazy
+	IExchangeOrderService<ExchangeOrder, Serializable> exchangeOrderService;
+
+	@RequiresAuthentication
+	@RequestMapping(value = "toExchange/{goodsId}", method = RequestMethod.GET)
+	public ModelAndView toExchange(@PathVariable String goodsId, HttpServletRequest request) {
+		Goods exchangeGoods = goodsService.getGoodsById(goodsId);
+		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+		Page page = goodsService.getList(Page.defaultStartIndex, Page.defaultPageSize, user.getId(), null, null,
+				Goods.GROUNDING);
+		ModelAndView modelAndView = new ModelAndView("ggt/goodsExchange");
+		modelAndView.addObject("goods", exchangeGoods);
+		modelAndView.addObject("goodsList", page.getList());
+		return modelAndView;
+	}
+
+	@RequiresAuthentication
+	@RequestMapping(value = "exchange/{goodsId}", method = RequestMethod.GET)
+	public String exchange(@PathVariable String goodsId, HttpServletRequest request) {
+		ExchangeOrder eo = new ExchangeOrder();
+		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+		Goods goods = goodsService.get(goodsId);
+		eo.setGoodsId(goodsId);
+		eo.setExchangeGoodsId(request.getParameter("exchangeGoodsId"));
+		eo.setExchangeState(Constant.State.STATE_NOT_NORMAL);
+		eo.setUserId(goods.getUserId());
+		eo.setExchangeUserId(user.getId());
+		exchangeOrderService.save(eo);
+
+		return  "redirect:/index/indexGoodsDetail/" + goodsId ;
+	}
+
 	@RequiresAuthentication
 	@RequestMapping(value = "userLoginOut", method = RequestMethod.GET)
 	public String userLoginOut(User user, HttpServletRequest request) {
@@ -67,7 +103,7 @@ public class UserController {
 			user.setPassword(MD5Tools.MD5(userParam.getNewPassword()));
 			userService.update(user);
 			if (SecurityUtils.getSubject().getPrincipal() != null) {
-				return new ModelAndView("redirect:/user/userIndex");
+				return new ModelAndView("redirect:/index/userIndex");
 			}
 		} else {
 			ModelAndView modelAndView = new ModelAndView(getPath("getPassword"));

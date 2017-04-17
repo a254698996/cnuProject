@@ -5,38 +5,45 @@ import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "t_exchange_order")
 public class ExchangeOrder extends BaseEntity {
-	@Column(name = "t_exchange_group_id_main")
-	private int exchangeGroupIdMain;
-	@Column(name = "t_exchange_group_id")
-	private int exchangeGroupId;
+
+	@Column(name = "t_goods_id")
+	private String goodsId;
+	@Column(name = "t_exchange_goods_id")
+	private String exchangeGoodsId;
 	@Column(name = "success_date")
 	private Timestamp successDate;
-	@Column(name = "main_success_flag")
-	private int mainSuccessFlag;
 	@Column(name = "success_flag")
 	private int successFlag;
 	@Column(name = "exchange_state")
 	private int exchangeState;
+	@Column(name = "user_id")
+	private int userId;
+	@Column(name = "exchange_user_id")
+	private int exchangeUserId;
+	
+	@Transient
+	private User user;
 
-	public int getExchangeGroupIdMain() {
-		return exchangeGroupIdMain;
+	public String getGoodsId() {
+		return goodsId;
 	}
 
-	public void setExchangeGroupIdMain(int exchangeGroupIdMain) {
-		this.exchangeGroupIdMain = exchangeGroupIdMain;
+	public void setGoodsId(String goodsId) {
+		this.goodsId = goodsId;
 	}
 
-	public int getExchangeGroupId() {
-		return exchangeGroupId;
+	public String getExchangeGoodsId() {
+		return exchangeGoodsId;
 	}
 
-	public void setExchangeGroupId(int exchangeGroupId) {
-		this.exchangeGroupId = exchangeGroupId;
+	public void setExchangeGoodsId(String exchangeGoodsId) {
+		this.exchangeGoodsId = exchangeGoodsId;
 	}
 
 	public Timestamp getSuccessDate() {
@@ -45,14 +52,6 @@ public class ExchangeOrder extends BaseEntity {
 
 	public void setSuccessDate(Timestamp successDate) {
 		this.successDate = successDate;
-	}
-
-	public int getMainSuccessFlag() {
-		return mainSuccessFlag;
-	}
-
-	public void setMainSuccessFlag(int mainSuccessFlag) {
-		this.mainSuccessFlag = mainSuccessFlag;
 	}
 
 	public int getSuccessFlag() {
@@ -71,4 +70,28 @@ public class ExchangeOrder extends BaseEntity {
 		this.exchangeState = exchangeState;
 	}
 
+	public int getUserId() {
+		return userId;
+	}
+
+	public void setUserId(int userId) {
+		this.userId = userId;
+	}
+
+	public int getExchangeUserId() {
+		return exchangeUserId;
+	}
+
+	public void setExchangeUserId(int exchangeUserId) {
+		this.exchangeUserId = exchangeUserId;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+	
 }

@@ -2,6 +2,8 @@ package web.entity;
 
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,12 +43,27 @@ public class Goods implements Serializable {
 	private int state;
 
 	private int adminGrounding;
-	
+
 	@Column(name = "send_date")
 	private Timestamp sendDate;
-	
+
+	@Column(name = "exchange_address")
+	private String exchangeAddress;
+
+	@Column(name = "goods_desc")
+	private String goodsDesc;
+
 	@Transient
 	private int daysBetween;
+
+	@Transient
+	private List<GoodsPic> goodsPicList = new ArrayList<>();
+
+	@Transient
+	private User user;
+	
+	@Transient
+	private ExchangeOrder eo;
 
 	public int getState() {
 		return state;
@@ -158,6 +175,46 @@ public class Goods implements Serializable {
 
 	public void setDaysBetween(int daysBetween) {
 		this.daysBetween = daysBetween;
+	}
+
+	public List<GoodsPic> getGoodsPicList() {
+		return goodsPicList;
+	}
+
+	public void setGoodsPicList(List<GoodsPic> goodsPicList) {
+		this.goodsPicList = goodsPicList;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
+
+	public String getExchangeAddress() {
+		return exchangeAddress;
+	}
+
+	public void setExchangeAddress(String exchangeAddress) {
+		this.exchangeAddress = exchangeAddress;
+	}
+
+	public String getGoodsDesc() {
+		return goodsDesc;
+	}
+
+	public void setGoodsDesc(String goodsDesc) {
+		this.goodsDesc = goodsDesc;
+	}
+
+	public ExchangeOrder getEo() {
+		return eo;
+	}
+
+	public void setEo(ExchangeOrder eo) {
+		this.eo = eo;
 	}
 
 }
