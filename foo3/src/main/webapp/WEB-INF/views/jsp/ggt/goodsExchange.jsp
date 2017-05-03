@@ -364,6 +364,9 @@
             </div>
             <!--网站位置-->
             <div class="shop_inner"> 
+           		  <li>
+                      <span class="jianjie_tit"><b>要交换的得到的物品</b></span>
+                  </li>
                 <div class="shop_jianjie">
                     <ul>
                         <li>
@@ -385,13 +388,10 @@
                             <span class="jianjie_con">${goods.goodsDesc }</span>
                         </li>
                     </ul>
-                </div>
-                <!--shop_jianjie-->
-<!--                 <p class="shop_zisu"> -->
-<%--                     &nbsp;&nbsp;&nbsp;  ${goods.goodsDesc} --%>
-<!--                     <br /><br /> -->
-<!--                 </p> -->
-                
+                </div> 
+                  <li>
+                      <span class="jianjie_tit"><b>自己的物品</b></span>
+                  </li>
                <div class="shop_jianjie">
                     <ul>
                     <c:forEach items="${goodsList }" var="userGoods">

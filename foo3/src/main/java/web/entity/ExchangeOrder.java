@@ -12,6 +12,8 @@ import javax.persistence.Transient;
 @Table(name = "t_exchange_order")
 public class ExchangeOrder extends BaseEntity {
 
+	public static final int SUCCESS = 1;
+	public static final int CLOSE = 9;
 	@Column(name = "t_goods_id")
 	private String goodsId;
 	@Column(name = "t_exchange_goods_id")
@@ -26,7 +28,7 @@ public class ExchangeOrder extends BaseEntity {
 	private int userId;
 	@Column(name = "exchange_user_id")
 	private int exchangeUserId;
-	
+
 	@Transient
 	private User user;
 
@@ -93,5 +95,5 @@ public class ExchangeOrder extends BaseEntity {
 	public void setUser(User user) {
 		this.user = user;
 	}
-	
+
 }

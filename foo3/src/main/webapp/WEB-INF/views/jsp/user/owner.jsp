@@ -78,21 +78,26 @@
 						     <c:when test="${goods.state eq 1 }">
 						      	已上架
 						     </c:when>
+						     <c:when test="${goods.state eq 2 }">
+						      	已成交
+						     </c:when>
 							 <c:otherwise >
 								  未上架
 							 </c:otherwise>
 						 </c:choose>
 					</td>
 					<td>
-						<button type="button" class="btn btn-info btn-xs" onclick="update('${goods.id}')">更新</button>
-						 <c:choose>
-						     <c:when test="${goods.state eq 1 }">
-						      		<button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">下架</button>
-						     </c:when>
-							 <c:otherwise >
-								  <button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">上架</button>
-							 </c:otherwise>
-						 </c:choose>
+						<c:if test="${goods.deal eq 0 }">
+							<button type="button" class="btn btn-info btn-xs" onclick="update('${goods.id}')">更新</button>
+							 <c:choose>
+							     <c:when test="${goods.state eq 1 }">
+							      		<button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">下架</button>
+							     </c:when>
+								 <c:otherwise >
+									  <button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">上架</button>
+								 </c:otherwise>
+							 </c:choose>
+						 </c:if>
 					</td>
 				</tr>
 			</c:forEach>

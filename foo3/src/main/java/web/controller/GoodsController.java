@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
+import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
@@ -30,12 +31,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import util.JSONUtils;
 import web.conf.SysInit;
 import web.dto.GoodsDto;
+import web.entity.ExchangeOrder;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
 import web.entity.GoodsPic;
 import web.entity.User;
+import web.service.IExchangeOrderService;
 import web.service.IGoodsCategoryService;
 import web.service.IGoodsPicService;
 import web.service.IGoodsService;
@@ -60,15 +64,20 @@ public class GoodsController {
 	@Lazy
 	IGoodsCategoryService<GoodsCategory, Serializable> goodsCategoryService;
 
+	@Autowired
+	@Lazy
+	IExchangeOrderService<ExchangeOrder, Serializable> exchangeOrderService;
+
 	@RequestMapping(value = "showGoods", method = RequestMethod.GET)
-	public ModelAndView showGoods(Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,HttpServletRequest request) {
-		Page page = goodsService.getList(pageIndex, 100, null, _SCH_name,null,null);
+	public ModelAndView showGoods(Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,
+			HttpServletRequest request) {
+		Page page = goodsService.getList(pageIndex, 100, null, _SCH_name, null, null);
 		ModelAndView mav = new ModelAndView(getPath("showGoods"));
 		mav.getModel().put("steps", page.getPageSize());
 		mav.getModel().put("pageIndex", pageIndex);
 		mav.getModel().put("count", page.getTotalCount());
 		List<Object> list = page.getList();
-		
+
 		List<GoodsDto> goodsDtoList = new ArrayList<GoodsDto>();
 		if (list != null && !list.isEmpty()) {
 			for (Object object : list) {
@@ -87,15 +96,18 @@ public class GoodsController {
 		mav.getModelMap().put("goodsDtoList", goodsDtoList);
 		return mav;
 	}
-	
+
 	@RequestMapping(value = "list", method = RequestMethod.GET)
-	public ModelAndView list(Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,HttpServletRequest request) {
-		
-//		User currUser = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
- 
-//		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, currUser.getId()+"", _SCH_name);
-		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, null, _SCH_name,null,null);
-		 
+	public ModelAndView list(Goods Goods, String _SCH_name, @RequestParam(required = false) Integer pageIndex,
+			HttpServletRequest request) {
+
+		// User currUser = (User) SessionUtil.getAttribute(request,
+		// User.SESSION_USER);
+
+		// Page page = goodsService.getList(pageIndex, Page.defaultPageSize,
+		// currUser.getId()+"", _SCH_name);
+		Page page = goodsService.getList(pageIndex, Page.defaultPageSize, null, _SCH_name, null, null);
+
 		ModelAndView mav = new ModelAndView(getPath("goodsList"));
 		mav.getModelMap().put("goodsList", page.getList());
 		mav.getModel().put("steps", page.getPageSize());
@@ -171,19 +183,19 @@ public class GoodsController {
 	}
 
 	@RequestMapping(value = "addGoods", method = RequestMethod.POST)
-	public ModelAndView addGoods(Goods goods, Integer[] goodsPicIds,HttpServletRequest request) {
+	public ModelAndView addGoods(Goods goods, Integer[] goodsPicIds, HttpServletRequest request) {
 		String goodsId = UUID.randomUUID().toString();
-		
-		if(goodsPicIds!=null &&goodsPicIds.length>0){
+
+		if (goodsPicIds != null && goodsPicIds.length > 0) {
 			for (Integer goodsPicId : goodsPicIds) {
 				GoodsPic goodsPic = goodsPicService.get(goodsPicId);
 				goodsPic.setGoodsId(goodsId);
 				goodsPicService.update(goodsPic);
-				if(StringUtils.isBlank(goods.getTitleUrl())){
+				if (StringUtils.isBlank(goods.getTitleUrl())) {
 					goods.setTitleUrl(goodsPic.getUrl());
 				}
 			}
-		}else{
+		} else {
 			ModelAndView mav = new ModelAndView(getPath("addGoods"));
 			mav.addObject("msg", "至少需要上传一张图片");
 			return mav;
@@ -194,32 +206,32 @@ public class GoodsController {
 		goods.setAdminGrounding(Goods.GROUNDING);
 		goods.setSendDate(new Timestamp(System.currentTimeMillis()));
 		goodsService.save(goods);
-		
-//		return new ModelAndView("redirect:/goods/list");
+
+		// return new ModelAndView("redirect:/goods/list");
 		return new ModelAndView("redirect:/user/owner");
 	}
 
 	@RequestMapping(value = "grounding/{id}", method = RequestMethod.GET)
-	public ModelAndView grounding(@PathVariable String id,HttpServletRequest request) {
+	public ModelAndView grounding(@PathVariable String id, HttpServletRequest request) {
 		Goods goods = goodsService.get(id);
-		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER );
+		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
 		user.getRoleSet().contains("admin");
-		
+
 		if (goods.getState() == Goods.NOT_GROUNDING) {
 			goods.setState(Goods.GROUNDING);
 		} else {
 			goods.setState(Goods.NOT_GROUNDING);
 		}
-		if(goods.getAdminGrounding() == Goods.GROUNDING){
+		if (goods.getAdminGrounding() == Goods.GROUNDING) {
 			goodsService.update("web.entity.Goods", goods);
-			Page page = goodsService.getList(Page.defaultStartIndex, 16, null, null, null,Goods.GROUNDING);
+			Page page = goodsService.getList(Page.defaultStartIndex, 16, null, null, null, Goods.GROUNDING);
 			SysInit.goodsList = page.getList();
 		}
 		return new ModelAndView("redirect:/user/owner");
 	}
-	
+
 	@RequestMapping(value = "adminGrounding/{id}", method = RequestMethod.GET)
-	public ModelAndView adminGrounding(@PathVariable String id,HttpServletRequest request) {
+	public ModelAndView adminGrounding(@PathVariable String id, HttpServletRequest request) {
 		Goods goods = goodsService.get(id);
 		if (goods.getState() == Goods.NOT_GROUNDING) {
 			goods.setState(Goods.GROUNDING);
@@ -229,7 +241,7 @@ public class GoodsController {
 			goods.setState(Goods.NOT_GROUNDING);
 		}
 		goodsService.update("web.entity.Goods", goods);
-		Page page = goodsService.getList(Page.defaultStartIndex, 16, null, null, null,Goods.GROUNDING);
+		Page page = goodsService.getList(Page.defaultStartIndex, 16, null, null, null, Goods.GROUNDING);
 		SysInit.goodsList = page.getList();
 		return new ModelAndView("redirect:/goods/list");
 	}
@@ -244,7 +256,59 @@ public class GoodsController {
 		ModelAndView modelAndView = new ModelAndView(getPath("detailGoods"));
 		modelAndView.addObject("goods", goods);
 		modelAndView.addObject("picList", picList);
+
+		Page page = exchangeOrderService.pagedQuery(
+				"select eo,g ,c,subC from ExchangeOrder eo,Goods g ,GoodsCategory c, GoodsCategory subC    where g.goodsCategoryCode=c.code and g.goodsCategorySubCode=subC.code and  eo.exchangeGoodsId=g.id and    eo.goodsId=?    ",
+				Page.defaultStartIndex, 10, new Object[] {   id });
+		List<Goods> goodsList = new ArrayList<Goods>();
+		if (page.getList() != null && !page.getList().isEmpty()) {
+			for (Object objArr : page.getList()) {
+				Object[] obj = (Object[]) objArr;
+				ExchangeOrder eo = (ExchangeOrder) obj[0];
+				Goods g = (Goods) obj[1];
+				GoodsCategory c = (web.entity.GoodsCategory) obj[2];
+				GoodsCategory subC = (web.entity.GoodsCategory) obj[3];
+				g.setGoodsCategoryName(c.getName());
+				g.setGoodsCategorySubName(subC.getName());
+				g.setEo(eo);
+				System.out.println(JSONUtils.obj2json(g));
+				goodsList.add(g);
+			}
+			modelAndView.addObject("goodsList", goodsList);
+		}
 		return modelAndView;
+	}
+
+	@RequestMapping(value = "trans/{id}", method = RequestMethod.GET)
+	public ModelAndView trans(@PathVariable int id, HttpServletRequest request) {
+		ExchangeOrder exchangeOrder = exchangeOrderService.get(id);
+		exchangeOrder.setExchangeState(ExchangeOrder.SUCCESS);
+		exchangeOrderService.update(exchangeOrder);
+		String goodsId = exchangeOrder.getGoodsId();
+		Goods goods = goodsService.get(goodsId);
+		goods.setDeal(1);
+		goodsService.update(goods);
+		
+		String exchangeGoodsId = exchangeOrder.getExchangeGoodsId();
+		Goods goods2 = goodsService.get(exchangeGoodsId);
+		goods2.setDeal(1);
+		goodsService.update(goods2);
+		 
+		List find = exchangeOrderService.find("from ExchangeOrder where goodsId=?  ", new Object[]{exchangeOrder.getExchangeGoodsId()});
+		if(find!=null&&!find.isEmpty()){
+			for (Object object : find) {
+				ExchangeOrder exchange =(ExchangeOrder) object;
+				if(exchange.getExchangeGoodsId().equals(exchangeOrder.getGoodsId())){
+					exchange.setExchangeState(ExchangeOrder.SUCCESS);
+					exchangeOrderService.update(exchange);
+				}else{
+					exchange.setExchangeState(ExchangeOrder.CLOSE);
+					exchangeOrderService.update(exchange);
+				}
+			}
+		}
+		
+		return new ModelAndView("redirect:/goods/get/"+exchangeOrder.getGoodsId());
 	}
 
 	@RequestMapping(value = "toUpdate/{id}", method = RequestMethod.GET)
@@ -302,8 +366,8 @@ public class GoodsController {
 		}
 		goods.setSendDate(new Timestamp(System.currentTimeMillis()));
 		goodsService.update(goods);
-		
-//		return new ModelAndView("redirect:/goods/list");
+
+		// return new ModelAndView("redirect:/goods/list");
 		return new ModelAndView("redirect:/user/owner");
 	}
 
@@ -323,7 +387,7 @@ public class GoodsController {
 		}
 		return goods;
 	}
-	
+
 	private void delete(String fileUrl) {
 		File file = new File(fileUrl);
 		file.delete();

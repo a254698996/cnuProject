@@ -37,21 +37,7 @@
 	    <input type="text" name="_SCH_name" class="form-control" value="${param._SCH_name}" placeholder="分类名">
 	  </div>
 	  <button type="submit" class="btn btn-default">搜索</button><br/>
-	</form>
-<!-- 	 <button type="button" class="btn btn-primary popover-show" -->
-<!-- 	            title="错误提示" data-container="body" -->
-<!-- 	            data-toggle="popover"  -->
-<!-- 	            data-content="没有输入密码" -->
-<!-- 	            id="addBut"  > -->
-<!-- 	  		         新增 -->
-<!-- 	    </button> -->
-<!-- 	    <button type="button" class="btn btn-primary popover-show" -->
-<!-- 	            title="错误提示" data-container="body" -->
-<!-- 	            data-toggle="popover"  -->
-<!-- 	            data-content="没有输入密码" -->
-<!-- 	            id="groundingBut"  > -->
-<!-- 	  		    上架 -->
-<!-- 	    </button> -->
+	</form> 
 	<div class="table-responsive">
        <table class="table  table-hover table-bordered">
          <thead>
@@ -76,13 +62,15 @@
 						     <c:when test="${goods.state eq 1 }">
 						      	已上架
 						     </c:when>
+						     <c:when test="${goods.state eq 2 }">
+						      	已成交
+						     </c:when>
 							 <c:otherwise >
 								  未上架
 							 </c:otherwise>
 						 </c:choose>
 					</td>
 					<td>
-<%-- 						<button type="button" class="btn btn-info btn-xs" onclick="update('${goods.id}')">更新</button> --%>
 						 <c:choose>
 						     <c:when test="${goods.state eq 1 }">
 						      		<button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">下架</button>

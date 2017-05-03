@@ -381,8 +381,23 @@
                             <span class="jianjie_con">${goods.exchangeAddress }</span>
                         </li>
                         <li>
-                            <span class="jianjie_tit"><a href="${ctx }/user/toExchange/${goods.id}">点击此处交换</a></span> 
+                            <span class="jianjie_tit">交易状态：</span>
+                            <span class="jianjie_con"> 
+	                            <c:choose>
+							     <c:when test="${goods.deal eq 0 }">
+							      	未成交
+							     </c:when>
+								 <c:otherwise >
+									 已成交
+								 </c:otherwise>
+							 </c:choose>
+                            </span>
                         </li>
+                        <c:if test="${goods.deal eq 0 }">
+	                        <li>
+	                            <span class="jianjie_tit"><a href="${ctx }/user/toExchange/${goods.id}">点击此处交换</a></span> 
+	                        </li>
+                        </c:if>
                     </ul>
                 </div>
                 <!--shop_jianjie-->
@@ -413,7 +428,9 @@
                     <!-- 结束 -->
                 </div>
                 <!--kuangqie_tu-->
-                
+                  <li>
+                      <span class="jianjie_tit"><b>以下物品想要同该物品进行交换</b></span>
+                  </li>
                <div class="shop_jianjie">
                     <ul>
                      <c:forEach items="${goodsList }" var="userGoods">

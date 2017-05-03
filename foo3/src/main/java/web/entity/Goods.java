@@ -15,6 +15,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "t_goods")
 public class Goods implements Serializable {
+	public final static int DEAL = 2;
 	public final static int GROUNDING = 1;
 	public final static int NOT_GROUNDING = 0;
 	@Id
@@ -41,6 +42,8 @@ public class Goods implements Serializable {
 	private String goodsCategorySubName;
 
 	private int state;
+	
+	private int deal;
 
 	private int adminGrounding;
 
@@ -61,7 +64,7 @@ public class Goods implements Serializable {
 
 	@Transient
 	private User user;
-	
+
 	@Transient
 	private ExchangeOrder eo;
 
@@ -215,6 +218,14 @@ public class Goods implements Serializable {
 
 	public void setEo(ExchangeOrder eo) {
 		this.eo = eo;
+	}
+
+	public int getDeal() {
+		return deal;
+	}
+
+	public void setDeal(int deal) {
+		this.deal = deal;
 	}
 
 }

@@ -154,7 +154,7 @@
 		                <div class="boxthreetwo">
 			                <div class="twoone">
 <!-- 			                  	  【供应】  -->
-			                    <a href="http://www.maliuer.com/Commodity/Detail/401.htm" target="_blank">
+			                    <a href="${ctx }/index/indexGoodsDetail/${goods.id }" target="_blank">
 			                      	  ${goods.name }</a> (${goods.goodsCategoryName }-${goods.goodsCategorySubName })<span>(个人)</span>
 			                    &nbsp;&nbsp; 
 			                </div>
