@@ -7,8 +7,6 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "t_menu")
 public class Menu extends BaseEntity {
-	public final static int STATE_NORMAL = 1;
-	public final static int STATE_NOT_NORMAL = 0;
 	private String name;
 	private String url;
 	private Integer state;

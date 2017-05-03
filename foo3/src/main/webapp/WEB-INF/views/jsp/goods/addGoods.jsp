@@ -124,7 +124,7 @@
 				<div class="copyright_inner">
 					<img class="foot_logo" src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="112" height="26" alt=" " />
 <!-- 					<div class="sec_nav"> -->
-<!-- 						<a href="Help/Detail/2.htm" target="_blank">关于麻溜儿</a> | -->
+<!-- 						<a href="Help/Detail/2.htm" target="_blank">关于物物交换</a> | -->
 <!-- 						<a href="Help/Detail/3.htm" target="_blank">联系我们</a> | -->
 <!-- 						<a href="Help/Detail/4.htm" target="_blank">商家合作</a> | -->
 <!-- 						<a href="Help/JianYi.htm" target="_blank">意见反馈</a> | -->

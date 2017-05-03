@@ -19,8 +19,10 @@
      			document.location="${pageContext.request.contextPath}/permission/toAddPermission";
      		});
 	    });
- 		function changeUserState(id) {
- 				document.location="${pageContext.request.contextPath}/admin/changeUserState/"+id;
+ 		function deleteRole(id) {
+ 			 if(confirm("确定要清空数据吗？")) {
+ 				document.location="${pageContext.request.contextPath}/permission/deleteRole/"+id;
+			  } 
  		}
  		function addRole(userId) {
  			$("input[name='currUserId']").val(userId);
@@ -103,7 +105,7 @@
      	</shiro:user>
 <shiro:hasRole name="admin">
 	     	<button type="button" class="btn btn-primary" id="addRoleBtn">新增角色</button>&nbsp;&nbsp;&nbsp;&nbsp;
-	     	<button type="button" class="btn btn-primary" id="addPermissionBtn">新增权限</button>&nbsp;&nbsp;&nbsp;&nbsp;
+<!-- 	     	<button type="button" class="btn btn-primary" id="addPermissionBtn">新增权限</button>&nbsp;&nbsp;&nbsp;&nbsp; -->
  </shiro:hasRole>
        <table class="table  table-hover table-bordered">
          <thead>
@@ -133,7 +135,7 @@
                        </c:forEach>
                     </td>
 					<td>
-<%-- 						<button type="button" class="btn btn-info btn-xs" onclick="changeUserState('${role.id}')">禁用</button> --%>
+						<button type="button" class="btn btn-info btn-xs" onclick="deleteRole('${role.id}')">删除</button>
 						<button type="button" class="btn btn-info btn-xs" onclick="updatePermission('${role.id}')">更新权限</button>
 					</td>
 				</tr>

@@ -13,9 +13,9 @@
 <body> 
 <form class="form-inline" action="${ctx}/menu/add" method="POST">
 	  <div class="form-group">
-	    <label class="sr-only" for="exampleInputPassword3">名称</label>
+	     名称 
 	    <input type="text" name="name" class="form-control"  >
-	      <label class="sr-only" for="exampleInputPassword3">URL</label>
+	 URL 
 	   	 <input type="text" name="url" class="form-control">
 	    <input type="hidden" name="satte" value="1"  >
 	  </div>

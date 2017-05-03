@@ -11,7 +11,8 @@ import javax.persistence.MappedSuperclass;
 // @JsonIgnoreProperties(value = { "hibernateLazyInitializer", "handler" })
 @MappedSuperclass
 public class BaseEntity implements Serializable {
-
+	public final static int STATE_NORMAL = 1;
+	public final static int STATE_NOT_NORMAL = 0;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;

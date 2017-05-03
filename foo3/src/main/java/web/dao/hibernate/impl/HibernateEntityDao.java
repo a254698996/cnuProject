@@ -69,7 +69,7 @@ public class HibernateEntityDao<T, PK extends Serializable> extends HibernateDao
 	 * @param id
 	 */
 	public T get(PK id) {
-		return (T) getHibernateTemplate().load(getEntityClass(), id);
+		return (T)getHibernateTemplate().get(getEntityClass(), id);
 	}
 
 	/**

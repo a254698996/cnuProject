@@ -137,7 +137,7 @@
             });
             $("#sousuo").click(function () {
                 var title = $("#CommTitle").val();
-                if (title.length != 0 && title != '麻溜儿一下你想要的^_^') {
+                if (title.length != 0 && title != '物物交换一下你想要的^_^') {
                     $("#sform").submit();
                 }
             });
@@ -389,7 +389,7 @@
                 <p class="shop_zisu">
                     &nbsp;&nbsp;&nbsp;  ${goods.goodsDesc}
                     <br /><br />
-                    联系我时，请说是在麻溜儿网上看到的，谢谢！
+                    联系我时，请说是在物物交换上看到的，谢谢！
                 </p>
                 <!--shop_zisu-->
                 <div class="kuangqie_tu">

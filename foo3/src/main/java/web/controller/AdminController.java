@@ -3,8 +3,12 @@ package web.controller;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
+import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;
+import org.apache.shiro.authz.annotation.Logical;
 import org.apache.shiro.authz.annotation.RequiresRoles;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -36,9 +40,10 @@ import web.service.IMenuService;
 import web.service.IRoleService;
 import web.service.IUserRoleService;
 import web.service.IUserService;
+import web.util.SessionUtil;
 
 @Controller
-@RequiresRoles("admin")
+@RequiresRoles(value = { "admin", "superadmin" }, logical = Logical.OR)
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -74,10 +79,27 @@ public class AdminController {
 	IGoodsCategoryService<GoodsCategory, Serializable> goodsCategoryService;
 
 	@RequestMapping(value = "adminIndex", method = RequestMethod.GET)
-	public ModelAndView adminIndex() {
-		List menuList = menuService.find("from Menu" );
+	public ModelAndView adminIndex(HttpServletRequest request) {
+		List menuList = menuService.find("from Menu");
 		ModelAndView modelAndView = new ModelAndView(getPath("adminIndex"));
-		modelAndView.addObject("menuList", menuList);
+		User currUser = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+
+		List list = new ArrayList();
+		Set<String> permissionSet = currUser.getPermissionSet();
+		if (permissionSet != null && !permissionSet.isEmpty()) {
+			for (Object obj : menuList) {
+				Menu m = (Menu) obj;
+				for (String permission : permissionSet) {
+					if (m.getName().equals(permission)) {
+						list.add(m);
+						break;
+					}
+				}
+			}
+		}
+
+		modelAndView.addObject("menuList", list);
+		modelAndView.addObject("indexList", list.get(0));
 		return modelAndView;
 	}
 
@@ -154,7 +176,7 @@ public class AdminController {
 		userService.update(user);
 		return new ModelAndView("redirect:/admin/userList");
 	}
-	
+
 	private String getPath(String path) {
 		return JSP_PATH + path;
 	}

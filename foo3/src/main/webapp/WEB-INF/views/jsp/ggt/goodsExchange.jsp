@@ -137,7 +137,7 @@
             });
             $("#sousuo").click(function () {
                 var title = $("#CommTitle").val();
-                if (title.length != 0 && title != '麻溜儿一下你想要的^_^') {
+                if (title.length != 0 && title != '物物交换一下你想要的^_^') {
                     $("#sform").submit();
                 }
             });
@@ -380,14 +380,17 @@
                             <span class="jianjie_tit">交易地点：</span>
                             <span class="jianjie_con">${goods.exchangeAddress }</span>
                         </li>
+                        <li>
+                            <span class="jianjie_tit">物品描述：</span>
+                            <span class="jianjie_con">${goods.goodsDesc }</span>
+                        </li>
                     </ul>
                 </div>
                 <!--shop_jianjie-->
-                <p class="shop_zisu">
-                    &nbsp;&nbsp;&nbsp;  ${goods.goodsDesc}
-                    <br /><br />
-                    联系我时，请说是在麻溜儿网上看到的，谢谢！
-                </p>
+<!--                 <p class="shop_zisu"> -->
+<%--                     &nbsp;&nbsp;&nbsp;  ${goods.goodsDesc} --%>
+<!--                     <br /><br /> -->
+<!--                 </p> -->
                 
                <div class="shop_jianjie">
                     <ul>
@@ -481,6 +484,22 @@
 		</script>
 		<!-- footer end -->
 
+<!-- 模态框（Modal） -->
+<input type="hidden" value="${msg}" id="msg">
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">提示</h4>
+            </div>
+            <div class="modal-body" id="pageMsg" >${msg}</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div>
 	</body>
 
 	<script type="text/javascript">
@@ -602,3 +621,12 @@
 		}
 	});
 </script>
+ <script type="text/javascript">
+     	$(document).ready(function(){
+     		//后台返回提示
+   			var code=$('#msg').val();
+   			if(code!=''){
+   				$('#myModal').modal('show');
+   			}
+	    });
+     </script>

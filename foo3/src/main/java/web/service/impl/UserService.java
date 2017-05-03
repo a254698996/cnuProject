@@ -11,6 +11,7 @@ import com.hibernate.dao.base.Page;
 import com.hibernate.dao.generic.HibernateGenericDao;
 
 import web.dao.hibernate.impl.HibernateEntityDao;
+import web.entity.BaseEntity;
 import web.entity.Permission;
 import web.entity.Role;
 import web.entity.User;
@@ -44,7 +45,9 @@ public class UserService extends ServiceImpl<User, Serializable> implements IUse
 					Permission p = (Permission) temp[0];
 					Role r = (Role) temp[1];
 					roleSet.add(r.getName());
-					permissionSet.add(p.getName());
+					if(p.getState().equals(BaseEntity.STATE_NORMAL)){
+						permissionSet.add(p.getName());
+					}
 				}
 				returnUser.setRoleSet(roleSet);
 				returnUser.setPermissionSet(permissionSet);
@@ -68,7 +71,9 @@ public class UserService extends ServiceImpl<User, Serializable> implements IUse
 				Permission p = (Permission) temp[0];
 				Role r = (Role) temp[1];
 				roleSet.add(r.getName());
-				permissionSet.add(p.getName());
+				if(p.getState().equals(BaseEntity.STATE_NORMAL)){
+					permissionSet.add(p.getName());
+				}
 			}
 			returnUser.setRoleSet(roleSet);
 			returnUser.setPermissionSet(permissionSet);

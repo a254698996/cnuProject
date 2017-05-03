@@ -29,6 +29,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import util.JSONUtils;
 import web.content.Constant;
 import web.content.Constant.UserType;
 import web.dto.UserDto;
@@ -256,6 +257,9 @@ public class IndexController {
 			SecurityUtils.getSubject().login(usernamePasswordToken);
 			User userAllInfo = userService.getUserAllInfo(user);
 			SessionUtil.setAttribute(request, User.SESSION_USER, userAllInfo);
+			System.out.println(JSONUtils.obj2json(userAllInfo));
+			Object attribute =  SessionUtil.getAttribute(request, User.SESSION_USER);
+			System.out.println(JSONUtils.obj2json(attribute));
 		} catch (AuthenticationException e) {
 			e.printStackTrace();
 

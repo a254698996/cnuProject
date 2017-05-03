@@ -10,10 +10,10 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 <head>
-    <title>登录-麻溜儿网-大学生闲置物品交易平台</title>
+    <title>登录-物物交换-大学生闲置物品交易平台</title>
     <meta name="keywords" content="二手货|闲置物品|校园二手|大学生二手交易|大学生闲置物品交易" />
-    <meta name="description" content="服务于大学生群体的闲置物品交易平台，在麻溜儿网，您可以便捷、自主、高效的处理身边的闲置物品。" />
-    <meta name="copyright" content="麻溜儿 " />
+    <meta name="description" content="服务于大学生群体的闲置物品交易平台，在物物交换，您可以便捷、自主、高效的处理身边的闲置物品。" />
+    <meta name="copyright" content="物物交换 " />
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <meta property="qc:admins" content="6202377777651415526375" />
     <meta property="wb:webmaster" content="44e7216ce6f6da21" />
@@ -51,7 +51,7 @@
             });
             $("#sousuo").click(function () {
                 var title = $("#CommTitle").val();
-                if (title.length != 0 && title != '麻溜儿一下你想要的^_^') {
+                if (title.length != 0 && title != '物物交换一下你想要的^_^') {
                     $("#sform").submit();
                 }
             });
@@ -149,7 +149,7 @@
 			<div class="top_inner">
 				<div class="logo">
 					<a href="">
-						<img src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="263" height="58" alt="麻溜儿" /></a>
+						<img src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="263" height="58" alt="物物交换" /></a>
 				</div>
 				<div class="logo_r">
 					<div class="guanzhu">
@@ -215,7 +215,7 @@
     
     <div class="Ioutside">
         <div class="Lotitle">
-<!--             用户登录&nbsp;已有<font color="red">778</font>位可爱的童鞋们成为麻溜儿网的用户啦！ -->
+<!--             用户登录&nbsp;已有<font color="red">778</font>位可爱的童鞋们成为物物交换的用户啦！ -->
         </div>
         <div class="Loconten">
             <input type="hidden" name="ToUrls" value="http://www.maliuer.com/"/>
@@ -284,7 +284,7 @@
 				<div class="copyright_inner">
 					<img class="foot_logo" src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="112" height="26" alt=" " />
 <!-- 					<div class="sec_nav"> -->
-<!-- 						<a href="Help/Detail/2.htm" target="_blank">关于麻溜儿</a> | -->
+<!-- 						<a href="Help/Detail/2.htm" target="_blank">关于物物交换</a> | -->
 <!-- 						<a href="Help/Detail/3.htm" target="_blank">联系我们</a> | -->
 <!-- 						<a href="Help/Detail/4.htm" target="_blank">商家合作</a> | -->
 <!-- 						<a href="Help/JianYi.htm" target="_blank">意见反馈</a> | -->
@@ -374,7 +374,7 @@
 
 <!-- footer end -->
 <div class="fixedBtn">
-    <a href="http://www.maliuer.com/Help/JianYi.htm" class="feedback" title="欢迎反馈麻溜儿网的使用问题、Bug和建议～" target="_blank">意见反馈</a> 
+    <a href="http://www.maliuer.com/Help/JianYi.htm" class="feedback" title="欢迎反馈物物交换的使用问题、Bug和建议～" target="_blank">意见反馈</a> 
     <a href="Login.htm#" class="tops" id="toptop" title="回到顶部">回到顶部</a>
 </div>
 

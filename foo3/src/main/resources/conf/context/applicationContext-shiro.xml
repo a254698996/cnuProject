@@ -12,9 +12,14 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property  name="loginUrl" value="/index/toLogin"/> 
+		<property name="filters">
+        	<map>
+           		 <entry key="anAlias" value-ref="myRolesAuthorizationFilter"/>
+       		</map>
+    	</property>
 		<property name="filterChainDefinitions">
 			<value>
-				/admin/** = authc, roles[admin]
+				/admin/** = authc, roles[admin],roles[superadmin],roles[noticeAdmin]
 				/user/** = authc
 				/index/** = anon
  				/css/** = anon
@@ -26,6 +31,7 @@
 			</value>
 		</property>
 	</bean>
+	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="myRealm" /> 
 	</bean>

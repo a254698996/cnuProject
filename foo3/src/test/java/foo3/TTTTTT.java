@@ -7,6 +7,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.util.Assert;
+
 import util.JSONUtils;
 import web.entity.Goods;
 import web.entity.GoodsCategory;
@@ -36,16 +38,18 @@ public class TTTTTT {
 		// }
 
 		// goods();
-//		getProperty();
-		
-//		rolePermissionSet();
-		try {
-			System.out.println(dataLenFormat(333323411, 6) );
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		// getProperty();
+
+		// rolePermissionSet();
+//		try {
+//			System.out.println(dataLenFormat(333323411, 6));
+		// } catch (UnsupportedEncodingException e) {
+		// e.printStackTrace();
+		// }
+
+		testAssert();
 	}
-	
+
 	public static String dataLenFormat(int i, int len) throws UnsupportedEncodingException {
 		StringBuffer sb = new StringBuffer();
 		sb.append(i);
@@ -56,6 +60,7 @@ public class TTTTTT {
 
 		return sb.toString();
 	}
+
 	private static void rolePermissionSet() {
 
 		Set<RolePermission> set = new HashSet<>();
@@ -98,6 +103,19 @@ public class TTTTTT {
 
 		}
 
+	}
+
+	public static void testAssert() {
+		String hql = "  aaa";
+		Assert.hasText(hql);
+		int pageNo = 2;
+		try {
+			Assert.isTrue(pageNo >= 9, "pageNo should start from 1");
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.out.println("qqqq-- : " + e.getMessage());
+		}
+		System.out.println(" testAssert ......");
 	}
 
 }

@@ -24,6 +24,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.hibernate.dao.base.Page;
 
+import util.JSONUtils;
+import web.entity.Menu;
 import web.entity.Permission;
 import web.entity.Role;
 import web.entity.RolePermission;
@@ -32,6 +34,7 @@ import web.service.IPermissionService;
 import web.service.IRolePermissionService;
 import web.service.IRoleService;
 import web.service.IUserService;
+import web.util.SessionUtil;
 
 @Controller
 @RequestMapping("/permission")
@@ -80,7 +83,9 @@ public class PermissionController {
 				Permission permission = (Permission) objArr[0];
 				RolePermission rp = (RolePermission) objArr[1];
 				rpSet.add(rp);
-				pAllSet.add(permission);
+				if(permission.getState().equals(Menu.STATE_NORMAL)){
+					pAllSet.add(permission);
+				}
 			}
 		}
 
@@ -95,7 +100,7 @@ public class PermissionController {
 	}
 
 	@RequestMapping(value = "updatePermission/{roleId}", method = RequestMethod.POST)
-	public ResponseEntity<Integer> updatePermission(@PathVariable String roleId, String permissions) {
+	public ResponseEntity<Integer> updatePermission(@PathVariable String roleId, String permissions,HttpServletRequest request) {
 		List<RolePermission> oldRolePermission = rolePermissionService.findBy("roleId", roleId);
 		rolePermissionService.removeAll(oldRolePermission);
 		if (StringUtils.isNotBlank(permissions)) {
@@ -106,7 +111,13 @@ public class PermissionController {
 				rolePermission.setPermissionId(permission);
 				rolePermissionService.save(rolePermission);
 			}
-		}
+		}  
+		User currUser = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+		User userRolesAndPermissions = userService.getUserRolesAndPermissions(currUser.getUsername());
+		currUser.setPermissionSet(userRolesAndPermissions.getPermissionSet());
+		currUser.setRoleSet(userRolesAndPermissions.getRoleSet());
+		SessionUtil.setAttribute(request, User.SESSION_USER, currUser);
+		System.out.println(JSONUtils.obj2json(currUser));
 		return new ResponseEntity<Integer>(1, HttpStatus.OK);
 	}
 
@@ -120,7 +131,13 @@ public class PermissionController {
 		roleService.save(role);
 		return new ModelAndView("redirect:/permission/roleList");
 	}
-	
+
+	@RequestMapping(value = "deleteRole/{roleId}", method = RequestMethod.GET)
+	public ModelAndView deleteRole(@PathVariable Integer roleId) {
+		roleService.removeById(roleId);
+		return new ModelAndView("redirect:/permission/roleList");
+	}
+
 	@RequestMapping(value = "toAddPermission", method = RequestMethod.GET)
 	public String toAddPermission() {
 		return getPath("addPermission");
@@ -131,7 +148,7 @@ public class PermissionController {
 		permissionService.save(permission);
 		return new ModelAndView("redirect:/permission/roleList");
 	}
-	
+
 	private String getPath(String path) {
 		return JSP_PATH + path;
 	}

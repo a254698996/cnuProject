@@ -24,7 +24,7 @@
                 <p>
 	<img alt="" height="348" src="${ctx }/upload/${notice.imgUrl}" width="679" /></p>
 <p>
-	<span style="font-size:18px;">麻溜儿网校园代理正式开始招募啦~想创业？想锻炼自己？想让日后找工作的简历多些分量？那就快来看看吧！</span></p>
+	<span style="font-size:18px;">物物交换校园代理正式开始招募啦~想创业？想锻炼自己？想让日后找工作的简历多些分量？那就快来看看吧！</span></p>
 <p>
 	<span style="font-size:18px;">${notice.conent}
 	</span></p>
@@ -39,7 +39,7 @@
 				<div class="copyright_inner">
 					<img class="foot_logo" src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="112" height="26" alt=" " />
 <!-- 					<div class="sec_nav"> -->
-<!-- 						<a href="Help/Detail/2.htm" target="_blank">关于麻溜儿</a> | -->
+<!-- 						<a href="Help/Detail/2.htm" target="_blank">关于物物交换</a> | -->
 <!-- 						<a href="Help/Detail/3.htm" target="_blank">联系我们</a> | -->
 <!-- 						<a href="Help/Detail/4.htm" target="_blank">商家合作</a> | -->
 <!-- 						<a href="Help/JianYi.htm" target="_blank">意见反馈</a> | -->

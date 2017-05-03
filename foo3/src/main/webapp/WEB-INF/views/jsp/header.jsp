@@ -15,8 +15,8 @@
 	<head>
 		<title>大学生物品交换平台</title>
 		<meta name="keywords" content="二手货|闲置物品|校园二手|大学生二手交易|大学生闲置物品交易" />
-		<meta name="description" content="服务于大学生群体的闲置物品交易平台，在麻溜儿网，您可以便捷、自主、高效的处理身边的闲置物品。" />
-		<meta name="copyright" content="麻溜儿 " />
+		<meta name="description" content="服务于大学生群体的闲置物品交易平台，在物物交换，您可以便捷、自主、高效的处理身边的闲置物品。" />
+		<meta name="copyright" content="物物交换 " />
 		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	    <script src="${ctx}/static/bootstrap/js/jquery.js"></script>
 <%-- 		<script src="${ctx}/static/ggt/JS/jquery-1.5.1.min.js" type="text/javascript"></script> --%>
@@ -58,7 +58,7 @@
 				});
 				$("#sousuo").click(function() {
 					var title = $("#CommTitle").val();
-					if(title.length != 0 && title != '麻溜儿一下你想要的^_^') {
+					if(title.length != 0 && title != '物物交换一下你想要的^_^') {
 						$("#sform").submit();
 					}
 				});
@@ -147,7 +147,7 @@
 			<div class="top_inner">
 				<div class="logo">
 					<a href="">
-						<img  src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="263" height="58" alt="麻溜儿" /></a>
+						<img  src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="263" height="58" alt="物物交换" /></a>
 				</div>
 				<div class="logo_r">
 					<div class="guanzhu">

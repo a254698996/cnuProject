@@ -66,18 +66,45 @@ public class UserController {
 
 	@RequiresAuthentication
 	@RequestMapping(value = "exchange/{goodsId}", method = RequestMethod.GET)
-	public String exchange(@PathVariable String goodsId, HttpServletRequest request) {
-		ExchangeOrder eo = new ExchangeOrder();
+	public ModelAndView exchange(@PathVariable String goodsId, HttpServletRequest request) {
+		String exchangeGoodsId = request.getParameter("exchangeGoodsId");
+		
+		Page page = exchangeOrderService.pagedQuery("from ExchangeOrder eo where eo.goodsId=? and eo.exchangeGoodsId=? ", Page.defaultStartIndex, 10, new Object[]{goodsId,exchangeGoodsId });
+		if(page.getList()!=null && !page.getList().isEmpty()){
+			ModelAndView modelAndView = new ModelAndView("ggt/goodsExchange");
+			modelAndView.addObject("msg", "已经存应该交换意向，请不要重复提交!");
+			Goods exchangeGoods = goodsService.getGoodsById(goodsId);
+			User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
+			Page page1 = goodsService.getList(Page.defaultStartIndex, Page.defaultPageSize, user.getId(), null, null,
+					Goods.GROUNDING);
+			modelAndView.addObject("goods", exchangeGoods);
+			modelAndView.addObject("goodsList", page1.getList());
+			return modelAndView;
+		}
+		
 		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
 		Goods goods = goodsService.get(goodsId);
+		
+		if(goods.getUserId()==user.getId()){
+			ModelAndView modelAndView = new ModelAndView("ggt/goodsExchange");
+			modelAndView.addObject("msg", "同一账号内的物品不能进行交换");
+			Page page1 = goodsService.getList(Page.defaultStartIndex, Page.defaultPageSize, user.getId(), null, null,
+					Goods.GROUNDING);
+			Goods exchangeGoods = goodsService.getGoodsById(goodsId);
+			modelAndView.addObject("goods", exchangeGoods);
+			modelAndView.addObject("goodsList", page1.getList());
+			return modelAndView;
+		}
+		
+		ExchangeOrder eo = new ExchangeOrder();
 		eo.setGoodsId(goodsId);
-		eo.setExchangeGoodsId(request.getParameter("exchangeGoodsId"));
+		eo.setExchangeGoodsId(exchangeGoodsId);
 		eo.setExchangeState(Constant.State.STATE_NOT_NORMAL);
 		eo.setUserId(goods.getUserId());
 		eo.setExchangeUserId(user.getId());
 		exchangeOrderService.save(eo);
 
-		return  "redirect:/index/indexGoodsDetail/" + goodsId ;
+		return  new ModelAndView("redirect:/index/indexGoodsDetail/" + goodsId);
 	}
 
 	@RequiresAuthentication

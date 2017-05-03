@@ -83,7 +83,7 @@ ul.nav-tabs.affix {
 				</ul>
 			</div>
 			<div class="col-xs-9">
-				 <iframe src="${ctx}/menu/list" id="adminIframe" width="850" height="500">
+				 <iframe src="${ctx}/${indexList.url}" id="adminIframe" width="850" height="500">
 				 
 				 </iframe>
 			</div>
