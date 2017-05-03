@@ -43,7 +43,7 @@ import web.service.IUserService;
 import web.util.SessionUtil;
 
 @Controller
-@RequiresRoles(value = { "admin", "superadmin" }, logical = Logical.OR)
+@RequiresRoles(value = { "admin", "superadmin", "noticeAdmin" }, logical = Logical.OR)
 @RequestMapping("/admin")
 public class AdminController {
 

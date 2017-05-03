@@ -12,14 +12,20 @@
 	<bean id="shiroFilter" class="org.apache.shiro.spring.web.ShiroFilterFactoryBean">
 		<property name="securityManager" ref="securityManager" />
 		<property  name="loginUrl" value="/index/toLogin"/> 
-		<property name="filters">
-        	<map>
-           		 <entry key="anAlias" value-ref="myRolesAuthorizationFilter"/>
-       		</map>
-    	</property>
+<!-- 		<property name="filters"> -->
+<!--         	<map> -->
+<!--            		 <entry key="anAlias" value-ref="myRolesAuthorizationFilter"/> -->
+<!--        		</map> -->
+<!--     	</property> -->
+		<property name="filters">  
+            <map>  
+<!--                 <entry key="authc" value-ref="formAuthenticationFilter"/>   -->
+                <entry key="roles" value-ref="anyRolesAuthorizationFilter"/>  
+            </map>  
+        </property> 
 		<property name="filterChainDefinitions">
 			<value>
-				/admin/** = authc, roles[admin],roles[superadmin],roles[noticeAdmin]
+				/admin/** =authc,roles[superadmin,admin,noticeAdmin]
 				/user/** = authc
 				/index/** = anon
  				/css/** = anon
@@ -31,6 +37,10 @@
 			</value>
 		</property>
 	</bean>
+	
+<!-- 	<bean id="myRolesAuthorizationFilter" class="web.handler.RolesAuthorizationFilter"></bean> -->
+<!-- 	<bean id="formAuthenticationFilter" class="com.thon.security.CaptchaFormAuthenticationFilter"/>    -->
+<!-- <bean id="anyRolesAuthorizationFilter" class="com.thon.security.AnyRolesAuthorizationFilter"/>   -->
 	
 	<bean id="securityManager" class="org.apache.shiro.web.mgt.DefaultWebSecurityManager">
 		<property name="realm" ref="myRealm" /> 
