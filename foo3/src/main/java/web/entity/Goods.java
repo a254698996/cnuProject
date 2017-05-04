@@ -15,7 +15,7 @@ import javax.persistence.Transient;
 @Entity
 @Table(name = "t_goods")
 public class Goods implements Serializable {
-	public final static int DEAL = 2;
+	public final static int DEAL = 1;
 	public final static int GROUNDING = 1;
 	public final static int NOT_GROUNDING = 0;
 	@Id

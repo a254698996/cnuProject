@@ -42,7 +42,6 @@
        <table class="table  table-hover table-bordered">
          <thead>
            <tr>
-           	 <th>选择</th>
              <th>名称</th>
              <th>大类</th>
              <th>细类</th>
@@ -53,7 +52,6 @@
          <tbody>  
            <c:forEach items="${goodsList}" var="goods" varStatus="itr">
 				<tr>
-					<td><input type="checkbox" name="goodsIds"  value="${goods.id}"></td>
                     <td><a href="${ctx}/goods/get/${goods.id}">${goods.name}</a></td>
                     <td>${goods.goodsCategoryName}</td>
                     <td>${goods.goodsCategorySubName}</td>
@@ -73,7 +71,7 @@
 					<td>
 						 <c:choose>
 						     <c:when test="${goods.state eq 1 }">
-						      		<button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">下架</button>
+						      		<button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">强制下架</button>
 						     </c:when>
 							 <c:otherwise >
 								  <button type="button" class="btn btn-info btn-xs" onclick="grounding('${goods.id}')">上架</button>

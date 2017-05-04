@@ -206,8 +206,6 @@ public class GoodsController {
 		goods.setAdminGrounding(Goods.GROUNDING);
 		goods.setSendDate(new Timestamp(System.currentTimeMillis()));
 		goodsService.save(goods);
-
-		// return new ModelAndView("redirect:/goods/list");
 		return new ModelAndView("redirect:/user/owner");
 	}
 

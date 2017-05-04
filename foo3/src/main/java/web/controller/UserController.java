@@ -56,8 +56,8 @@ public class UserController {
 	public ModelAndView toExchange(@PathVariable String goodsId, HttpServletRequest request) {
 		Goods exchangeGoods = goodsService.getGoodsById(goodsId);
 		User user = (User) SessionUtil.getAttribute(request, User.SESSION_USER);
-		Page page = goodsService.getList(Page.defaultStartIndex, Page.defaultPageSize, user.getId(), null, null,
-				Goods.GROUNDING);
+		Page page =  goodsService.getList(Page.defaultStartIndex, Page.defaultPageSize, user.getId(), Goods.GROUNDING);
+				
 		ModelAndView modelAndView = new ModelAndView("ggt/goodsExchange");
 		modelAndView.addObject("goods", exchangeGoods);
 		modelAndView.addObject("goodsList", page.getList());
