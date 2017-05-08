@@ -167,23 +167,6 @@
 								<input class="search_btn" type="button" value="" id="sousuo" />
 							</form>
 						</div>
-<!-- 						<div class="biaoqian"> -->
-
-<!-- 							<a href="#" class="k">英语四级</a> -->
-
-<!-- 							<a href="#" class="k">牛仔裤</a> -->
-
-<!-- 							<a href="#" class="k">苹果</a> -->
-
-<!-- 							<a href="#" class="k">墨镜</a> -->
-
-<!-- 							<a href="#" class="k">面膜</a> -->
-
-<!-- 							<a href="#" class="k">影集</a> -->
-
-<!-- 							<a href="#" class="k">数字油画</a> -->
-
-<!-- 						</div> -->
 					</div>
 				</div>
 				<!--logo右部分-->
@@ -269,7 +252,8 @@
                 </form>
             </div>
             <div class="Loright">
-                <div class="LoPic">
+                <div  >
+                 <center ><b style="color: red;">简单填写身份信息就可以注册成为会员<br>只有会员才可以进行物品交换</b></center> 
                 </div>
                 <a href="${ctx }/index/toReg"></a>
             </div>
@@ -283,17 +267,7 @@
 			<div class="copyright">
 				<div class="copyright_inner">
 					<img class="foot_logo" src="${ctx}/static/ggt/App_Themes/UI/images/foot_logo.jpg" width="112" height="26" alt=" " />
-<!-- 					<div class="sec_nav"> -->
-<!-- 						<a href="Help/Detail/2.htm" target="_blank">关于物物交换</a> | -->
-<!-- 						<a href="Help/Detail/3.htm" target="_blank">联系我们</a> | -->
-<!-- 						<a href="Help/Detail/4.htm" target="_blank">商家合作</a> | -->
-<!-- 						<a href="Help/JianYi.htm" target="_blank">意见反馈</a> | -->
-<!-- 						<a href="Help/index.htm" target="_blank">帮助中心</a> -->
-<!-- 					</div> -->
 				</div>
-<!-- 				<p style=" text-align:center;"> -->
-<!-- 					<script src="http://s5.cnzz.com/stat.php?id=3696939&web_id=3696939&show=pic" language="JavaScript"></script> -->
-<!-- 				</p> -->
 			</div>
 		</div>
     

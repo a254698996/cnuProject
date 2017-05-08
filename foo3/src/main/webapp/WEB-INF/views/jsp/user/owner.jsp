@@ -63,6 +63,7 @@
              <th>大类</th>
              <th>细类</th>
              <th>状态</th>
+             <th>成交状态</th>
              <th>操作</th>
            </tr>
          </thead>
@@ -83,6 +84,16 @@
 						     </c:when>
 							 <c:otherwise >
 								  未上架
+							 </c:otherwise>
+						 </c:choose>
+					</td>
+                    <td>
+ 						<c:choose>
+						     <c:when test="${goods.deal eq 1 }">
+						      	已成交
+						     </c:when>
+							 <c:otherwise >
+								  未成交
 							 </c:otherwise>
 						 </c:choose>
 					</td>

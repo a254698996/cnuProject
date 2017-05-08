@@ -23,7 +23,7 @@ public class CNUTest extends BasicNoRellbackTest {
 	@Lazy
 	IMenuService<Menu, Serializable> menuService;
 
-	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHH");
+//	SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHH");
 
 	@Test
 	public void menuTest() {
