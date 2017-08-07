@@ -1,4 +1,4 @@
-package restaurant;
+package test.restaurant;
 
 public class Waiter extends Person {
 

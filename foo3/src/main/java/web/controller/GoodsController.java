@@ -8,7 +8,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import javax.persistence.Column;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang.StringUtils;

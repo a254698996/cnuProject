@@ -26,8 +26,10 @@ import web.entity.Permission;
 import web.entity.Person;
 import web.entity.Role;
 import web.entity.RolePermission;
+import web.entity.SeqnoEntity;
 import web.entity.User;
 import web.entity.UserRole;
+import web.entity.ZookeeperEntity;
 import web.service.ICityService;
 import web.service.IExchangeGroupService;
 import web.service.IExchangeOrderService;
@@ -41,8 +43,10 @@ import web.service.IPermissionService;
 import web.service.IPersonService;
 import web.service.IRolePermissionService;
 import web.service.IRoleService;
+import web.service.ISeqnoService;
 import web.service.IUserRoleService;
 import web.service.IUserService;
+import web.service.IZookeeperService;
 import web.service.impl.CityService;
 import web.service.impl.ExchangeGroupService;
 import web.service.impl.ExchangeOrderService;
@@ -56,8 +60,10 @@ import web.service.impl.PermissionService;
 import web.service.impl.PersonService;
 import web.service.impl.RolePermissionService;
 import web.service.impl.RoleService;
+import web.service.impl.SeqnoService;
 import web.service.impl.UserRoleService;
 import web.service.impl.UserService;
+import web.service.impl.ZookeeperService;
 
 @Configuration
 public class DaoConfig {
@@ -208,5 +214,21 @@ public class DaoConfig {
 		logger.info("INoticeActivityService  created");
 		return new NoticeActivityService(NoticeActivity.class,
 				(HibernateEntityDao<NoticeActivity, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
+
+	@SuppressWarnings("unchecked")
+	@Bean
+	public IZookeeperService<ZookeeperEntity, Serializable> getZookeeperService() {
+		logger.info("IZookeeperService  created");
+		return new ZookeeperService(ZookeeperEntity.class,
+				(HibernateEntityDao<ZookeeperEntity, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
+	}
+	
+	@SuppressWarnings("unchecked")
+	@Bean
+	public ISeqnoService<SeqnoEntity, Serializable> getSeqnoService() {
+		logger.info("ISeqnoService  created");
+		return new SeqnoService(SeqnoEntity.class,
+				(HibernateEntityDao<SeqnoEntity, Serializable>) getHibernateEntityDao(), getHibernateGenericDao());
 	}
 }

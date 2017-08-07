@@ -1,4 +1,4 @@
-package restaurant;
+package test.restaurant;
 
 import java.util.Iterator;
 import java.util.Set;

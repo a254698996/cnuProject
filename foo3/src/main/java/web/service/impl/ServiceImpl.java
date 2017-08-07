@@ -156,7 +156,7 @@ public class ServiceImpl<T, PK extends Serializable> implements IService<T, PK> 
 	}
 
 	@Override
-	public List find(String hql, Object... values) {
+	public List<?> find(String hql, Object... values) {
 		return hdao.find(hql, values);
 	}
 

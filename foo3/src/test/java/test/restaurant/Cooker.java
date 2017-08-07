@@ -1,4 +1,4 @@
-package restaurant;
+package test.restaurant;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 

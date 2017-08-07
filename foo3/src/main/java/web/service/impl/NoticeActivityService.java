@@ -10,7 +10,6 @@ import javax.transaction.Transactional.TxType;
 import com.hibernate.dao.base.Page;
 import com.hibernate.dao.generic.HibernateGenericDao;
 
-import web.conf.SysInit;
 import web.content.Constant;
 import web.dao.hibernate.impl.HibernateEntityDao;
 import web.entity.NoticeActivity;

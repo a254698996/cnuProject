@@ -1,17 +1,18 @@
-package restaurant.test;
+package test.restaurant.test;
 
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import restaurant.Cooker;
-import restaurant.Customer;
-import restaurant.Food;
-import restaurant.Menu;
-import restaurant.Order;
-import restaurant.Restaurant;
-import restaurant.Waiter;
+import test.restaurant.Cooker;
+import test.restaurant.Customer;
+import test.restaurant.Food;
+import test.restaurant.Menu;
+import test.restaurant.Order;
+import test.restaurant.Restaurant;
+import test.restaurant.Waiter;
+ 
 
 public class RestaurantTest {
 	public static AtomicInteger orderNo = new AtomicInteger(1);
@@ -20,6 +21,8 @@ public class RestaurantTest {
 		try {
 			Restaurant restaurant = restaurantReady();
 			// randomName();
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
