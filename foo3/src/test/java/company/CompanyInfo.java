@@ -1,6 +1,7 @@
 package company;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
 public class CompanyInfo {
@@ -17,10 +18,22 @@ public class CompanyInfo {
 
 	private Account companyAccount;
 
+	public Emp getBoss() {
+		Iterator<Emp> iterator = empManageSet.iterator();
+		while (iterator.hasNext()) {
+			Emp emp = iterator.next();
+			if (emp.getEmpLevel().equals(EmpLevel.boss)) {
+				return emp;
+			}
+		}
+		return null;
+	}
+
 	@Override
 	public String toString() {
 		return "CompanyInfo [compnayNo=" + compnayNo + ", companyName=" + companyName + ", companyState=" + companyState
-				+ ", empSet=" + empSet + ", empManageSet=" + empManageSet + ", empOfferSet=" + empOfferSet + "]";
+				+ ", empSet=" + empSet + ", empManageSet=" + empManageSet + ", empOfferSet=" + empOfferSet
+				+ ", companyAccount=" + companyAccount + "]";
 	}
 
 	public void open() {

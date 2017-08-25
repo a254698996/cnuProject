@@ -7,6 +7,12 @@ public class EmpSalaryBillWater {
 	private double realSalary;
 	private double realbonus;
 
+	@Override
+	public String toString() {
+		return "EmpSalaryBillWater [no=" + no + ", sendDate=" + sendDate + ", emp=" + emp + ", realSalary=" + realSalary
+				+ ", realbonus=" + realbonus + "]";
+	}
+
 	public String getNo() {
 		return no;
 	}

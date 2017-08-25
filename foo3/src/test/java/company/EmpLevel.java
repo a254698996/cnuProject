@@ -1,5 +1,5 @@
 package company;
 
 public enum EmpLevel {
-	manger, normal
+	manger, normal, boss
 }

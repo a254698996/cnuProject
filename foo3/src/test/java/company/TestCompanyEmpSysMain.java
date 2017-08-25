@@ -1,5 +1,7 @@
 package company;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -9,6 +11,18 @@ public class TestCompanyEmpSysMain {
 		CompanyInfo companyInfo = new CompanyInfo();
 		companyInfo.setCompanyName("EBC");
 		companyInfo.setCompnayNo("929238393");
+
+		Account companyAccount = new Account();
+		companyAccount.setAccountNumber("company998");
+		companyAccount.setBalance(50000.0);
+		companyInfo.setCompanyAccount(companyAccount);
+
+		SalaryRule bossSalaryRule = new SalaryRule();
+		bossSalaryRule.setNo("33");
+		bossSalaryRule.setEmpLevel(EmpLevel.boss);
+		bossSalaryRule.setName("老板的薪资规则");
+		bossSalaryRule.setSalaryPercent(70);
+		bossSalaryRule.setBonusPercent(30);
 
 		SalaryRule managerSalaryRule = new SalaryRule();
 		managerSalaryRule.setNo("11");
@@ -26,6 +40,7 @@ public class TestCompanyEmpSysMain {
 
 		Set<SalaryRule> salaryRuleSet = new HashSet<SalaryRule>();
 
+		salaryRuleSet.add(bossSalaryRule);
 		salaryRuleSet.add(managerSalaryRule);
 		salaryRuleSet.add(empSalaryRule);
 
@@ -36,6 +51,10 @@ public class TestCompanyEmpSysMain {
 		Emp zhangsan = new Emp();
 		zhangsan.setEmpName("张三");
 		zhangsan.setWorkforceCapability(85);
+		Account zhangsanAccount = new Account();
+		zhangsanAccount.setAccountNumber("zhangsanA003");
+		zhangsanAccount.setBalance(0.0);
+		zhangsan.setEmpAccount(zhangsanAccount);
 
 		try {
 			company.recruit(zhangsan, 10000.0);
@@ -46,6 +65,11 @@ public class TestCompanyEmpSysMain {
 		Emp lisi = new Emp();
 		lisi.setEmpName("李四");
 		lisi.setWorkforceCapability(70);
+		
+		Account lisiAccount = new Account();
+		lisiAccount.setAccountNumber("lisiB008");
+		lisiAccount.setBalance(0.0);
+		lisi.setEmpAccount(lisiAccount);
 
 		try {
 			company.recruit(lisi, 8000.0);
@@ -53,12 +77,31 @@ public class TestCompanyEmpSysMain {
 			e.printStackTrace();
 		}
 
+		Emp wangwu = new Emp();
+		wangwu.setEmpName("王五");
+		wangwu.setWorkforceCapability(120);
+		
+		Account wangwuAccount = new Account();
+		wangwuAccount.setAccountNumber("wangwuB04545");
+		wangwuAccount.setBalance(0.0);
+		wangwu.setEmpAccount(wangwuAccount);
+
+		try {
+			company.recruit(wangwu, 9999999.0);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
 		System.out.println(company.queryCompanyInfo());
-		
+
 		company.business();
-		
-		
-		
-		
+
+		System.out.println("it is time to pay money for  emp ");
+		company.getCompanyInfo().getBoss().setEmpMood(EmpMood.crazy);
+
+		SimpleDateFormat sendDate = new SimpleDateFormat("yyyyMMdd");
+
+		company.payoffemp(sendDate.format(new Date()));
+
 	}
 }

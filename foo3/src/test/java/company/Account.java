@@ -6,6 +6,11 @@ public class Account {
 
 	private double balance;
 
+	@Override
+	public String toString() {
+		return "Account [accountNumber=" + accountNumber + ", balance=" + balance + "]";
+	}
+
 	public String getAccountNumber() {
 		return accountNumber;
 	}

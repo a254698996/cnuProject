@@ -12,6 +12,8 @@ public class Emp {
 
 	private EmpState empState;
 
+	private EmpMood empMood;
+
 	private EmpOffer empOffer;
 
 	private int workforceCapability;
@@ -27,10 +29,9 @@ public class Emp {
 
 	@Override
 	public String toString() {
-		return "Emp [empNo=" + empNo + ", empName=" + empName + ", companyNo=" + companyNo + ", getEmpNo()="
-				+ getEmpNo() + ", getEmpName()=" + getEmpName() + ", getCompanyNo()=" + getCompanyNo()
-				+ ", getEmpLevel()=" + getEmpLevel() + ", getEmpState()=" + getEmpState() + ", getClass()=" + getClass()
-				+ ", hashCode()=" + hashCode() + ", toString()=" + super.toString() + "]";
+		return "Emp [empNo=" + empNo + ", empName=" + empName + ", companyNo=" + companyNo + ", empLevel=" + empLevel
+				+ ", empState=" + empState + ", empOffer=" + empOffer + ", workforceCapability=" + workforceCapability
+				+ ", empAccount=" + empAccount + "]";
 	}
 
 	public String getEmpNo() {
@@ -95,6 +96,14 @@ public class Emp {
 
 	public void setEmpAccount(Account empAccount) {
 		this.empAccount = empAccount;
+	}
+
+	public EmpMood getEmpMood() {
+		return empMood;
+	}
+
+	public void setEmpMood(EmpMood empMood) {
+		this.empMood = empMood;
 	}
 
 }

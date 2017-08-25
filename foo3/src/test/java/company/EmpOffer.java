@@ -16,11 +16,9 @@ public class EmpOffer {
 
 	@Override
 	public String toString() {
-		return "EmpOffer [company=" + company + ", emp=" + emp + ", empSalaryRule=" + empSalaryRule + ", money=" + money
+		return "EmpOffer [company=" + company + ",  empSalaryRule=" + empSalaryRule + ", money=" + money
 				+ "]";
 	}
-
-
 
 	public Company getCompany() {
 		return company;
