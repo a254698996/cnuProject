@@ -22,6 +22,7 @@ public class PayMoney implements Runnable {
 
 	@Override
 	public void run() {
+		System.out.println("开始 给  " + this.inAccount.getAccountNumber() + "  转入   " + this.payMoney);
 		transAccount();
 	}
 }

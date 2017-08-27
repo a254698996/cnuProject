@@ -8,6 +8,22 @@ import java.util.Set;
 public class TestCompanyEmpSysMain {
 
 	public static void main(String[] args) {
+		testCompanyEmpSys();
+	}
+
+	private void testResult() {
+		double a = 1.00;
+		double b = 8000.0;
+
+		double c = 0.8;
+		double result_a = a * b;
+		double result_b = result_a * c;
+		System.out.println(result_a);
+		System.out.println(result_b);
+	}
+
+	private static void testCompanyEmpSys() {
+
 		CompanyInfo companyInfo = new CompanyInfo();
 		companyInfo.setCompanyName("EBC");
 		companyInfo.setCompnayNo("929238393");
@@ -65,7 +81,7 @@ public class TestCompanyEmpSysMain {
 		Emp lisi = new Emp();
 		lisi.setEmpName("李四");
 		lisi.setWorkforceCapability(70);
-		
+
 		Account lisiAccount = new Account();
 		lisiAccount.setAccountNumber("lisiB008");
 		lisiAccount.setBalance(0.0);
@@ -80,14 +96,14 @@ public class TestCompanyEmpSysMain {
 		Emp wangwu = new Emp();
 		wangwu.setEmpName("王五");
 		wangwu.setWorkforceCapability(120);
-		
+
 		Account wangwuAccount = new Account();
 		wangwuAccount.setAccountNumber("wangwuB04545");
 		wangwuAccount.setBalance(0.0);
 		wangwu.setEmpAccount(wangwuAccount);
 
 		try {
-			company.recruit(wangwu, 9999999.0);
+			company.recruit(wangwu, 10000.0);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

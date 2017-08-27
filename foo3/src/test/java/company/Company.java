@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
 
 public class Company {
 
@@ -41,11 +40,14 @@ public class Company {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		System.out.println("工资已完成，检查一下工资....");
 		Set<Emp> empManageSet = company.getCompanyInfo().getEmpManageSet();
 		empCheckAccount(empManageSet);
-		
+
 		Set<Emp> empSet = company.getCompanyInfo().getEmpSet();
 		empCheckAccount(empSet);
+
+		System.out.println(this.companyInfo.getCompanyAccount());
 	}
 
 	// 正常 按 工资条 全额发放
@@ -53,16 +55,26 @@ public class Company {
 		ExecutorService threadPool = Executors.newFixedThreadPool(billWaterList.size());
 		for (EmpSalaryBillWater empSalaryBillWater : billWaterList) {
 			PayMoney payMoney = new PayMoney(companyAccount, empSalaryBillWater.getEmp().getEmpAccount(),
-//					。。 empSalaryBillWater.getEmp().getEmpAccount()这个参数 是null 
+					// 。。 empSalaryBillWater.getEmp().getEmpAccount()这个参数 是null
 					empSalaryBillWater.getRealbonus() + empSalaryBillWater.getRealSalary());
-			threadPool.submit(payMoney);
+			threadPool.execute(payMoney);
 		}
-		try {
-			while (!threadPool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
-				System.out.println("工资还没有发完");
+		// try {
+		// while (!threadPool.awaitTermination(500, TimeUnit.MILLISECONDS)) {
+		// System.out.println("工资还没有发完");
+		// }
+		// } catch (InterruptedException e) {
+		// e.printStackTrace();
+		// }
+
+		threadPool.shutdown();
+
+		if (!threadPool.isShutdown()) {
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
-		} catch (InterruptedException e) {
-			e.printStackTrace();
 		}
 	}
 
@@ -114,11 +126,12 @@ public class Company {
 	private EmpSalaryBillWater calcEmpSalaryBillWater(EmpOffer empOffer, double percent, String sendDate) {
 		EmpSalaryBillWater billWater = new EmpSalaryBillWater();
 		SalaryRule empSalaryRule = empOffer.getEmpSalaryRule();
-		double salaryPercent = empSalaryRule.getSalaryPercent() * percent;
-		double bonusPercent = empSalaryRule.getBonusPercent() * percent;
+		double salaryPercent = empSalaryRule.getSalaryPercent() * percent / 100;
+		double bonusPercent = empSalaryRule.getBonusPercent() * percent / 100;
 		billWater.setRealSalary(empOffer.getMoney() * salaryPercent);
 		billWater.setRealbonus(empOffer.getMoney() * bonusPercent);
 		billWater.setSendDate(sendDate);
+		billWater.setEmp(empOffer.getEmp());
 		return billWater;
 	}
 
