@@ -37,6 +37,8 @@ public class LockingExample {
 	private static final String PATH = "/examples/locks";
 
 	public static void main(String[] args) throws Exception {
+		System.out.println("LockingExample   ... start  !!! ");
+		
 		// all of the useful sample code is in ExampleClientThatLocks.java
 
 		// FakeLimitedResource simulates some external resource that can only be
@@ -55,7 +57,7 @@ public class LockingExample {
 					public Void call() throws Exception {
 //						CuratorFramework client = CuratorFrameworkFactory.newClient(server.getConnectString(),
 //								new ExponentialBackoffRetry(1000, 3));
-						CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:2181",
+						CuratorFramework client = CuratorFrameworkFactory.newClient("127.0.0.1:9181",
 								new ExponentialBackoffRetry(1000, 3));
 						try {
 							client.start();

@@ -1,0 +1,41 @@
+问题总结
+
+1) 因为需要测试集群环境，所以需要搭建一个 nginx  tomcat 集群系统 
+  nginx tomcat 集群系统  注意事项
+  a) nginx 版本 nginx-1.13.4
+  b) tomcat 版本 apache-tomcat-8.5.11-windows-x64
+  c) 修改 nginx 配置文件 nginx.conf
+               增加 虚拟站点
+    upstream mysite {
+		server 127.0.0.1:8080 weight=1;
+		server 127.0.0.1:8090 weight=1;
+	}
+	 
+	在  location / { 结点 下 加 入    proxy_pass http://mysite;
+	 location / {
+        root   html;
+        index  index.html index.htm;
+		proxy_pass http://mysite;
+    }
+
+2) 新建 一个 连接分步式 zookeeper 帮助类 CuratorHelp	
+
+3) 应用分步式锁(在需要 集群环境  独占 资源的class 中)
+ private static final String PATH = "/examples/locks";
+ private final InterProcessMutex lock = CuratorHelp.getInterProcessMutex(lockPath);
+
+	public void testTask() {
+		try {
+			lock.acquire();
+			settlementService.testTask();
+		} catch (Exception e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				lock.release();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	

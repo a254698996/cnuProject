@@ -113,7 +113,8 @@ public class TestCompanyEmpSysMain {
 		company.business();
 
 		System.out.println("it is time to pay money for  emp ");
-		company.getCompanyInfo().getBoss().setEmpMood(EmpMood.crazy);
+//		company.getCompanyInfo().getBoss().setEmpMood(EmpMood.crazy);
+		company.getCompanyInfo().getBoss().setEmpMood(EmpMood.normal);
 
 		SimpleDateFormat sendDate = new SimpleDateFormat("yyyyMMdd");
 
