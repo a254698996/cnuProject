@@ -1,0 +1,11 @@
+zookeeper 实现 DistributedLock 注意事项
+1) 与 zookeeper 版本匹配 问题
+	<dependency>
+			<groupId>org.apache.curator</groupId>
+			<artifactId>curator-recipes</artifactId>
+			<version>4.0.0</version>
+			<!-- 连接  zookeeper-3.5.3-beta  没有问题  -->
+			<!-- 连接  zookeeper-3.3.6   有问题 连接不上 -->
+		</dependency>
+		
+2)	CuratorFrameworkFactory 启动时 注意 调用 start 方法 详见 CuratorHelp.java

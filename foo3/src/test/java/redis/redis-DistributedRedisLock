@@ -1,0 +1,176 @@
+Redisson  用这个实现  DistributedLock 注意事项
+
+1) 加载 dependency 2.10.0 对应  jdk 1.6+  3.5.0 对应 jdk8+
+   <dependency>
+	   <groupId>org.redisson</groupId>
+	   <artifactId>redisson</artifactId>
+	   <version>2.10.0</version><!-- 连接redis 3.4.6没有问题 哨兵模式  -->
+	</dependency>
+	
+2)Redisson 配置时 注意 连接信息 的正确格式 详见 RedisHelp.java 中的配置
+   String[] addresses = new String[] { "redis://10.153.29.54:16379", "redis://10.153.29.54:26379",
+				"redis://10.153.29.55:16379" };
+				
+3) 注意 锁的释放 和客户端 连接的关闭 
+ lock.unlock();
+ redissonClient.shutdown();
+ 
+另 同一应用 部署在从个服务，其中定时 任务不能启动多个的问题，以下的形式解决 Thread.sleep(sleepTime) + redis.exist 来模拟 分步式锁
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Random;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.stereotype.Component;
+
+import foo3.example.redis.JedisSentinelUtil;
+import redis.clients.jedis.Jedis;
+
+@Component("settlementTask")
+@Lazy(value = false)
+public class SettlementTask {
+	private final Logger logger = LoggerFactory.getLogger(getClass());
+	private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss SSS");
+
+	@Autowired
+	private SettlementService settlementService;
+
+	private final static byte[] TESTTASKKEY = "PROMOTION_SYS_TESTTASKKEY".getBytes();
+	private final static byte[] EXIST = "1".getBytes();
+
+	public void testTask() {
+		logger.info("testTask begin: {}", sdf.format(new Date()));
+		Jedis jredis = JedisSentinelUtil.getJredis();
+		jredis.setnx(TESTTASKKEY, EXIST);
+		int random = getRandom();
+		try {
+			logger.info("testTask sleep: {}", random);
+			Thread.sleep(random);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		byte[] bs = jredis.get(TESTTASKKEY);
+		if (bs != null) {
+			Long del = jredis.del(TESTTASKKEY);
+			if (del == 1) {
+				logger.info("testTask execute begin : {}", sdf.format(new Date()));
+				settlementService.testTask();
+				logger.info("testTask execute end   : {}", sdf.format(new Date()));
+			}
+		}
+		jredis.close();
+		logger.info("testTask end  : {}", sdf.format(new Date()));
+	}
+
+	public void pay() {
+		logger.info("payTask begin: {}", sdf.format(new Date()));
+		Jedis jredis = JedisSentinelUtil.getJredis();
+		jredis.setnx(TESTTASKKEY, EXIST);
+		int random = getRandom();
+		try {
+			logger.info("payTask sleep: {}", random);
+			Thread.sleep(random);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		byte[] bs = jredis.get(TESTTASKKEY);
+		if (bs != null) {
+			Long del = jredis.del(TESTTASKKEY);
+			if (del == 1) {
+				logger.info("payTask execute begin : {}", sdf.format(new Date()));
+				settlementService.pay();
+				logger.info("payTask execute end   : {}", sdf.format(new Date()));
+			}
+		}
+		jredis.close();
+		logger.info("payTask end  : {}", sdf.format(new Date()));
+	}
+
+	public void secondSettlement() {
+		logger.info("secondSettlementTask begin: {}", sdf.format(new Date()));
+		Jedis jredis = JedisSentinelUtil.getJredis();
+		jredis.setnx(TESTTASKKEY, EXIST);
+		int random = getRandom();
+		try {
+			logger.info("secondSettlementTask sleep: {}", random);
+			Thread.sleep(random);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		byte[] bs = jredis.get(TESTTASKKEY);
+		if (bs != null) {
+			Long del = jredis.del(TESTTASKKEY);
+			if (del == 1) {
+				logger.info("secondSettlementTask execute begin : {}", sdf.format(new Date()));
+				settlementService.secondSettlement();
+				logger.info("secondSettlementTask execute end   : {}", sdf.format(new Date()));
+			}
+		}
+		jredis.close();
+		logger.info("secondSettlementTask end  : {}", sdf.format(new Date()));
+	}
+
+	public void setSettlementFail() {
+		logger.info("setSettlementFailTask begin: {}", sdf.format(new Date()));
+		Jedis jredis = JedisSentinelUtil.getJredis();
+		jredis.setnx(TESTTASKKEY, EXIST);
+		int random = getRandom();
+		try {
+			logger.info("setSettlementFailTask sleep: {}", random);
+			Thread.sleep(random);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		byte[] bs = jredis.get(TESTTASKKEY);
+		if (bs != null) {
+			Long del = jredis.del(TESTTASKKEY);
+			if (del == 1) {
+				logger.info("setSettlementFailTask execute begin : {}", sdf.format(new Date()));
+				settlementService.setSettlementFail();
+				logger.info("setSettlementFailTask execute end   : {}", sdf.format(new Date()));
+			}
+		}
+		jredis.close();
+		logger.info("setSettlementFailTask end  : {}", sdf.format(new Date()));
+	}
+
+	public void refund() {
+		logger.info("refundTask begin: {}", sdf.format(new Date()));
+		Jedis jredis = JedisSentinelUtil.getJredis();
+		jredis.setnx(TESTTASKKEY, EXIST);
+		int random = getRandom();
+		try {
+			logger.info("refundTask sleep: {}", random);
+			Thread.sleep(random);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		byte[] bs = jredis.get(TESTTASKKEY);
+		if (bs != null) {
+			Long del = jredis.del(TESTTASKKEY);
+			if (del == 1) {
+				logger.info("refundTask execute begin : {}", sdf.format(new Date()));
+				settlementService.refund();
+				logger.info("refundTask execute end   : {}", sdf.format(new Date()));
+			}
+		}
+		jredis.close();
+		logger.info("refundTask end  : {}", sdf.format(new Date()));
+	}
+
+	private synchronized int getRandom() {
+		int max = 10000;
+		int min = 1000;
+		Random random = new Random();
+		return random.nextInt(max) % (max - min + 1) + min;
+	}
+
+}
+				
+
+
+
