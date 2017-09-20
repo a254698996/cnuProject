@@ -15,6 +15,9 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.alibaba.fastjson.JSON;
+import com.google.common.collect.Maps;
+
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPoolConfig;
 import redis.clients.jedis.JedisSentinelPool;
@@ -1599,17 +1602,17 @@ public class JedisSentinelUtil {
 	}
 
 	public static void main(String[] args) {
-//		Map<String, Object> map = Maps.newHashMap();
-//		map.put("1", 1);
-//		map.put("2", "sfasdfa");
-//		map.put("3", "sfawrwere3fa");
-//
-//		String werwe = JedisSentinelUtil.getInstance().strings().set("werwe", JSON.toJSONString(map));
-//		System.out.println(werwe);
-//		String s = JedisSentinelUtil.getInstance().strings().get("werwe");
-//		System.out.println(s);
-		
+		Map<String, Object> map = Maps.newHashMap();
+		map.put("1", 1);
+		map.put("2", "sfasdfa");
+		map.put("3", "sfawrwere3fa");
+		//
+		String werwe = JedisSentinelUtil.getInstance().strings().set("werwe", JSON.toJSONString(map));
+		System.out.println(werwe);
+		String s = JedisSentinelUtil.getInstance().strings().get("werwe");
+		System.out.println(s);
+
 		long del = JedisSentinelUtil.getInstance().keys().del("werwe");
-		System.out.println("del  "+del);
+		System.out.println("del  " + del);
 	}
 }
