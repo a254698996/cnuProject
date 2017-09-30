@@ -58,20 +58,28 @@ public abstract class MongoDbDaoImpl<T> implements IMongoDbDao<T> {
 		String collectName = getCollectName(t);
 		MongoCollection<Document> collection = mongoClient.getDatabase(dataBase).getCollection(collectName);
 		collection.insertOne(toDocument(t));
+		String indexName = "age";
+		if (!hasIndex(collection, indexName)) {
+			createIndex(collection, indexName);
+		}
+	}
+
+	private boolean hasIndex(MongoCollection<Document> collection, String indexName) {
 		ListIndexesIterable<Document> listIndexes = collection.listIndexes();
-		System.out.println("listIndexes  " + listIndexes);
-		System.out.println("listIndexes  " + listIndexes.first());
 		MongoCursor<Document> iterator = listIndexes.iterator();
 		while (iterator.hasNext()) {
 			Document next = iterator.next();
-			// TODO 这里 查询 有没有 名字为 age 的索引
-			// age 索引 想在 用注解的方式 注解在 Student 里 然后 在这里可以知道 哪些列需要加 索引
 			Object object = next.get("name");
+			if (object.equals(indexName)) {
+				return true;
+			}
 		}
-		if (listIndexes.first() == null) {
-			String createIndex = collection.createIndex(new Document("age", 1), new IndexOptions().unique(true));
-			System.out.println(" create index " + createIndex);
-		}
+		return false;
+	}
+
+	private void createIndex(MongoCollection<Document> collection, String indexName) {
+		String createIndex = collection.createIndex(new Document(indexName, 1), new IndexOptions().unique(true));
+		System.out.println(" create index " + createIndex);
 	}
 
 	@Override
