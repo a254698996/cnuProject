@@ -342,6 +342,11 @@
 			<artifactId>spring-data-redis</artifactId>
 			<version>1.6.6.RELEASE</version>
 		</dependency>
+		<dependency>
+			<groupId>cglib</groupId>
+			<artifactId>cglib</artifactId>
+			<version>3.2.5</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>foo3</finalName>
@@ -367,8 +372,14 @@
 					<password>mysqladmin</password>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<skip>true</skip>
+				</configuration>
+			</plugin>
 		</plugins>
-
 		<resources>
 			<resource>
 				<directory>src/main/resources/${profiles.active}</directory>

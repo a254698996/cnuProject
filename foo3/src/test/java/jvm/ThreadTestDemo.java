@@ -15,6 +15,19 @@ public class ThreadTestDemo {
 		}
 	}
 
+	public synchronized void print2() {
+		int i = 5;
+		while (i-- > 0) {
+			System.out.println(Thread.currentThread().getName() + ":" + i);
+
+			try {
+				Thread.sleep(500);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public static synchronized void printStatic() {
 		int i = 5;
 		while (i-- > 0) {
@@ -41,7 +54,30 @@ public class ThreadTestDemo {
 		}
 	}
 
+	private static void testObjectLock() {
+		final ThreadTestDemo t = new ThreadTestDemo();
+		Thread test1 = new Thread(new Runnable() {
+			public void run() {
+				t.print();
+			}
+		}, "test1");
+		Thread test2 = new Thread(new Runnable() {
+			public void run() {
+				t.print2();
+			}
+		}, "test2");
+		test2.start();
+		test1.start();
+	}
+
 	public static void main(String[] args) {
+//		 testDiffLockObjectOrClass();
+
+		// 同一个对象锁
+		testObjectLock();
+	}
+
+	private static void testDiffLockObjectOrClass() {
 		final ThreadTestDemo t = new ThreadTestDemo();
 		Thread test1 = new Thread(new Runnable() {
 			public void run() {
@@ -111,6 +147,5 @@ public class ThreadTestDemo {
 
 		System.out.println("w1==w2 " + (w1 == w2)); // false
 		System.out.println("w1equals(w2) " + w1.equals(w2));
-
 	}
 }
