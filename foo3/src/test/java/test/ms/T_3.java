@@ -1,29 +1,60 @@
 package test.ms;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Set;
 
 public class T_3 {
 
 	public static void main(String[] args) {
+		testFindPath();
+		//
+		// testLinkList();
+	}
+
+	private static void testLinkList() {
+		Node aNode = new Node("A", 1);
+		Node bNode = new Node("B", 2);
+		Node cNode = new Node("C", 2);
+		Node dNode = new Node("D", 6);
+		LinkedList<Path> list = new LinkedList<>();
+		list.add(new Path(aNode, bNode));
+		list.add(new Path(bNode, cNode));
+		list.add(new Path(aNode, cNode));
+		list.add(new Path(bNode, dNode));
+
+		List<Path> subList = list.subList(0, 2);
+		System.out.println(subList.size());
+		System.out.println(subList);
+		System.out.println(list);
+		System.out.println(subList);
+
+	}
+
+	private static void testFindPath() {
 
 		Set<Node> nodeSet = new HashSet<>();
 		Node aNode = new Node("A", 1);
 		Node bNode = new Node("B", 2);
 		Node cNode = new Node("C", 2);
+		Node dNode = new Node("D", 6);
 
 		nodeSet.add(aNode);
 		nodeSet.add(bNode);
 		nodeSet.add(cNode);
+		nodeSet.add(dNode);
 
 		Set<Path> pathSet = new HashSet<Path>();
 		pathSet.add(new Path(aNode, bNode));
 		pathSet.add(new Path(bNode, cNode));
 		pathSet.add(new Path(aNode, cNode));
+		pathSet.add(new Path(bNode, dNode));
 
 		boolean existCyc = existCyc(aNode, pathSet);
 		if (existCyc) {
@@ -31,15 +62,15 @@ public class T_3 {
 			return;
 		}
 
-		List<LinkedList<Path>> pathList = new ArrayList<>();
+		List<List<Path>> pathList = new ArrayList<>();
 
 		findPath(aNode, nodeSet, pathSet, pathList);
 
 		int pathIndex = 1;
 		System.out.println("pathList size " + pathList.size());
-		Iterator<LinkedList<Path>> iterator2 = pathList.iterator();
+		Iterator<List<Path>> iterator2 = pathList.iterator();
 		while (iterator2.hasNext()) {
-			LinkedList<Path> next = iterator2.next();
+			List<Path> next = iterator2.next();
 			Set<Node> linkedListNodeSet = new HashSet<>();
 			Iterator<Path> iterator3 = next.iterator();
 			while (iterator3.hasNext()) {
@@ -71,8 +102,7 @@ public class T_3 {
 		return false;
 	}
 
-	private static void findPath(Node beginNode, Set<Node> nodeSet, Set<Path> pathSet,
-			List<LinkedList<Path>> pathList) {
+	private static void findPath(Node beginNode, Set<Node> nodeSet, Set<Path> pathSet, List<List<Path>> pathList) {
 		if (beginNode == null || nodeSet.isEmpty() || nodeSet == null || pathSet.isEmpty() || pathSet == null) {
 			return;
 		}
@@ -88,22 +118,42 @@ public class T_3 {
 			}
 		}
 		for (Path currPath : currentPathSet) {
-			LinkedList<Path> currlinkedList = null;
-			for (LinkedList<Path> linkedList : pathList) {
+			List<Path> currlinkedList = null;
+			for (List<Path> linkedList : pathList) {
 				if (!linkedList.isEmpty()) {
-					Iterator<Path> iterator2 = linkedList.iterator();
-					while (iterator2.hasNext()) {
-						Path next = iterator2.next();
-						Node endNode = next.getEndNode();
-						if (currPath.getBeginNode().equals(endNode)) {
-							currlinkedList = linkedList;
-							break;
+					Path last = linkedList.get(linkedList.size() - 1);
+					Node endNode = last.getEndNode();
+					if (currPath.getBeginNode().equals(endNode)) {
+						currlinkedList = linkedList;
+						System.out.println("找到 最后一个节点  " + endNode);
+						break;
+					} else {
+						// System.out.println("linkedList.size() " +
+						// linkedList.size());
+						// System.out.println("linkedList " + linkedList);
+						for (int i = linkedList.size() - 1; i > 0; i--) {
+							Path next = linkedList.get(i);
+							endNode = next.getEndNode();
+							if (currPath.getBeginNode().equals(endNode)) {
+								System.out.println("i  " + i);
+								System.out.println("linkedList  " + linkedList);
+								List<Path> subList = linkedList.subList(0, i + 1);
+								System.out.println("subList.size()  " + subList.size());
+								currlinkedList = new ArrayList<Path>(Arrays.asList(new Path[subList.size()]));
+								Collections.copy(currlinkedList, subList);
+								System.out.println("找 中间 节点 " + endNode);
+								System.out.println("找 中间 节点 next Path " + next);
+								System.out.println("currlinkedList   " + currlinkedList);
+								System.out.println("currlinkedList size " + currlinkedList.size());
+								break;
+							}
 						}
 					}
 				}
+				System.out.println("一次 循环....");
 			}
 			if (currlinkedList == null) {
-				LinkedList<Path> temp = new LinkedList<>();
+				List<Path> temp = new ArrayList<>();
 				pathList.add(temp);
 				currlinkedList = temp;
 			}
