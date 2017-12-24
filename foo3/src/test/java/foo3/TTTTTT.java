@@ -105,7 +105,9 @@ public class TTTTTT {
 
 //		test0();
 		
-		testMap() ;
+//		testMap() ;
+		
+		System.out.println("0100801234567890".substring(0,5));
 	}
 
 	private static void testMap() {

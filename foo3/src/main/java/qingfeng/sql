@@ -1,0 +1,17 @@
+select top 200 * from card; 
+
+select top 100 * from card where cardid like '________________776';
+
+--select  count(cardid) from card where cardid like '________________776';
+
+--  select top 200 * from users where personid like '________________776'; 
+-- update users  set password= hash('000000','md5') where personid like '________________776'; 
+--  select  count(personid) from users where personid like '________________776';
+ 
+  --  select top 200 * from account  where ownerid like '________________776';
+  -- select  count(ownerid) from account where ownerid like '________________776';
+/* 
+delete  from card where cardid like '________________776';
+delete  from users where personid like '________________776';
+delete  from account where ownerid like '________________776';
+*/ 
